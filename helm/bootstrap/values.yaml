@@ -1,0 +1,6 @@
+ip_ranges:
+  range_default: "some-range"
+  cidr_edge: "some-cidr"
+
+kube-vip-cloud-provider:
+  configMapName: kube-vip-cloud-provider-ranges

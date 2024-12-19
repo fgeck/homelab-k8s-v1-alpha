@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-service
+  namespace: default
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test-app
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-app
+  namespace: default
+  labels:
+    app: test-app
+spec:
+  containers:
+    - name: test-app
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+      securityContext:
+        allowPrivilegeEscalation: false # Prevent privilege escalation
+        # runAsNonRoot: false # Ensure the container runs as non-root
+        seccompProfile:
+          type: RuntimeDefault # Use the default seccomp profile

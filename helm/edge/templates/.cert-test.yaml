@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: certificates-test-cert
+  namespace: default
+spec:
+  secretName: certificates-test
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - {{ .Values.edge.letsencrypt.dns_name }}
+

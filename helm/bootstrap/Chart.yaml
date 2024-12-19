@@ -1,0 +1,14 @@
+apiVersion: v2
+name: bootstrap
+description: Helm chart for bootstrapping a k8s cluster
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+  - name: kube-vip
+    version: "^0.6.4"
+    repository: https://kube-vip.github.io/helm-charts
+  - name: kube-vip-cloud-provider
+    version: "^0.2.5"
+    repository: https://kube-vip.github.io/helm-charts

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-local
+  labels:
+    app: whoami-local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-local
+  template:
+    metadata:
+      labels:
+        app: whoami-local
+    spec:
+      containers:
+        - name: whoami-local
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+          securityContext:
+            allowPrivilegeEscalation: false # Prevent privilege escalation
+            capabilities:
+              drop: ["ALL"] # Drop all capabilities
+            # runAsNonRoot: true # Ensure the container runs as non-root
+            seccompProfile:
+              type: RuntimeDefault # Use the default seccomp profile
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-local
+spec:
+  selector:
+    app: whoami-local
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-local-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+    - host: test.local # Add this to /etc/hosts for testing:  <EXTERNAL_IP_OF_LOADBALANCER> test.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami-local
+                port:
+                  number: 80

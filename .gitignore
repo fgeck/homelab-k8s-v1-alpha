@@ -1,0 +1,12 @@
+.DS_Store
+
+.env
+
+*Chart.lock
+**/charts/*
+
+**kubeconfig**
+secrets/*
+
+**.log
+**/talos/_out/

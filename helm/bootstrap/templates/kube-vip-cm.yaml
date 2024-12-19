@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-vip-cloud-provider-ranges
+  namespace: kube-system
+data:
+  range-default: {{ .Values.bootstrap.ip_ranges.range_default }} # Default range for the VIP
+  cidr-edge: {{ .Values.bootstrap.ip_ranges.cidr_edge }} # CIDR for the edge node

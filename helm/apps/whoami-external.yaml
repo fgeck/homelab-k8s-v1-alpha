@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami-external
+  labels:
+    app: whoami-external
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami-external
+  template:
+    metadata:
+      labels:
+        app: whoami-external
+    spec:
+      containers:
+        - name: whoami-external
+          image: traefik/whoami
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+          securityContext:
+            allowPrivilegeEscalation: false # Prevent privilege escalation
+            capabilities:
+              drop: ["ALL"] # Drop all capabilities
+            # runAsNonRoot: true # Ensure the container runs as non-root
+            seccompProfile:
+              type: RuntimeDefault # Use the default seccomp profile
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-external
+spec:
+  selector:
+    app: whoami-external
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami-external-ingress
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/renew-before: 48h
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+  labels:
+    app: whoami-external
+spec:
+  rules:
+    - host: whoami.fgeck.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami-external
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - whoami.fgeck.de
+      secretName: whoami-fgeck-de-tls
