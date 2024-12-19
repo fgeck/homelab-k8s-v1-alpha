@@ -22,6 +22,8 @@ traefik:
       port: 80
       expose:
         enabled: true
+      redirectTo: 
+        port: websecure
     websecure:
       port: 443
       expose:
