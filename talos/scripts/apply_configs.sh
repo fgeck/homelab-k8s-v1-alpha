@@ -37,13 +37,13 @@ echo "  Worker: $CURRENT_WORKER_IP"
 talosctl apply-config --insecure --nodes "$CONTROL_PLANE_IP" --file talos/_out/controlplane.yaml
 talosctl apply-config --insecure --nodes "$WORKER_IP" --file talos/_out/worker.yaml
 
-echo "Waiting 1m for the control plane to be ready... Eventually you have to retrigger this script if 1m was not enough"
-sleep 60
-
-talosctl bootstrap
+echo "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 1m was not enough"
+sleep 120
 
 talosctl config endpoint "$FINAL_CONTROL_PLANE_IP"
 talosctl config node "$FINAL_CONTROL_PLANE_IP"
+
+talosctl bootstrap
 
 echo "Checking the health of the cluster..."
 

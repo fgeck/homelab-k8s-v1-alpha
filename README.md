@@ -26,6 +26,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] talos extract secrets and use templating mechanism
 - [x] proper scripts for setup/teardown of cluster and cluster installation
 - [x] minimal README
+- [ ] write a script that fills in `secrets/values.yaml` from defined vaultwarden
 - [ ] Use traefik ingress objects instead of standard ingress
 - [ ] successfully deploy crowdsec
 - [ ] successfully deploy keel

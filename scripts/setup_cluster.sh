@@ -39,10 +39,8 @@ build_dependencies $chart_dir
 helm upgrade bootstrap "$script_dir/helm/bootstrap" --install -f $script_dir/helm/bootstrap/values.yaml -f $script_dir/secrets/values.yaml --namespace kube-system
 
 helm upgrade edge "$script_dir/helm/edge" --install --create-namespace -f $script_dir/helm/edge/values.yaml -f $script_dir/secrets/values.yaml --namespace edge
-kubectl apply -f "$script_dir/helm/edge/templates/.letsencrypt-staging.yaml"
-kubectl apply -f "$script_dir/helm/edge/templates/.letsencrypt-prod.yaml"
-kubectl apply -f "$script_dir/helm/edge/templates/.cert-test.yaml"
+helm upgrade edge-custom "$script_dir/helm/edge-custom" --install -f $script_dir/secrets/values.yaml --namespace edge
 
-kubectl apply -f "$script_dir/helm/apps/nginx.yaml"
-kubectl apply -f "$script_dir/helm/apps/whoami-local.yaml"
-kubectl apply -f "$script_dir/helm/apps/whoami-external.yaml"
+# kubectl apply -f "$script_dir/helm/apps/nginx.yaml"
+# kubectl apply -f "$script_dir/helm/apps/whoami-local.yaml"
+# kubectl apply -f "$script_dir/helm/apps/whoami-external.yaml"
