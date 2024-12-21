@@ -1,37 +1,25 @@
 #!/bin/bash
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
+# Check if the script is executed at the root of the repository
+if [[ ! -d ".git" ]]; then
+  COLOR_RED="\033[1;31m"
+  echo -e "${COLOR_RED}[ERROR] This script must be run from the root of the repository.${COLOR_RESET}" >&2
+  exit 1
+fi
+# Source the helper script
+source ./scripts/helper_funcs.sh
+
+# --------------------------------START-DEPLOYMENT----------------------------------------
 
 helm repo add kube-vip https://kube-vip.github.io/helm-charts
+helm repo add longhorn https://charts.longhorn.io
 helm repo add traefik https://traefik.github.io/charts
 # certmanager
 helm repo add jetstack https://charts.jetstack.io
 helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
 
 helm repo update
-
-function build_dependencies() {
-  start_dir="$1"
-
-  # Find all directories containing a Chart.yaml file
-  if [[ "$(uname)" == "Darwin" ]]; then
-    # macOS: use the `-exec` method
-    chart_dirs=($(find "$start_dir" -name "Chart.yaml" -type f -exec dirname {} \;))
-  else
-    # Linux: use the `-printf` method
-    chart_dirs=($(find "$start_dir" -name "Chart.yaml" -type f -printf '%h\n'))
-  fi
-
-  # Sort directories based on depth (deepest first)
-  IFS=$'\n' sorted_chart_dirs=($(sort -r <<<"${chart_dirs[*]}"))
-  unset IFS
-
-  # Build dependencies for each sorted directory
-  for dir in "${sorted_chart_dirs[@]}"; do
-    echo "Building dependencies in: $dir"
-    helm dependency build "$dir" --skip-refresh
-  done
-}
 
 chart_dir="$script_dir/helm"
 build_dependencies $chart_dir
