@@ -17,12 +17,13 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] deploy an app and it is reachable in local network via external IP
 - [x] deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
 - [x] deploy an app end to end with dedicated certificates (whoami-external)
-- [ ] decide about storage provider. Requirements:
+- [x] decide about storage provider. Requirements:
   - The node that hosts proxmox has a dediqated 2TB SSD where data will be stored. This must be available to many pods
   - A multi VM multi Node setup must be possible
   - Some PVs that will be used for database and backed up on a daily basis.
   - Some PVs that just store some 'not so important data'. Can be used from the VMs storage itself, but must be checked against how TalOS behaves on reset/upgrade etc.
-- [ ] successfully deploy storage provider
+  - **Decision: [Longhorn](https://longhorn.io)**
+- [x] successfully deploy storage provider
 - [x] talos extract secrets and use templating mechanism
 - [x] proper scripts for setup/teardown of cluster and cluster installation
 - [x] minimal README

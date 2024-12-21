@@ -1,0 +1,10 @@
+apiVersion: v2
+name: edge-custom
+description: Helm chart for deploying resources related to edge namespace that must be deployed after the edge namespace is created and all charts are deployed
+type: application
+version: 0.1.0
+appVersion: "latest"
+dependencies:
+  - name: longhorn
+    version: "1.7.2"
+    repository: https://charts.longhorn.io

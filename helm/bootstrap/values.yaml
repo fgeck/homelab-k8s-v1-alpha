@@ -4,3 +4,16 @@ ip_ranges:
 
 kube-vip-cloud-provider:
   configMapName: kube-vip-cloud-provider-ranges
+  
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 10
+          preference:
+            matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: Exists

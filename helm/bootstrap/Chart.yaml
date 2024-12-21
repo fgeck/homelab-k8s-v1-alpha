@@ -1,6 +1,6 @@
 apiVersion: v2
 name: bootstrap
-description: Helm chart for bootstrapping a k8s cluster
+description: Helm chart for bootstrapping a k8s cluster using kube-vip to be able to assign external IPs
 type: application
 version: 0.1.0
 appVersion: "latest"

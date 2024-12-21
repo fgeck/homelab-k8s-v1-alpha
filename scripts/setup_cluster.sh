@@ -22,13 +22,14 @@ helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
 helm repo update
 
 chart_dir="$script_dir/helm"
-build_dependencies $chart_dir
+build_helm_dependencies $chart_dir
 
 helm upgrade bootstrap "$script_dir/helm/bootstrap" --install -f $script_dir/helm/bootstrap/values.yaml -f $script_dir/secrets/values.yaml --namespace kube-system
 
 helm upgrade edge "$script_dir/helm/edge" --install --create-namespace -f $script_dir/helm/edge/values.yaml -f $script_dir/secrets/values.yaml --namespace edge
 helm upgrade edge-custom "$script_dir/helm/edge-custom" --install -f $script_dir/secrets/values.yaml --namespace edge
 
+helm upgrade storage "$script_dir/helm/storage" --install --create-namespace -f $script_dir/helm/storage/values.yaml -f $script_dir/secrets/values.yaml --namespace longhorn-system
 # kubectl apply -f "$script_dir/helm/apps/nginx.yaml"
 # kubectl apply -f "$script_dir/helm/apps/whoami-local.yaml"
 # kubectl apply -f "$script_dir/helm/apps/whoami-external.yaml"

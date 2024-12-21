@@ -7,8 +7,21 @@ set -e
 # when the OS was installed. Can be found in the VM screen
 # Run the script from the root of this repository. It will fetch the final IPs from the config files
 
+# --------------------------------CONFIG----------------------------------------
+
 CURRENT_CONTROL_PLANE_IP=
 CURRENT_WORKER_IP=
+
+# --------------------------------CONFIG----------------------------------------
+
+# Check if the script is executed at the root of the repository
+if [[ ! -d ".git" ]]; then
+  COLOR_RED="\033[1;31m"
+  echo -e "${COLOR_RED}[ERROR] This script must be run from the root of the repository.${COLOR_RESET}" >&2
+  exit 1
+fi
+# Source the helper script
+source ./scripts/helper_funcs.sh
 
 FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/controlplane.yaml | cut -d'/' -f1)
 FINAL_WORKER_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker.yaml | cut -d'/' -f1)
@@ -23,11 +36,34 @@ check_ip_reachability() {
   
   # Check if the response indicates an empty reply
   if [[ $response == "000" ]]; then
-    #echo "Final $role IP is reachable: $ip"
+    #log_debug "Final $role IP is reachable: $ip"
     echo "$ip"
   else
-    #echo "Final $role IP is not reachable, falling back to current IP: $fallback_ip"
+    #log_debug "Final $role IP is not reachable, falling back to current IP: $fallback_ip"
     echo "$fallback_ip"
+  fi
+}
+
+apply_talos_config() {
+  local node_ip="$1"
+  local config_file="$2"
+  local insecure_flag=""
+
+  log_info "Attempting to apply Talos config to node: $node_ip using $config_file"
+
+  # Try without --insecure
+  if ! talosctl apply-config --nodes "$node_ip" --file "$config_file" $insecure_flag; then
+    log_debug "First attempt failed, retrying with --insecure..."
+    # Retry with --insecure
+    insecure_flag="--insecure"
+    if talosctl apply-config --nodes "$node_ip" --file "$config_file" $insecure_flag; then
+      log_success "Successfully applied Talos config to $node_ip with --insecure"
+    else
+      log_error "Failed to apply Talos config to $node_ip with --insecure"
+      exit 1
+    fi
+  else
+    log_success "Successfully applied Talos config to $node_ip"
   fi
 }
 
@@ -37,24 +73,24 @@ CONTROL_PLANE_IP=$(check_ip_reachability "$FINAL_CONTROL_PLANE_IP" "$CURRENT_CON
 WORKER_IP=$(check_ip_reachability "$FINAL_WORKER_IP" "$CURRENT_WORKER_IP")
 
 
-echo "Applying the final configs to the nodes..."
-echo "  Control Plane: $CONTROL_PLANE_IP"
-echo "  Worker: $WORKER_IP"
+log_info "Applying the final configs to the nodes..."
+log_info "  Control Plane: $CONTROL_PLANE_IP"
+log_info "  Worker: $WORKER_IP"
 
-talosctl apply-config --insecure --nodes "$CONTROL_PLANE_IP" --file talos/_out/controlplane.yaml
-talosctl apply-config --insecure --nodes "$WORKER_IP" --file talos/_out/worker.yaml
+apply_talos_config "$CONTROL_PLANE_IP" "talos/_out/controlplane.yaml"
+apply_talos_config "$WORKER_IP" "talos/_out/worker.yaml"
 
-echo "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 1m was not enough"
+log_info "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 1m was not enough"
 sleep 120
 
 talosctl config endpoint "$FINAL_CONTROL_PLANE_IP"
 talosctl config node "$FINAL_CONTROL_PLANE_IP"
 
-echo "Bootstrapping the cluster now"
+log_info "Bootstrapping the cluster now"
 
 talosctl bootstrap
 
-echo "Checking the health of the cluster..."
+log_info "Checking the health of the cluster..."
 
 talosctl health
 
