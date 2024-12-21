@@ -11,27 +11,28 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 
 ## Todos
 
-- [x] successfully create K8s cluster in Proxmox VMs using TalOS
-- [x] successfully deploy cert-manager which creates valid certificates
-- [x] successfully deploy kube-vip
-- [x] deploy an app and it is reachable in local network via external IP
-- [x] deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
-- [x] deploy an app end to end with dedicated certificates (whoami-external)
-- [x] decide about storage provider. Requirements:
+- [x] Successfully create K8s cluster in Proxmox VMs using TalOS
+- [x] Successfully deploy cert-manager which creates valid certificates
+- [x] Successfully deploy kube-vip
+- [x] Deploy an app and it is reachable in local network via external IP
+- [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
+- [x] Deploy an app end to end with dedicated certificates (whoami-external)
+- [x] Decide about storage provider. Requirements:
   - The node that hosts proxmox has a dediqated 2TB SSD where data will be stored. This must be available to many pods
   - A multi VM multi Node setup must be possible
   - Some PVs that will be used for database and backed up on a daily basis.
   - Some PVs that just store some 'not so important data'. Can be used from the VMs storage itself, but must be checked against how TalOS behaves on reset/upgrade etc.
   - **Decision: [Longhorn](https://longhorn.io)**
+- [ ] Configure backups for selected PVs
 - [x] successfully deploy storage provider
-- [x] talos extract secrets and use templating mechanism
-- [x] proper scripts for setup/teardown of cluster and cluster installation
-- [x] minimal README
-- [ ] write a script that fills in `secrets/values.yaml` from defined vaultwarden
+- [x] Talos extract secrets and use templating mechanism
+- [x] Proper scripts for setup/teardown of cluster and cluster installation
+- [x] Minimal README
+- [x] Write a script that fills in `secrets/values.yaml` from defined vaultwarden
 - [ ] Use traefik ingress objects instead of standard ingress
-- [ ] successfully deploy crowdsec
-- [ ] successfully deploy keel
-- [ ] single postgres deployment to be used by many services
-- [ ] backup for selected PVs
-- [ ] successfully deploy signoz
-- [ ] enhanced security using RBAC
+- [ ] Use a single wildcard certificate instead of a certificate for each service
+- [ ] Successfully deploy crowdsec
+- [ ] Successfully deploy keel
+- [ ] Single postgres deployment to be used by many services
+- [ ] Successfully deploy signoz
+- [ ] Enhanced security using RBAC
