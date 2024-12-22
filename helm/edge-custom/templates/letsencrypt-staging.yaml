@@ -3,6 +3,9 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-staging
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade" # Ensures PVC creation before others
+    "helm.sh/hook-weight": "-1" # Lower weight runs earlier
 spec:
   acme:
     # The ACME server URL
