@@ -12,8 +12,14 @@ traefik:
   securityContext:
     seccompProfile:
       type: RuntimeDefault
-  crds:
-    enabled: true
+  providers:
+    kubernetesCRD:
+      enabled: true
+      allowCrossNamespace: true
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: "set-by-secret-values"
   ingressClass:
     enabled: true
     isDefaultClass: true
