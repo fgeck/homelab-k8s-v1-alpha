@@ -12,8 +12,11 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 ## Todos
 
 - [x] Successfully create K8s cluster in Proxmox VMs using TalOS
-- [x] Successfully deploy cert-manager which creates valid certificates
-- [x] Successfully deploy kube-vip
+- [ ] Multi Controlplane Cluster using 2 Controlplane TalOS VMs
+- [x] Successfully deploy Cert-Manager which creates valid certificates
+- [x] Successfully deploy Kube-Vip
+- [x] Successfully deploy Traefik
+- [ ] A Traefik pod runs on every node to have some kind of HA setup
 - [x] Deploy an app and it is reachable in local network via external IP
 - [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
 - [x] Deploy an app end to end with dedicated certificates (whoami-external)
@@ -23,16 +26,26 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
   - Some PVs that will be used for database and backed up on a daily basis.
   - Some PVs that just store some 'not so important data'. Can be used from the VMs storage itself, but must be checked against how TalOS behaves on reset/upgrade etc.
   - **Decision: [Longhorn](https://longhorn.io)**
-- [ ] Configure backups for selected PVs
+- [ ] Testing of Longhorn + TalOS
+  - Add a second disk to VM
+  - Configure it in TalOS (adapt config scripts)
+  - Verify `talosctl reset` does not delete contents of the disk
+  - Create PV + PVC; write some data to it using a Deployment; configure and do backup of disk to another disk; check for files on disk; do a disaster recovery once
 - [x] successfully deploy storage provider
-- [x] Talos extract secrets and use templating mechanism
-- [x] Proper scripts for setup/teardown of cluster and cluster installation
-- [x] Minimal README
-- [x] Write a script that fills in `secrets/values.yaml` from defined vaultwarden
-- [ ] Use traefik ingress objects instead of standard ingress
-- [ ] Use a single wildcard certificate instead of a certificate for each service
+- [x] TalOS extract secrets and use templating mechanism
+- [x] Proper scripts for setup of cluster and cluster installation (ongoing WIP)
+- [ ] Script to uninstall everything from the cluster
+- [x] Minimal README (ongoing WIP)
+- [x] Write a script that fills in `secrets/values.yaml` and `secrets/secrets.yaml` from defined vaultwarden
+- [ ] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
+- [x] Use traefik ingress objects instead of standard ingress
+- [x] Use a single wildcard certificate instead of a certificate for each service
 - [ ] Successfully deploy crowdsec
 - [ ] Successfully deploy keel
 - [ ] Single postgres deployment to be used by many services
 - [ ] Successfully deploy signoz
+- [ ] Migrate stack from docker-compose to K8s
+- [ ] Expose USB HDDs in network as backup drives. Currently the Fritzbox exposes them as Samba Shares. Requirements:
+  - Longhorn can use the disks; according to [Longhorn docs](https://longhorn.io/docs/1.7.2/snapshots-and-backups/backup-and-restore/set-backup-target/) it should be possible to use a Samba Share
+- [ ] configure backups for important PVs
 - [ ] Enhanced security using RBAC
