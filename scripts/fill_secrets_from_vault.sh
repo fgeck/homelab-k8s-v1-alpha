@@ -3,13 +3,9 @@
 set -e
 
 # --------------------------------CONFIG----------------------------------------
-BITWARDEN_SERVER=
+VAULTWARDEN_SERVER=
 SECRET_NAME=Kubernetes # expect secrets.yaml and values.yaml here
 # --------------------------------CONFIG----------------------------------------
-
-logout() {
-    bw logout
-}
 
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
@@ -20,13 +16,13 @@ fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
 
-log_info "Setting your server in config and logging in"
-bw config server "$BITWARDEN_SERVER"
+log_debug "Setting your server in config and logging in"
+bw config server "$VAULTWARDEN_SERVER"
 SESSION=$(bw login --raw)
-trap logout EXIT
+trap bw_logout EXIT
 
 log_info "Getting secret Kubernetes"
-JSON_RESPONSE=$(bw get item Kubernetes --session "$SESSION" --response)
+JSON_RESPONSE=$(bw get item "$SECRET_NAME" --session "$SESSION" --response)
 
 log_info "Parsing fields"
 VALUES_BASE64=$(echo "$JSON_RESPONSE" | jq -r '.data.fields[] | select(.name == "values.yaml") | .value')

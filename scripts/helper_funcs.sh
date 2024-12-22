@@ -23,7 +23,20 @@ log_success() {
   echo -e "${COLOR_GREEN}[SUCCESS] $*${COLOR_RESET}"
 }
 
-function build_helm_dependencies() {
+file_exists() {
+    local file_path="$1"
+    if [ -e "$file_path" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+bw_logout() {
+    bw logout
+}
+
+build_helm_dependencies() {
   start_dir="$1"
 
   # Find all directories containing a Chart.yaml file
