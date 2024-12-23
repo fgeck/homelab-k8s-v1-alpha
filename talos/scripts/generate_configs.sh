@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# Usage:
-# 1. generate your secrets.yaml file: talosctl gen secrets -o ./secrets/secrets.yaml
-# 2. set your static IP addresses and the gateway in the variables below
-# 3. run this script from the root of this repository
-
-# --------------------------------CONFIG----------------------------------------
-source .env
-# CLUSTER_NAME=
-# CONTROL_PLANE_IP=
-# WORKER_IP=
-# GATEWAY=
-# v1.9.0 Contains qemu-guest-agent, iscsi-tools, util-linux-tools
-IMAGE="factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.9.0"
-# --------------------------------CONFIG----------------------------------------
-
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
   COLOR_RED="\033[1;31m"
@@ -23,6 +8,23 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+
+# Usage:
+# 1. generate your secrets.yaml file: talosctl gen secrets -o ./secrets/secrets.yaml
+# 2. set your static IP addresses and the gateway in the variables below
+# 3. run this script from the root of this repository
+
+# --------------------------------CONFIG----------------------------------------
+
+CLUSTER_NAME=$(yq '.scriptConfigs.clusterName' secrets/values.yaml)
+CONTROL_PLANE_IP=$(yq '.scriptConfigs.finalControlPlaneIp' secrets/values.yaml)
+WORKER_IP=$(yq '.scriptConfigs.finalWorkerIp' secrets/values.yaml)
+GATEWAY=$(yq '.scriptConfigs.gateway' secrets/values.yaml)
+
+# v1.9.0 Contains qemu-guest-agent, iscsi-tools, util-linux-tools
+IMAGE="factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.9.0"
+# --------------------------------CONFIG----------------------------------------
+
 
 mkdir -p talos/_out
 

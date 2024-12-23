@@ -2,17 +2,6 @@
 
 set -e
 
-# Usage:
-# Configure the control plane and worker nodes IPs which were assigned via DHCP
-# when the OS was installed. Can be found in the VM screen
-# Run the script from the root of this repository. It will fetch the final IPs from the config files
-
-# --------------------------------CONFIG----------------------------------------
-source .env
-#CURRENT_CONTROL_PLANE_IP=
-#CURRENT_WORKER_IP=
-# --------------------------------CONFIG----------------------------------------
-
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
   COLOR_RED="\033[1;31m"
@@ -21,6 +10,18 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+
+
+# Usage:
+# Configure the control plane and worker nodes IPs which were assigned via DHCP
+# when the OS was installed. Can be found in the VM screen
+# Run the script from the root of this repository. It will fetch the final IPs from the config files
+
+# --------------------------------CONFIG----------------------------------------
+CURRENT_CONTROL_PLANE_IP=$(yq '.scriptConfigs.currentControlPlaneIp' secrets/values.yaml)
+CURRENT_WORKER_IP=$(yq '.scriptConfigs.currentWorkerIp' secrets/values.yaml)
+# --------------------------------CONFIG----------------------------------------
+
 
 FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/controlplane.yaml | cut -d'/' -f1)
 FINAL_WORKER_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker.yaml | cut -d'/' -f1)
