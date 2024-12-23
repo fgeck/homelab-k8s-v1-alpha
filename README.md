@@ -21,7 +21,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
 - [x] Deploy an app end to end with dedicated certificates (whoami-external)
 - [x] Decide about storage provider. Requirements:
-  - The node that hosts proxmox has a dediqated 2TB SSD where data will be stored. This must be available to many pods
+  - The node that hosts Proxmox has a dedicated 2TB SSD where data will be stored. This must be available to many pods
   - A multi VM multi Node setup must be possible
   - Some PVs that will be used for database and backed up on a daily basis.
   - Some PVs that just store some 'not so important data'. Can be used from the VMs storage itself, but must be checked against how TalOS behaves on reset/upgrade etc.
@@ -31,13 +31,16 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
   - Configure it in TalOS (adapt config scripts)
   - Verify `talosctl reset` does not delete contents of the disk
   - Create PV + PVC; write some data to it using a Deployment; configure and do backup of disk to another disk; check for files on disk; do a disaster recovery once
+- [ ] The 2 TB Data SSD must be exposed in the cluster to read/write data as well as via SMB share to be able to access the files via Windows and Mac. According to [official K8s documentation](https://github.com/kubernetes-csi/csi-driver-smb/blob/master/deploy/example/smb-provisioner/README.md) it is possible to deploy a Samba Deployments. Current idea: Mount Data SSD in a worker VM, make the Samba Server Deployment stick to that Node. But how will other Pods be able to write to that Disk?
+- [ ] Expose USB HDDs in network as backup drives. Currently the Fritzbox exposes them as Samba Shares. Requirements:
+  - Longhorn can use the disks; according to [Longhorn docs](https://longhorn.io/docs/1.7.2/snapshots-and-backups/backup-and-restore/set-backup-target/) it should be possible to use a Samba Share
 - [x] successfully deploy storage provider
 - [x] TalOS extract secrets and use templating mechanism
 - [x] Proper scripts for setup of cluster and cluster installation (ongoing WIP)
 - [ ] Script to uninstall everything from the cluster
 - [x] Minimal README (ongoing WIP)
 - [x] Write a script that fills in `secrets/values.yaml` and `secrets/secrets.yaml` from defined vaultwarden
-- [ ] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
+- [x] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
 - [ ] Successfully deploy crowdsec
@@ -45,7 +48,5 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [ ] Single postgres deployment to be used by many services
 - [ ] Successfully deploy signoz
 - [ ] Migrate stack from docker-compose to K8s
-- [ ] Expose USB HDDs in network as backup drives. Currently the Fritzbox exposes them as Samba Shares. Requirements:
-  - Longhorn can use the disks; according to [Longhorn docs](https://longhorn.io/docs/1.7.2/snapshots-and-backups/backup-and-restore/set-backup-target/) it should be possible to use a Samba Share
 - [ ] configure backups for important PVs
 - [ ] Enhanced security using RBAC

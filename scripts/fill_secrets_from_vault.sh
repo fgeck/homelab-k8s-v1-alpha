@@ -4,7 +4,7 @@ set -e
 
 # --------------------------------CONFIG----------------------------------------
 VAULTWARDEN_SERVER=
-SECRET_NAME=Kubernetes # expect secrets.yaml and values.yaml here
+SECRET_NAME=KubernetesOnTalos # expect secrets.yaml and values.yaml here
 # --------------------------------CONFIG----------------------------------------
 
 # Check if the script is executed at the root of the repository
