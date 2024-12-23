@@ -8,10 +8,9 @@ set -e
 # Run the script from the root of this repository. It will fetch the final IPs from the config files
 
 # --------------------------------CONFIG----------------------------------------
-
-CURRENT_CONTROL_PLANE_IP=
-CURRENT_WORKER_IP=
-
+source .env
+#CURRENT_CONTROL_PLANE_IP=
+#CURRENT_WORKER_IP=
 # --------------------------------CONFIG----------------------------------------
 
 # Check if the script is executed at the root of the repository
