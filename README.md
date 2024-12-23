@@ -32,6 +32,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
   - Verify `talosctl reset` does not delete contents of the disk
   - Create PV + PVC; write some data to it using a Deployment; configure and do backup of disk to another disk; check for files on disk; do a disaster recovery once
 - [ ] The 2 TB Data SSD must be exposed in the cluster to read/write data as well as via SMB share to be able to access the files via Windows and Mac. According to [official K8s documentation](https://github.com/kubernetes-csi/csi-driver-smb/blob/master/deploy/example/smb-provisioner/README.md) it is possible to deploy a Samba Deployments. Current idea: Mount Data SSD in a worker VM, make the Samba Server Deployment stick to that Node. But how will other Pods be able to write to that Disk?
+--> New Idea: Longhorn use RWX for the data disk. This exposes the disk via NFS according to their [documentation](https://longhorn.io/docs/1.7.2/nodes-and-volumes/volumes/rwx-volumes/#configuring-volume-locality-for-rwx-volumes)
 - [ ] Expose USB HDDs in network as backup drives. Currently the Fritzbox exposes them as Samba Shares. Requirements:
   - Longhorn can use the disks; according to [Longhorn docs](https://longhorn.io/docs/1.7.2/snapshots-and-backups/backup-and-restore/set-backup-target/) it should be possible to use a Samba Share
 - [x] successfully deploy storage provider

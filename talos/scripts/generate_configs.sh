@@ -10,8 +10,8 @@ CLUSTER_NAME=""
 CONTROL_PLANE_IP=""
 WORKER_IP=""
 GATEWAY=""
-# v1.9.0 Contains qemu-guest-agent, iscsi-tools 
-IMAGE="factory.talos.dev/installer/dc7b152cb3ea99b821fcb7340ce7168313ce393d663740b791c36f6e95fc8586:v1.9.0"
+# v1.9.0 Contains qemu-guest-agent, iscsi-tools, util-linux-tools
+IMAGE="factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.9.0"
 # --------------------------------CONFIG----------------------------------------
 
 # Check if the script is executed at the root of the repository
@@ -25,9 +25,15 @@ source ./scripts/helper_funcs.sh
 
 mkdir -p talos/_out
 
-talosctl gen config $CLUSTER_NAME https://${CONTROL_PLANE_IP}:6443 \
-    --config-patch-control-plane "[{\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${CONTROL_PLANE_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"}]" \
-    --config-patch-worker "[{\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${WORKER_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"}]" \
+talosctl gen config --force $CLUSTER_NAME https://${CONTROL_PLANE_IP}:6443 \
+    --config-patch-control-plane "[ \
+        {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${CONTROL_PLANE_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
+        {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"}, \
+        {\"op\": \"add\", \"path\": \"/cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-\", \"value\": \"longhorn-system\"} \
+    ]" \
+    --config-patch-worker "[ \
+        {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${WORKER_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
+        {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"} \
+    ]" \
     --with-secrets ./secrets/secrets.yaml \
     -o talos/_out/
-
