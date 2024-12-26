@@ -1,0 +1,11 @@
+
+postgresql:
+  primary:
+    persistence:
+      existingClaim: postgres-pvc
+    containerSecurityContext:
+      runAsGroup: 1001
+    persistentVolumeClaimRetentionPolicy:
+      enabled: true
+    volumePermissions:
+      enabled: true

@@ -26,5 +26,5 @@ spec:
       name: signoz
       namespace: monitoring
       passHostHeader: true
-      port: 3001
+      port: 3301
       scheme: http

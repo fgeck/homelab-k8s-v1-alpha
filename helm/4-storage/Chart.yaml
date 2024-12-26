@@ -1,6 +1,6 @@
 apiVersion: v2
 name: edge-custom
-description: Helm chart for deploying resources related to edge namespace that must be deployed after the edge namespace is created and all charts are deployed
+description: Helm chart for deploying storage provisioners
 type: application
 version: 0.1.0
 appVersion: "latest"
