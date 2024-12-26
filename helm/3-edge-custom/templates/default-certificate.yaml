@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: {{ .Values.edge.certificateName }}
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-staging # TODO: Use Prod later
     kind: ClusterIssuer
   dnsNames:
     - {{ .Values.edge.certificateDomain | quote }}

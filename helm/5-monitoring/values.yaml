@@ -1,0 +1,25 @@
+# signoz:
+
+
+global:
+  cloud: others
+  clusterName: fgeck
+  deploymentEnvironment: prod
+otelCollectorEndpoint: observability-signoz-otel-collector:4317
+otelInsecure: true
+presets:
+  otlpExporter:
+    enabled: true
+  loggingExporter:
+    enabled: false
+
+uptime-kuma:
+  volume:
+    # enabled: true
+    # accessMode: ReadWriteOnce
+    # size: 1Gi
+    # If you want to use a storage class other than the default, uncomment this
+    # line and define the storage class name
+    # storageClassName:
+    # Reuse your own pre-existing PVC.
+    existingClaim: "TODO"

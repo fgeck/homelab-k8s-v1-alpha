@@ -11,3 +11,13 @@ spec:
     sourceRange:
         - 127.0.0.1/32
         - {{ .Values.edge.traefik.localIPAllowCidr }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: ssl-header
+spec:
+  headers:
+    customRequestHeaders:
+      Connection: keep-alive, Upgrade
+      Upgrade: WebSocket

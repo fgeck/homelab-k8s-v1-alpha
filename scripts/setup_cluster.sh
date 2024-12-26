@@ -24,12 +24,16 @@ helm repo update
 chart_dir="$script_dir/helm"
 build_helm_dependencies $chart_dir
 
-helm upgrade bootstrap "$script_dir/helm/bootstrap" --install -f $script_dir/helm/bootstrap/values.yaml -f $script_dir/secrets/values.yaml --namespace kube-system
+helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml --namespace kube-system
 
-helm upgrade edge "$script_dir/helm/edge" --install --create-namespace -f $script_dir/helm/edge/values.yaml -f $script_dir/secrets/values.yaml --namespace edge
-helm upgrade edge-custom "$script_dir/helm/edge-custom" --install -f $script_dir/secrets/values.yaml --namespace edge
+helm upgrade edge "$script_dir/helm/2-edge" --install --create-namespace -f $script_dir/helm/2-edge/values.yaml -f $script_dir/secrets/values.yaml --namespace edge
+helm upgrade edge-custom "$script_dir/helm/3-edge-custom" --install -f $script_dir/secrets/values.yaml --namespace edge
 
-helm upgrade storage "$script_dir/helm/storage" --install --create-namespace -f $script_dir/helm/storage/values.yaml -f $script_dir/secrets/values.yaml --namespace longhorn-system
+helm upgrade storage "$script_dir/helm/4-storage" --install --create-namespace -f $script_dir/helm/4-storage/values.yaml -f $script_dir/secrets/values.yaml --namespace longhorn-system
+helm upgrade monitoring "$script_dir/helm/5-monitoring" --install --create-namespace -f $script_dir/helm/5-monitoring/values.yaml -f $script_dir/secrets/values.yaml --namespace monitoring
+
+# helm upgrade media "$script_dir/helm/6-media" --install --create-namespace -f $script_dir/helm/6-media/values.yaml -f $script_dir/secrets/values.yaml --namespace media
+# helm upgrade apps "$script_dir/helm/7-apps" --install -f $script_dir/helm/7-apps/values.yaml -f $script_dir/secrets/values.yaml
 # kubectl apply -f "$script_dir/helm/apps/nginx.yaml"
 # kubectl apply -f "$script_dir/helm/apps/whoami-local.yaml"
 # kubectl apply -f "$script_dir/helm/apps/whoami-external.yaml"

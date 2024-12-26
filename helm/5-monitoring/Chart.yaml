@@ -1,0 +1,17 @@
+apiVersion: v2
+name: media
+description: Helm chart for deploying a monitoring stack to a k8s cluster
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+  - name: uptime-kuma 
+    version: "^2.20.0"
+    repository: https://dirsigler.github.io/uptime-kuma-helm # https://github.com/dirsigler/uptime-kuma-helm/blob/main/charts/uptime-kuma/values.yaml
+  # - name: signoz
+  #   version: "0.62.1"
+  #   repository: "https://charts.signoz.io"
+  # - name: k8s-infra
+  #   version: "0.11.18"
+  #   repository: "https://charts.signoz.io"

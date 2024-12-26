@@ -1,0 +1,91 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: example-pv
+# spec:
+#   capacity:
+#     storage: 1Gi
+#   accessModes:
+#     - ReadWriteMany
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: example-pvc
+# spec:
+#   storageClassName: longhorn
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 3Gi
+# ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nfs-test
+  namespace: longhorn-system
+spec:
+  containers:
+    - name: test
+      image: ubuntu:20.04
+      command: ["/bin/bash", "-c", "sleep 99999"]
+      securityContext:
+        privileged: true
+        capabilities:
+          add:
+          - SYS_ADMIN
+  #     volumeMounts:
+  #     - name: nfs-vol
+  #       mountPath: /share
+  # volumes:
+  # - name: nfs-vol
+  #   nfs:
+  #     server: 192.168.178.115
+  #     path: /mnt/share
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+    - name: test
+      image: ubuntu:20.04
+      command: ["/bin/bash", "-c", "sleep 99999"]
+      volumeMounts:
+        - mountPath: /mnt/data
+          name: example-storage
+  volumes:
+    - name: example-storage
+      persistentVolumeClaim:
+        claimName: storage
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-external
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/renew-before: 48h
+  labels:
+    app: whoami-external
+spec:
+  entryPoints:
+    - websecure
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`whoami.fgeck.de`)
+      priority: 10
+      middlewares:
+        - name: local-ipallowlist
+          namespace: edge
+      services:
+        - kind: Service
+          name: whoami-external
+          namespace: default
+          passHostHeader: true
+          port: 80
+          scheme: http
