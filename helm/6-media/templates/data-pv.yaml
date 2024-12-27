@@ -4,7 +4,8 @@ metadata:
   name: data-pv
 spec:
   capacity:
-    storage: 1800Gi
+    # TODO: Fix me
+    storage: 2Gi #1800Gi
   accessModes:
     - ReadWriteMany
   nfs:
@@ -21,5 +22,6 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1800Gi
+      # TODO: Fix me
+      storage: 2Gi #1800Gi
   volumeName: data-pv

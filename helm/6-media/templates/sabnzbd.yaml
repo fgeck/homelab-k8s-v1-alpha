@@ -110,9 +110,9 @@ spec:
           timeoutSeconds: 2
         volumeMounts:
         - mountPath: /config
-          name: config
+          name: sabnzbd-config-nfs
         - mountPath: /mnt/data
-          name: data
+          name: data-nfs
         - mountPath: /dev/shm
           name: devshm
         - mountPath: /shared
@@ -142,13 +142,11 @@ spec:
       terminationGracePeriodSeconds: 60
       volumes:
       - name: sabnzbd-config-nfs
-        nfs:
-          server: {{ .Values.global.nfs.server }}
-          path: /share/media/sabnzbd/config
+        persistentVolumeClaim:
+          claimName: sabnzbd-pvc
       - name: data-nfs
-        nfs:
-          server: {{ .Values.global.nfs.server }}
-          path: /share/data
+        persistentVolumeClaim:
+          claimName: data-pvc
       - emptyDir:
           medium: Memory
           sizeLimit: 2Gi

@@ -1,11 +1,25 @@
+global:
+  labels:
+    app.kubernetes.io/group: media
+  annotations:
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@daily"
+  postgresql:
+    auth:
+      username: mediauser
+      existingSecret: media-postgres-auth
 
 postgresql:
+  namespace: media
   primary:
     persistence:
+      enabled: true
+      accessModes:
+      - ReadWriteMany
       existingClaim: postgres-pvc
+    podSecurityContext:
+      fsGroup: 1000
     containerSecurityContext:
-      runAsGroup: 1001
-    persistentVolumeClaimRetentionPolicy:
-      enabled: true
-    volumePermissions:
-      enabled: true
+      runAsGroup: 1000
+      runAsUser: 1000
