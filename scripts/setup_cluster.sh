@@ -24,13 +24,13 @@ helm repo update
 chart_dir="$script_dir/helm"
 build_helm_dependencies $chart_dir
 
-helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml --namespace kube-system
+helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install --namespace kube-system -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
 
-helm upgrade edge "$script_dir/helm/2-edge" --install --create-namespace -f $script_dir/helm/2-edge/values.yaml -f $script_dir/secrets/values.yaml --namespace edge
-helm upgrade edge-custom "$script_dir/helm/3-edge-custom" --install -f $script_dir/secrets/values.yaml --namespace edge
+helm upgrade edge "$script_dir/helm/2-edge" --install  --namespace edge --create-namespace -f $script_dir/helm/2-edge/values.yaml -f $script_dir/secrets/values.yaml
+helm upgrade edge-custom "$script_dir/helm/3-edge-custom" --install --namespace edge -f $script_dir/secrets/values.yaml
 
-helm upgrade storage "$script_dir/helm/4-storage" --install --create-namespace -f $script_dir/helm/4-storage/values.yaml -f $script_dir/secrets/values.yaml --namespace longhorn-system
-helm upgrade monitoring "$script_dir/helm/5-monitoring" --install --create-namespace -f $script_dir/helm/5-monitoring/values.yaml -f $script_dir/secrets/values.yaml --namespace monitoring
+# helm upgrade storage "$script_dir/helm/4-storage" --install --namespace longhorn-system --create-namespace -f $script_dir/helm/4-storage/values.yaml -f $script_dir/secrets/values.yaml
+helm upgrade monitoring "$script_dir/helm/5-monitoring" --install --namespace monitoring --create-namespace -f $script_dir/helm/5-monitoring/values.yaml -f $script_dir/secrets/values.yaml
 
 # helm upgrade media "$script_dir/helm/6-media" --install --create-namespace -f $script_dir/helm/6-media/values.yaml -f $script_dir/secrets/values.yaml --namespace media
 # helm upgrade apps "$script_dir/helm/7-apps" --install -f $script_dir/helm/7-apps/values.yaml -f $script_dir/secrets/values.yaml

@@ -3,9 +3,6 @@ kind: IngressRoute
 metadata:
   name: uptime-kuma
   namespace: monitoring
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    cert-manager.io/renew-before: 48h
   labels:
     app: uptime-kuma
 spec:
@@ -19,9 +16,11 @@ spec:
     middlewares:
     - name: local-ipallowlist
       namespace: edge
+    # - name: ssl-header  
+    #   namespace: edge
     services:
     - kind: Service
-      name: uptime-kuma
+      name: monitoring-uptime-kuma
       namespace: monitoring
       passHostHeader: true
       port: 3001

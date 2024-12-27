@@ -3,9 +3,6 @@ kind: IngressRoute
 metadata:
   name: signoz
   namespace: monitoring
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    cert-manager.io/renew-before: 48h
   labels:
     app: signoz
 spec:
