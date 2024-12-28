@@ -15,34 +15,35 @@ presets:
 uptime-kuma:
   namespace: monitoring
   volume:
-    enabled: false
-  podEnv:
-    - name: PUID
-      value: "1000"
-    - name: GUID
-      value: "1000"
-    - name: UPTIME_KUMA_DB_TYPE
-      value: "mariadb"
-    - name: UPTIME_KUMA_DB_HOSTNAME
-      value: "monitoring-mariadb"
-    - name: UPTIME_KUMA_DB_PORT
-      value: "3306"
-    - name: UPTIME_KUMA_DB_NAME
-      value: "uptime-kuma"
-    - name: UPTIME_KUMA_DB_USERNAME
-      value: "uptime-kuma"
-    - name: UPTIME_KUMA_DB_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: mariadb-secret
-          key: mariadb-password
+    enabled: true
+    existingClaim: uptime-kuma-pvc
+  # podEnv:
+  #   - name: PUID
+  #     value: "1000"
+  #   - name: GUID
+  #     value: "1000"
+  #   - name: UPTIME_KUMA_DB_TYPE
+  #     value: "mariadb"
+  #   - name: UPTIME_KUMA_DB_HOSTNAME
+  #     value: "monitoring-mariadb"
+  #   - name: UPTIME_KUMA_DB_PORT
+  #     value: "3306"
+  #   - name: UPTIME_KUMA_DB_NAME
+  #     value: "uptime-kuma"
+  #   - name: UPTIME_KUMA_DB_USERNAME
+  #     value: "uptime-kuma"
+  #   - name: UPTIME_KUMA_DB_PASSWORD
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: mariadb-secret
+  #         key: mariadb-password
 
-mariadb:
-  namespace: monitoring
-  auth:
-    database: uptime-kuma
-    existingSecret: mariadb-secret
-    user: uptime-kuma
-  primary:
-    persistence:
-      existingClaim: "mariadb-pvc"
+# mariadb:
+#   namespace: monitoring
+#   auth:
+#     database: uptime-kuma
+#     existingSecret: mariadb-secret
+#     user: uptime-kuma
+#   primary:
+#     persistence:
+#       existingClaim: "mariadb-pvc"

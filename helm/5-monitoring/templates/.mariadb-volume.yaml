@@ -1,0 +1,11 @@
+apiVersion: longhorn.io/v1beta2
+kind: Volume
+metadata:
+  name: mariadb-longhorn-volume
+  namespace: longhorn-system
+spec:
+  size: 1Gi
+  numberOfReplicas: 1
+  fromBackup: smb://{{ .Values.storage.longhorn.smb.server }}/mariadb-backup
+  backupTarget: smb://{{ .Values.storage.longhorn.smb.server }}/mariadb-backup
+  backupTargetSecret: smb-credentials

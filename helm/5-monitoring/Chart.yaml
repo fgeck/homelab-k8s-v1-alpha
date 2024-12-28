@@ -9,9 +9,9 @@ dependencies:
   - name: uptime-kuma 
     version: "^2.20.0"
     repository: https://dirsigler.github.io/uptime-kuma-helm # https://github.com/dirsigler/uptime-kuma-helm/blob/main/charts/uptime-kuma/values.yaml
-  - name: mariadb
-    version: "^20.2.1"
-    repository: https://charts.bitnami.com/bitnami
+  # - name: mariadb
+  #   version: "^20.2.1"
+  #   repository: https://charts.bitnami.com/bitnami
   # - name: signoz
   #   version: "0.62.1"
   #   repository: "https://charts.signoz.io"
