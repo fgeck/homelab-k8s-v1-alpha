@@ -5,13 +5,19 @@ metadata:
   namespace: media
 spec:
   capacity:
-    storage: 1Gi
+    storage: 500Mi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
-  nfs:
-    path: /share/media/sabnzbd
-    server: {{ .Values.global.nfs.server }}
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      backingImage: ""
+      numberOfReplicas: "1"
+    volumeHandle: sabnzbd-longhorn-volume
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,8 +26,39 @@ metadata:
   namespace: media
 spec:
   accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  volumeName: sabnzbd-pv
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sabnzbd-data-pv
+spec:
+  storageClassName: dummy
+  capacity:
+    # TODO: Fix me
+    storage: 2Gi #1800Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /share/data/usenet
+    server: {{ .Values.global.nfs.server }}
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sabnzbd-data-pvc
+spec:
+  storageClassName: dummy
+  accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
-  volumeName: sabnzbd-pv
+      # TODO: Fix me
+      storage: 2Gi #1800Gi
+  volumeName: sabnzbd-data-pv
+

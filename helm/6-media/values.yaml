@@ -15,11 +15,7 @@ postgresql:
   primary:
     persistence:
       enabled: true
-      accessModes:
-      - ReadWriteMany
-      existingClaim: postgres-pvc
-    podSecurityContext:
-      fsGroup: 1000
+      existingClaim: media-postgres-pvc
     containerSecurityContext:
       runAsGroup: 1000
       runAsUser: 1000

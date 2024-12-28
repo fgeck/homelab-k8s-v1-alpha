@@ -52,9 +52,10 @@ spec:
         - name: S6_READ_ONLY_ROOT
           value: "1"
         - name: SABNZBD__HOST_WHITELIST_ENTRIES
+          value: "dl.{{ .Values.edge.domain }}, sabnzbd, sabnzbd.default, sabnzbd.default.svc, sabnzbd.default.svc.cluster, sabnzbd.default.svc.cluster.local"
         - name: SABNZBD__PORT
           value: "10097"
-        image: ghcr.io/onedr0p/sabnzbd:4.4
+        image: ghcr.io/onedr0p/sabnzbd:4.4.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
@@ -95,9 +96,9 @@ spec:
             - ALL
           privileged: false
           readOnlyRootFilesystem: true
-          runAsGroup: 1001
+          runAsGroup: 1000
           runAsNonRoot: true
-          runAsUser: 1001
+          runAsUser: 1000
           seccompProfile:
             type: RuntimeDefault
         startupProbe:
@@ -110,9 +111,9 @@ spec:
           timeoutSeconds: 2
         volumeMounts:
         - mountPath: /config
-          name: sabnzbd-config-nfs
+          name: sabnzbd-config
         - mountPath: /mnt/data
-          name: data-nfs
+          name: sabnzbd-data
         - mountPath: /dev/shm
           name: devshm
         - mountPath: /shared
@@ -141,12 +142,12 @@ spec:
       shareProcessNamespace: false
       terminationGracePeriodSeconds: 60
       volumes:
-      - name: sabnzbd-config-nfs
+      - name: sabnzbd-config
         persistentVolumeClaim:
           claimName: sabnzbd-pvc
-      - name: data-nfs
+      - name: sabnzbd-data
         persistentVolumeClaim:
-          claimName: data-pvc
+          claimName: sabnzbd-data-pvc
       - emptyDir:
           medium: Memory
           sizeLimit: 2Gi
