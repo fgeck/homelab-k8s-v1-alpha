@@ -10,7 +10,7 @@ metadata:
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: edge
 spec:
   Standby: false

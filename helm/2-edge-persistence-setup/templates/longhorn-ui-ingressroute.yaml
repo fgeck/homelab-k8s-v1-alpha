@@ -4,7 +4,7 @@ metadata:
   name: longhorn-ui
   namespace: longhorn-system
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: longhorn-system
   labels:
     app: longhorn-ui
