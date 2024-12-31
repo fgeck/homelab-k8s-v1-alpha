@@ -37,7 +37,7 @@ log_info "-------------------------START-HELM-UPGRADE/INSTALL-------------------
 echo ""
 
 log_info "START --> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
-# kube-vip must be installed in kube-system ns. Chart will use the current ns
+# kube-vip must be installed in kube-system ns and does not offer namespaceOverride option. Chart will use the current ns
 log_exec kubectl config set-context --current --namespace=kube-system
 log_exec helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
 log_success "DONE -> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
