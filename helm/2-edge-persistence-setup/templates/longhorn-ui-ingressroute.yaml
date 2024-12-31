@@ -4,8 +4,8 @@ metadata:
   name: longhorn-ui
   namespace: longhorn-system
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    cert-manager.io/renew-before: 48h
+    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-namespace: longhorn-system
   labels:
     app: longhorn-ui
 spec:

@@ -1,0 +1,11 @@
+# Used for mapping a NFS colume to PVC
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: dummy
+  namespace: default
+  annotations:
+    meta.helm.sh/release-name: bootstrap
+    meta.helm.sh/release-namespace: default
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
