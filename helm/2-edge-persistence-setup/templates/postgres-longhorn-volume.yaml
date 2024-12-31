@@ -1,14 +1,17 @@
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
+  name: postgres-longhorn-volume
+  namespace: longhorn-system
   labels:
-    longhornvolume: media-postgres-longhorn-volume
+    longhornvolume: postgres-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
-  name: media-postgres-longhorn-volume
-  namespace: longhorn-system
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: edge
 spec:
   Standby: false
   accessMode: rwo

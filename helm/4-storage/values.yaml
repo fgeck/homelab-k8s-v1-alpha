@@ -1,6 +1,0 @@
-longhorn:
-  longhornUI:
-    replicas: 1
-  defaultSettings:
-    backupTarget: "TODO!"
-    # backupTargetCredentialSecret: "TODO!"

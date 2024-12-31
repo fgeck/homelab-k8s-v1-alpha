@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
@@ -12,37 +14,45 @@ source ./scripts/helper_funcs.sh
 
 log_info "-------------------------START-HELM-REPO-ADD/UPDATE-DEPDENCY-BUILD-------------------------"
 
-helm repo add kube-vip https://kube-vip.github.io/helm-charts
-helm repo add longhorn https://charts.longhorn.io
-helm repo add traefik https://traefik.github.io/charts
+log_exec helm repo add kube-vip https://kube-vip.github.io/helm-charts
+log_exec helm repo add longhorn https://charts.longhorn.io
+log_exec helm repo add traefik https://traefik.github.io/charts
 # certmanager
-helm repo add jetstack https://charts.jetstack.io
-helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add signoz https://charts.signoz.io
-helm repo add keel https://charts.keel.sh 
-helm repo add vaultwarden https://guerzon.github.io/vaultwarden
-helm repo add uptime-kuma https://helm.irsigler.cloud
+log_exec helm repo add jetstack https://charts.jetstack.io
+log_exec helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
+log_exec helm repo add bitnami https://charts.bitnami.com/bitnami
+log_exec helm repo add signoz https://charts.signoz.io
+log_exec helm repo add keel https://charts.keel.sh 
+log_exec helm repo add vaultwarden https://guerzon.github.io/vaultwarden
+log_exec helm repo add uptime-kuma https://dirsigler.github.io/uptime-kuma-helm
 
-helm repo update
+log_exec helm repo update
 
 chart_dir="$script_dir/helm"
 build_helm_dependencies "$chart_dir"
 
 log_success "-------------------------DONE-HELM-REPO-ADD/UPDATE-DEPDENCY-BUILD-------------------------"
 echo ""
-log_info "-------------------------START-HELM-UPGRADE-------------------------"
+log_info "-------------------------START-HELM-UPGRADE/INSTALL-------------------------"
+echo ""
 
-helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install --namespace kube-system -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
-helm upgrade edge "$script_dir/helm/2-edge" --install  --namespace edge --create-namespace -f $script_dir/helm/2-edge/values.yaml -f $script_dir/secrets/values.yaml
-helm upgrade edge-custom "$script_dir/helm/3-edge-custom" --install --namespace edge -f $script_dir/secrets/values.yaml
-helm upgrade storage "$script_dir/helm/4-storage" --install --namespace longhorn-system --create-namespace -f $script_dir/helm/4-storage/values.yaml -f $script_dir/secrets/values.yaml
-helm upgrade monitoring "$script_dir/helm/5-monitoring" --install --namespace monitoring --create-namespace -f $script_dir/helm/5-monitoring/values.yaml -f $script_dir/secrets/values.yaml
-helm upgrade media "$script_dir/helm/6-media" --install --namespace media --create-namespace -f $script_dir/helm/6-media/values.yaml -f $script_dir/secrets/values.yaml
+log_info "START --> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
+# kube-vip must be installed in kube-system ns and does not offer namespaceOverride option. Chart will use the current ns
+log_exec kubectl config set-context --current --namespace=kube-system
+log_exec helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
+log_success "DONE -> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
+echo ""
 
-# helm upgrade apps "$script_dir/helm/7-apps" --install -f $script_dir/helm/7-apps/values.yaml -f $script_dir/secrets/values.yaml
-# kubectl apply -f "$script_dir/helm/apps/nginx.yaml"
-# kubectl apply -f "$script_dir/helm/apps/whoami-local.yaml"
-# kubectl apply -f "$script_dir/helm/apps/whoami-external.yaml"
+log_info "START --> Deploying Routes, Middlewares, Certificates, Databases"
+echo ""
+log_exec kubectl config set-context --current --namespace=default
+log_exec helm upgrade db "$script_dir/helm/2-edge-persistence-setup" --install  -f $script_dir/helm/2-edge-persistence-setup/values.yaml -f $script_dir/secrets/values.yaml
+log_success "DONE --> Deploying Routes, Middlewares, Certificates, Databases"
+echo ""
+
+exit 0
+
+log_exec helm upgrade monitoring "$script_dir/helm/3-monitoring" --install -f $script_dir/helm/3-monitoring/values.yaml -f $script_dir/secrets/values.yaml
+log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
 
 log_success "-------------------------DONE-HELM-UPGRADE-------------------------"

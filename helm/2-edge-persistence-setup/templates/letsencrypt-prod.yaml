@@ -2,19 +2,21 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-staging
+  name: letsencrypt-prod
   annotations:
-    "helm.sh/hook": "post-install,post-upgrade" # Ensures PVC creation before others
-    "helm.sh/hook-weight": "-1" # Lower weight runs earlier
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: edge
+    helm.sh/hook: "post-install,post-upgrade" # Ensures PVC creation before others
+    helm.sh/hook-weight: "-1" # Lower weight runs earlier
 spec:
   acme:
     # The ACME server URL
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
     email: {{ .Values.edge.letsencrypt.email }}
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-prod
     # Enable the DNS-01 challenge provider
     solvers:
     - dns01:

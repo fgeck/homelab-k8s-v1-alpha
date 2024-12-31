@@ -3,6 +3,9 @@ kind: Certificate
 metadata:
   name: {{ .Values.edge.certificateName }}
   namespace: edge
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: edge
 spec:
   secretName: {{ .Values.edge.certificateName }}
   issuerRef:

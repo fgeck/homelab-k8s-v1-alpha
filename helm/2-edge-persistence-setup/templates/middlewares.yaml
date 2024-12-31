@@ -4,8 +4,9 @@ metadata:
   name: local-ipallowlist
   namespace: edge
   annotations:
-    "helm.sh/hook": "post-install,post-upgrade" # Ensures PVC creation before others
-    "helm.sh/hook-weight": "-1" # Lower weight runs earlier
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: edge
+    helm.sh/hook: "post-install,post-upgrade" # Ensures PVC creation before others
 spec:
   ipAllowList:
     sourceRange:
@@ -16,6 +17,10 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: ssl-header
+  namespace: edge
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: edge
 spec:
   headers:
     customRequestHeaders:

@@ -6,21 +6,25 @@ COLOR_GREY="\033[1;30m"
 COLOR_GREEN="\033[1;32m"
 COLOR_RED="\033[1;31m"
 
+get_timestamp() {
+  date +"%Y-%m-%d %H:%M:%S"
+}
+
 # Log functions
 log_debug() {
-  echo -e "${COLOR_GREY}[DEBUG] $*${COLOR_RESET}"
+  echo -e "${COLOR_GREY}[DEBUG] $(get_timestamp) $*${COLOR_RESET}"
 }
 
 log_info() {
-  echo "[INFO] $*"
+  echo "[INFO] $(get_timestamp) $*"
 }
 
 log_error() {
-  echo -e "${COLOR_RED}[ERROR] $*${COLOR_RESET}"
+  echo -e "${COLOR_RED}[ERROR] $(get_timestamp) $*${COLOR_RESET}"
 }
 
 log_success() {
-  echo -e "${COLOR_GREEN}[SUCCESS] $*${COLOR_RESET}"
+  echo -e "${COLOR_GREEN}[SUCCESS] $(get_timestamp) $*${COLOR_RESET}"
 }
 
 file_exists() {
@@ -34,6 +38,17 @@ file_exists() {
 
 bw_logout() {
     bw logout
+}
+
+# Function to execute Helm commands and log output in grey
+log_exec() {
+  COLOR_GREY="\033[1;30m"
+  COLOR_RESET="\033[0m"
+  command="$*"
+  echo -e "${COLOR_GREY}[DEBUG] Running: $command${COLOR_RESET}"
+  $command 2>&1 | while IFS= read -r line; do
+    echo -e "${COLOR_GREY}$line${COLOR_RESET}"
+  done
 }
 
 build_helm_dependencies() {
@@ -54,7 +69,7 @@ build_helm_dependencies() {
 
   # Build dependencies for each sorted directory
   for dir in "${sorted_chart_dirs[@]}"; do
-    log_info "Building dependencies in: $dir"
-    helm dependency build "$dir" --skip-refresh
+    log_debug "Building dependencies in: $dir"
+    log_exec helm dependency build "$dir" --skip-refresh
   done
 }

@@ -1,8 +1,11 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: media-postgres-volume
-  namespace: media
+  name: postgres-volume
+  namespace: default
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: default
 spec:
   capacity:
     storage: 2Gi
@@ -17,13 +20,16 @@ spec:
     volumeAttributes:
       backingImage: ""
       numberOfReplicas: "1"
-    volumeHandle: media-postgres-longhorn-volume
+    volumeHandle: postgres-longhorn-volume
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: media-postgres-pvc
-  namespace: media
+  name: postgres-pvc
+  namespace: default
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: default
 spec:
   accessModes:
     - ReadWriteOnce
