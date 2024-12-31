@@ -4,10 +4,9 @@ metadata:
   name: local-ipallowlist
   namespace: edge
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: edge
     helm.sh/hook: "post-install,post-upgrade" # Ensures PVC creation before others
-    helm.sh/hook-weight: "-1" # Lower weight runs earlier
 spec:
   ipAllowList:
     sourceRange:
@@ -20,7 +19,7 @@ metadata:
   name: ssl-header
   namespace: edge
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: edge
 spec:
   headers:

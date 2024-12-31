@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then

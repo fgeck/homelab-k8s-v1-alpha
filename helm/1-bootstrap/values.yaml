@@ -15,6 +15,8 @@ kube-vip-cloud-provider:
                 operator: Exists
 
 longhorn:
+  nameOverride: longhorn
+  fullnameOverride: longhorn
   namespaceOverride: longhorn-system
   longhornUI:
     replicas: 1
@@ -23,6 +25,8 @@ longhorn:
     # backupTargetCredentialSecret: "TODO!"
 
 traefik:
+  nameOverride: traefik
+  fullnameOverride: traefik
   namespaceOverride: edge
   service:
     type: LoadBalancer
@@ -58,12 +62,17 @@ traefik:
       enabled: true
 
 cert-manager:
+  nameOverride: cert-manager
+  fullnameOverride: cert-manager
   namespace: edge
   crds:
     enabled: true
     keep: false
 
 crowdsec:
+  nameOverride: crowdsec
+  fullnameOverride: crowdsec
+  namespaceOverride: edge
   container_runtime: containerd
   agent:
     acquisition:

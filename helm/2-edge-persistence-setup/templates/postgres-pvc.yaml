@@ -4,7 +4,7 @@ metadata:
   name: postgres-volume
   namespace: default
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: default
 spec:
   capacity:
@@ -28,7 +28,7 @@ metadata:
   name: postgres-pvc
   namespace: default
   annotations:
-    meta.helm.sh/release-name: edge-persistence-setup
+    meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: default
 spec:
   accessModes:
