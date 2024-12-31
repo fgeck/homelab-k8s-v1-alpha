@@ -1,18 +1,19 @@
-# signoz:
-
-global:
-  cloud: others
-  clusterName: fgeck
-  deploymentEnvironment: prod
-otelCollectorEndpoint: observability-signoz-otel-collector:4317
-otelInsecure: true
-presets:
-  otlpExporter:
-    enabled: true
-  loggingExporter:
-    enabled: false
+signoz:
+  global:
+    cloud: others
+    clusterName: fgeck
+    deploymentEnvironment: prod
+  otelCollectorEndpoint: observability-signoz-otel-collector:4317
+  otelInsecure: true
+  presets:
+    otlpExporter:
+      enabled: true
+    loggingExporter:
+      enabled: false
 
 uptime-kuma:
+  nameOverride: uptime-kuma
+  fullnameOverride: uptime-kuma
   namespace: monitoring
   volume:
     enabled: true
@@ -37,13 +38,3 @@ uptime-kuma:
   #       secretKeyRef:
   #         name: mariadb-secret
   #         key: mariadb-password
-
-# mariadb:
-#   namespace: monitoring
-#   auth:
-#     database: uptime-kuma
-#     existingSecret: mariadb-secret
-#     user: uptime-kuma
-#   primary:
-#     persistence:
-#       existingClaim: "mariadb-pvc"

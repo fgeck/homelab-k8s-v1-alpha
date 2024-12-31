@@ -2,8 +2,8 @@ postgresql:
   auth:
     username: defaultuser
     existingSecret: postgres-auth
-  nameOverride: postgresql
-  fullnameOverride: postgresql
+    nameOverride: postgresql
+    fullnameOverride: postgresql
   namespaceOverride: default
   primary:
     persistence:
@@ -12,3 +12,13 @@ postgresql:
     containerSecurityContext:
       runAsGroup: 1000
       runAsUser: 1000
+
+# mariadb:
+#   namespace: monitoring
+#   auth:
+#     database: 
+#     existingSecret: mariadb-secret
+#     user: 
+#   primary:
+#     persistence:
+#       existingClaim: "mariadb-pvc"

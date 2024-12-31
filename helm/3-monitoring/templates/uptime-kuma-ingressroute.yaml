@@ -20,7 +20,7 @@ spec:
     #   namespace: edge
     services:
     - kind: Service
-      name: monitoring-uptime-kuma
+      name: uptime-kuma
       namespace: monitoring
       passHostHeader: true
       port: 3001

@@ -9,3 +9,6 @@ dependencies:
   - name: postgresql
     version: "^14.3.3"
     repository: https://charts.bitnami.com/bitnami
+  # - name: mariadb
+  #   version: "^20.2.1"
+  #   repository: https://charts.bitnami.com/bitnami

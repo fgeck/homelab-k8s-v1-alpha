@@ -12,7 +12,9 @@ fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
 
+log_info "-------------------------------------------------------------------------------------------"
 log_info "-------------------------START-HELM-REPO-ADD/UPDATE-DEPDENCY-BUILD-------------------------"
+log_info "-------------------------------------------------------------------------------------------"
 
 log_exec helm repo add kube-vip https://kube-vip.github.io/helm-charts
 log_exec helm repo add longhorn https://charts.longhorn.io
@@ -31,28 +33,60 @@ log_exec helm repo update
 chart_dir="$script_dir/helm"
 build_helm_dependencies "$chart_dir"
 
+log_success "------------------------------------------------------------------------------------------"
 log_success "-------------------------DONE-HELM-REPO-ADD/UPDATE-DEPDENCY-BUILD-------------------------"
+log_success "------------------------------------------------------------------------------------------"
+
 echo ""
-log_info "-------------------------START-HELM-UPGRADE/INSTALL-------------------------"
+log_info "------------------------------------------------------------------------------------------"
+log_info "-------------------------START-HELM-UPGRADE/INSTALL---------------------------------------"
+log_info "------------------------------------------------------------------------------------------"
 echo ""
 
+log_info "------------------------------------------------------------------------------------------"
 log_info "START --> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
+log_info "------------------------------------------------------------------------------------------"
 # kube-vip must be installed in kube-system ns and does not offer namespaceOverride option. Chart will use the current ns
 log_exec kubectl config set-context --current --namespace=kube-system
 log_exec helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
+log_success "------------------------------------------------------------------------------------------"
 log_success "DONE -> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
+log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-log_info "START --> Deploying Routes, Middlewares, Certificates, Databases"
+log_info "------------------------------------------------------------------------------------------"
+log_info "START --> Deploying Routes, Middlewares, Certificates, Databases                         |"
+log_info "------------------------------------------------------------------------------------------"
 echo ""
 log_exec kubectl config set-context --current --namespace=default
 log_exec helm upgrade db "$script_dir/helm/2-edge-persistence-setup" --install  -f $script_dir/helm/2-edge-persistence-setup/values.yaml -f $script_dir/secrets/values.yaml
-log_success "DONE --> Deploying Routes, Middlewares, Certificates, Databases"
+log_success "------------------------------------------------------------------------------------------"
+log_success "DONE --> Deploying Routes, Middlewares, Certificates, Databases                          |"
+log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-exit 0
+log_info "------------------------------------------------------------------------------------------"
+log_info "START --> Deploying Monitoring: Uptime-Kuma, Signoz                                      |"
+log_info "------------------------------------------------------------------------------------------"
+echo ""
+# namespace needed until https://github.com/dirsigler/uptime-kuma-helm/pull/181 is merged
+log_exec helm upgrade monitoring "$script_dir/helm/3-monitoring" --namespace monitoring --install -f $script_dir/helm/3-monitoring/values.yaml -f $script_dir/secrets/values.yaml
+log_success "------------------------------------------------------------------------------------------"
+log_success "DONE --> Deploying Monitoring: Uptime-Kuma, Signoz                                       |"
+log_success "------------------------------------------------------------------------------------------"
+echo ""
 
-log_exec helm upgrade monitoring "$script_dir/helm/3-monitoring" --install -f $script_dir/helm/3-monitoring/values.yaml -f $script_dir/secrets/values.yaml
-log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
+# log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+# echo ""
+# log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
+# log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+# echo ""
 
+# log_info "START --> Deploying All other Apps"
+# echo ""
+# log_exec helm upgrade media "$script_dir/helm/5-apps" --install -f $script_dir/helm/5-apps/values.yaml -f $script_dir/secrets/values.yaml
+# log_success "DONE --> Deploying All other Apps"
+# echo ""
+log_success "------------------------------------------------------------------------------------------"
 log_success "-------------------------DONE-HELM-UPGRADE-------------------------"
+log_success "------------------------------------------------------------------------------------------"
