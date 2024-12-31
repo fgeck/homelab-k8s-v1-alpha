@@ -1,0 +1,11 @@
+apiVersion: v2
+name: edge
+description: Helm chart for deploying kube-vip-cloudprofver, traefik, cert-manager and crowdsec
+type: application
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+  - name: postgresql
+    version: "^14.3.3"
+    repository: https://charts.bitnami.com/bitnami
