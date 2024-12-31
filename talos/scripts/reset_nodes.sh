@@ -1,29 +1,9 @@
 #!/bin/bash
 
-# Check for correct arguments
-if [ $# -lt 2 ]; then
-  echo "Usage: $0 <CONTROL_PLANE_IP> <WORKER_IP> [--force]"
-  exit 1
-fi
+FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/controlplane.yaml | cut -d'/' -f1)
+FINAL_WORKER_1_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-1.yaml | cut -d'/' -f1)
+FINAL_WORKER_2_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-2.yaml | cut -d'/' -f1)
 
-# Handle --force argument
-if [ "$3" == "--force" ]; then
-  FORCE=true
-  CONTROL_PLANE_IP=$1
-  WORKER_IP=$2
-else
-  FORCE=false
-  CONTROL_PLANE_IP=$1
-  WORKER_IP=$2
-fi
-
-# Execute commands based on force flag
-if [ "$FORCE" == true ]; then
-  echo "Force option enabled. Using non-graceful reset."
-  talosctl reset --reboot --graceful=false -n "$WORKER_IP"
-  talosctl reset --reboot --graceful=false -n "$CONTROL_PLANE_IP"
-else
-  echo "Performing graceful reset."
-  talosctl reset --reboot -n "$WORKER_IP"
-  talosctl reset --reboot -n "$CONTROL_PLANE_IP"
-fi
+talosctl reset --reboot --graceful=false -n "$FINAL_WORKER_2_IP" > talos/_out/reset_worker2.log 2>&1 &
+talosctl reset --reboot --graceful=false -n "$FINAL_WORKER_1_IP" > talos/_out/reset_worker1.log 2>&1 &
+talosctl reset --reboot --graceful=false -n "$FINAL_CONTROL_PLANE_IP" > talos/_out/reset_controlplane.log 2>&1 &

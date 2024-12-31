@@ -25,7 +25,6 @@ helm repo add vaultwarden https://guerzon.github.io/vaultwarden
 helm repo add uptime-kuma https://helm.irsigler.cloud
 
 helm repo update
-helm dependency update
 
 chart_dir="$script_dir/helm"
 build_helm_dependencies "$chart_dir"
