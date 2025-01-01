@@ -62,7 +62,7 @@ log_info "START --> Deploying Routes, Middlewares, Certificates, Databases      
 log_info "------------------------------------------------------------------------------------------"
 echo ""
 log_exec kubectl config set-context --current --namespace=default
-log_exec helm upgrade db "$script_dir/helm/2-edge-persistence-setup" --install  -f $script_dir/helm/2-edge-persistence-setup/values.yaml -f $script_dir/secrets/values.yaml
+log_exec helm upgrade persistence "$script_dir/helm/2-persistence" --install  -f $script_dir/helm/2-persistence/values.yaml -f $script_dir/secrets/values.yaml
 log_success "------------------------------------------------------------------------------------------"
 log_success "DONE --> Deploying Routes, Middlewares, Certificates, Databases                          |"
 log_success "------------------------------------------------------------------------------------------"

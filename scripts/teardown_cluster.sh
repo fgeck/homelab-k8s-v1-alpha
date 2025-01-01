@@ -6,7 +6,7 @@ kubectl config set-context --current --namespace=monitoring
 helm uninstall monitoring
 kubectl -n longhorn-system patch settings.longhorn.io deleting-confirmation-flag --type=merge -p '{"value": "true"}'
 kubectl config set-context --current --namespace=default
-helm uninstall db
+helm uninstall persistence
 kubectl config set-context --current --namespace=kube-system
 helm uninstall certs
 helm uninstall bootstrap
