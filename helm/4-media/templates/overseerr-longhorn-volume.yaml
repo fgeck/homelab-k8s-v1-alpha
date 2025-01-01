@@ -1,14 +1,17 @@
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
+  name: overseerr-longhorn-volume
+  namespace: longhorn-system
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: longhorn-system
   labels:
     longhornvolume: overseerr-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
-  name: overseerr-longhorn-volume
-  namespace: longhorn-system
 spec:
   Standby: false
   accessMode: rwo

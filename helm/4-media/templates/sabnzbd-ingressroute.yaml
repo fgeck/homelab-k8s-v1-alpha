@@ -3,6 +3,9 @@ kind: IngressRoute
 metadata:
   name: sabnzbd
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
   labels:
     app: sabnzbd
 spec:

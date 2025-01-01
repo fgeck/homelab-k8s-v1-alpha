@@ -76,17 +76,18 @@ log_success "DONE --> Deploying Monitoring: Uptime-Kuma, Signoz                 
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-# log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
-# echo ""
-# log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
-# log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
-# echo ""
+log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+echo ""
+log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
+log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+echo ""
 
 # log_info "START --> Deploying All other Apps"
 # echo ""
 # log_exec helm upgrade media "$script_dir/helm/5-apps" --install -f $script_dir/helm/5-apps/values.yaml -f $script_dir/secrets/values.yaml
 # log_success "DONE --> Deploying All other Apps"
 # echo ""
+
 log_success "------------------------------------------------------------------------------------------"
-log_success "-------------------------DONE-HELM-UPGRADE-------------------------"
+log_success "-----------------------------------DONE-HELM-UPGRADE--------------------------------------"
 log_success "------------------------------------------------------------------------------------------"

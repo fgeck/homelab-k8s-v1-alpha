@@ -3,6 +3,9 @@ kind: PersistentVolume
 metadata:
   name: overseerr-pv
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
   capacity:
     storage: 500Mi
@@ -24,6 +27,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: overseerr-pvc
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
   accessModes:
     - ReadWriteOnce

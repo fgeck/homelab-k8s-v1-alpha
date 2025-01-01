@@ -5,6 +5,9 @@ metadata:
   namspace: media
   labels:
     app.kubernetes.io/name: overseerr
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
   selector:
     app.kubernetes.io/name: overseerr
@@ -20,6 +23,8 @@ metadata:
     keel.sh/policy: all
     keel.sh/pollSchedule: '@daily'
     keel.sh/trigger: poll
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
   labels:
     app.kubernetes.io/name: overseerr
   name: overseerr
