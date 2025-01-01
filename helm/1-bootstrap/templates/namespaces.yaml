@@ -8,7 +8,6 @@ metadata:
     meta.helm.sh/release-name: bootstrap
     meta.helm.sh/release-namespace: longhorn-system
     "helm.sh/hook": pre-install
-    "helm.sh/hook-delete-policy": before-hook-creation
 ---
 apiVersion: v1
 kind: Namespace
@@ -18,6 +17,8 @@ metadata:
     meta.helm.sh/release-name: bootstrap
     meta.helm.sh/release-namespace: edge
     "helm.sh/hook": pre-install
+  labels:
+    certmanager.k8s.io/disable-validation: "true" 
 ---
 apiVersion: v1
 kind: Namespace

@@ -6,7 +6,7 @@ metadata:
   annotations:
     meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: edge
-    helm.sh/hook: "post-install,post-upgrade" # Ensures PVC creation before others
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   ipAllowList:
     sourceRange:
@@ -21,6 +21,7 @@ metadata:
   annotations:
     meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: edge
+    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   headers:
     customRequestHeaders:

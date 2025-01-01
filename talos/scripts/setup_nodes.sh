@@ -28,17 +28,13 @@ FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' t
 FINAL_WORKER_1_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-1.yaml | cut -d'/' -f1)
 FINAL_WORKER_2_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-2.yaml | cut -d'/' -f1)
 
-
-log_info "Applying the final configs to the nodes..."
-log_info "  Control Plane: $CONTROL_PLANE_IP"
-log_info "  Worker-1: $WORKER_1_IP"
-log_info "  Worker-2: $WORKER_2_IP"
+gum confirm "Applying configs to the nodes...? $CONTROL_PLANE_IP, $CURRENT_WORKER_1_IP, $CURRENT_WORKER_2_IP ?" || exit 1
 
 log_exec talosctl apply-config --nodes "$CURRENT_CONTROL_PLANE_IP" --file "talos/_out/controlplane.yaml" --insecure
 log_exec talosctl apply-config --nodes "$CURRENT_WORKER_1_IP" --file "talos/_out/worker-1.yaml" --insecure
 log_exec talosctl apply-config --nodes "$CURRENT_WORKER_2_IP" --file "talos/_out/worker-2.yaml" --insecure
 
-log_info "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 1m was not enough"
+log_info "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 2m was not enough"
 sleep 120
 
 log_exec talosctl config endpoint "$FINAL_CONTROL_PLANE_IP"

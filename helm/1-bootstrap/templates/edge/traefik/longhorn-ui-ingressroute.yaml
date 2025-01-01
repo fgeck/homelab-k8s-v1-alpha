@@ -6,6 +6,7 @@ metadata:
   annotations:
     meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: longhorn-system
+    "helm.sh/hook": "post-install,post-upgrade"
   labels:
     app: longhorn-ui
 spec:
