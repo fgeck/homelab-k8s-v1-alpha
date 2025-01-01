@@ -69,6 +69,7 @@ log_info "----------------------------------------------------------------------
 log_info "START --> Deploying Monitoring: Uptime-Kuma, Signoz                                      |"
 log_info "------------------------------------------------------------------------------------------"
 echo ""
+log_exec kubectl config set-context --current --namespace=monitoring
 # namespace needed until https://github.com/dirsigler/uptime-kuma-helm/pull/181 is merged
 log_exec helm upgrade monitoring "$script_dir/helm/3-monitoring" --namespace monitoring --install -f $script_dir/helm/3-monitoring/values.yaml -f $script_dir/secrets/values.yaml
 log_success "------------------------------------------------------------------------------------------"
@@ -76,17 +77,19 @@ log_success "DONE --> Deploying Monitoring: Uptime-Kuma, Signoz                 
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-# log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
-# echo ""
-# log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
-# log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
-# echo ""
+log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+echo ""
+log_exec kubectl config set-context --current --namespace=media
+log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
+log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+echo ""
 
 # log_info "START --> Deploying All other Apps"
 # echo ""
 # log_exec helm upgrade media "$script_dir/helm/5-apps" --install -f $script_dir/helm/5-apps/values.yaml -f $script_dir/secrets/values.yaml
 # log_success "DONE --> Deploying All other Apps"
 # echo ""
+
 log_success "------------------------------------------------------------------------------------------"
-log_success "-------------------------DONE-HELM-UPGRADE-------------------------"
+log_success "-----------------------------------DONE-HELM-UPGRADE--------------------------------------"
 log_success "------------------------------------------------------------------------------------------"

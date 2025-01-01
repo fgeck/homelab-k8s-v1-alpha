@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
-  namespace: default
+  name: overseerr-pv
+  namespace: media
   annotations:
-    meta.helm.sh/release-name: db
-    meta.helm.sh/release-namespace: default
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
   capacity:
-    storage: 2Gi
+    storage: 500Mi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
@@ -20,20 +20,20 @@ spec:
     volumeAttributes:
       backingImage: ""
       numberOfReplicas: "1"
-    volumeHandle: postgres-longhorn-volume
+    volumeHandle: overseerr-longhorn-volume
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
-  namespace: default
+  name: overseerr-pvc
+  namespace: media
   annotations:
-    meta.helm.sh/release-name: db
-    meta.helm.sh/release-namespace: default
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
-  storageClassName: longhorn
+      storage: 500Mi
+  volumeName: overseerr-pv
