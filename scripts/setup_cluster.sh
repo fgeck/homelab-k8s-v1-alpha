@@ -49,6 +49,9 @@ log_info "----------------------------------------------------------------------
 # kube-vip must be installed in kube-system ns and does not offer namespaceOverride option. Chart will use the current ns
 log_exec kubectl config set-context --current --namespace=kube-system
 log_exec helm upgrade bootstrap "$script_dir/helm/1-bootstrap" --install -f $script_dir/helm/1-bootstrap/values.yaml -f $script_dir/secrets/values.yaml
+# This is a workaround  because cert-manager CRs need to be deployed after cert-manager webhook is ready
+# https://cert-manager.io/docs/concepts/webhook/#webhook-connection-problems-shortly-after-cert-manager-installation
+log_exec helm upgrade certs "$script_dir/helm/1a-certificates" --install -f $script_dir/secrets/values.yaml
 log_success "------------------------------------------------------------------------------------------"
 log_success "DONE -> Bootstrapping Cluster. Installing: Kube-Vip, Traefik, Cert-Manager, Longhorn, Namespaces, Storageclasses, Credentials etc....."
 log_success "------------------------------------------------------------------------------------------"
@@ -89,6 +92,11 @@ echo ""
 # log_exec helm upgrade media "$script_dir/helm/5-apps" --install -f $script_dir/helm/5-apps/values.yaml -f $script_dir/secrets/values.yaml
 # log_success "DONE --> Deploying All other Apps"
 # echo ""
+
+# Workaround as Kube-Vip/Kube-Vip-Cloudprovider seems to be stuck sometimes after install/upgrade
+log_exec kubectl rollout restart deployment kube-vip-cloud-provider -n kube-system
+log_exec kubectl rollout restart daemonset kube-vip -n kube-system
+# log_exec kubectl rollout restart  deployment traefik -n edge
 
 log_success "------------------------------------------------------------------------------------------"
 log_success "-----------------------------------DONE-HELM-UPGRADE--------------------------------------"
