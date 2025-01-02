@@ -1,0 +1,87 @@
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-config-pv
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  capacity:
+    storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      backingImage: ""
+      numberOfReplicas: "1"
+    volumeHandle: plex-config-longhorn-volume
+{{- end }}
+---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config-pvc
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  volumeName: plex-config-pv
+{{- end }}
+---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-transcode-pv
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  capacity:
+    storage: 8Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      backingImage: ""
+      numberOfReplicas: "1"
+    volumeHandle: plex-transcode-longhorn-volume
+{{- end }}
+---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-transcode-pvc
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  volumeName: plex-transcode-pv
+{{- end }}

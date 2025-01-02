@@ -7,6 +7,9 @@ metadata:
     keel.sh/trigger: poll
   labels:
     app.kubernetes.io/name: sonarr
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
   name: sonarr
   namespace: media
 spec:
@@ -21,6 +24,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: sonarr
+      annotations:
+        meta.helm.sh/release-name: media
+        meta.helm.sh/release-namespace: media
     spec:
       automountServiceAccountToken: false
       initContainers:
