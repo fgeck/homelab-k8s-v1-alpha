@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    keel.sh/policy: all
+    keel.sh/pollSchedule: '@daily'
+    keel.sh/trigger: poll
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+  labels:
+    app.kubernetes.io/name: calibre-web-automated
+  name: calibre-web-automated
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: calibre-web-automated
+  progressDeadlineSeconds: 600
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: calibre-web-automated
+      annotations:
+        meta.helm.sh/release-name: media
+        meta.helm.sh/release-namespace: media
+    spec:
+      containers:
+      - name: main
+        env:
+        - name: TZ
+          value: Europe/Berlin
+        envFrom:
+        - configMapRef:
+            name: calibre-web-automated-env
+        - secretRef:
+            name: calibre-web-automated-secret-env
+        image: crocodilestick/calibre-web-automated-web-automated:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /ping
+            port: 8083
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        ports:
+        - containerPort: 8083
+          name: main
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /ping
+            port: 8083
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "2"
+            memory: 1Gi
+          requests:
+            cpu: 10m
+            memory: 50Mi
+        securityContext:
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /ping
+            port: 8083
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 2
+        volumeMounts:
+        - mountPath: /config
+          name: calibre-web-automated-config
+        - mountPath: /mnt/data
+          name: data
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      volumes:
+      - name: calibre-web-automated-config
+        persistentVolumeClaim:
+          claimName: calibre-web-automated-pvc
+      - name: data
+        persistentVolumeClaim:
+          claimName: media-data-pvc
