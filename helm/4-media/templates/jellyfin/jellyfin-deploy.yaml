@@ -1,0 +1,112 @@
+{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    keel.sh/policy: all
+    keel.sh/pollSchedule: '@daily'
+    keel.sh/trigger: poll
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
+  name: jellyfin
+  namespace: media
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
+  progressDeadlineSeconds: 600
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jellyfin
+      annotations:
+        meta.helm.sh/release-name: media
+        meta.helm.sh/release-namespace: media
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: main
+        env:
+        - name: TZ
+          value: Europe/Berlin
+        - name: HOSTNAME
+          value: "jellyfinServer"
+        - name: jellyfin_UID
+          value: "1000"
+        - name: jellyfin_GID
+          value: "1000"
+        envFrom:
+        - secretRef:
+            name: jellyfin-secret-env
+        image: index.docker.io/jellyfininc/pms-docker:1.41.3.9314-a0bfb8370
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        ports:
+        - containerPort: 32400
+          name: main
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 2
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "4"
+            memory: 10Gi
+          requests:
+            cpu: 10m
+            memory: 50Mi
+        startupProbe:
+          failureThreshold: 60
+          httpGet:
+            path: /identity
+            port: 32400
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 2
+        volumeMounts:
+        - mountPath: /config
+          name: jellyfin-config
+        - mountPath: /transcode
+          name: jellyfin-transcode
+        - mountPath: /data
+          name: data
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+      volumes:
+      - name: jellyfin-config
+        persistentVolumeClaim:
+          claimName: jellyfin-config-pvc
+      - name: jellyfin-transcode
+        persistentVolumeClaim:
+          claimName: jellyfin-transcode-pvc
+      - name: data
+        persistentVolumeClaim:
+          claimName: media-data-pvc
+{{- end }}

@@ -1,0 +1,13 @@
+{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jellyfin-secret-env
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+type: Opaque
+data:
+  JELLYFIN_CLAIM: {{ .Values.media.jellyfin.claim | b64enc }}
+{{- end }}
