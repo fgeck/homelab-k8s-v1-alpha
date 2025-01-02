@@ -1,3 +1,4 @@
+# https://github.com/elfhosted/containers/tree/main/apps/readarr
 apiVersion: v1
 kind: Secret
 metadata:
@@ -5,13 +6,13 @@ metadata:
   namespace: media
 type: Opaque
 data:
-  READARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
+  READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.default.postgresql.postgresPassword | b64enc }}
   PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
-  MAIN_DB: {{ "readarr-main" | b64enc }}
-  LOG_DB: {{ "readarr-log" | b64enc }}
-  CACHE_DB: {{ "readarr-cache" | b64enc }}
+  MAIN_DB: {{ "readarr_main" | b64enc }}
+  LOG_DB: {{ "readarr_log" | b64enc }}
+  CACHE_DB: {{ "readarr_cache" | b64enc }}
 ---
 apiVersion: v1
 kind: Secret
@@ -20,7 +21,8 @@ metadata:
   namespace: media
 type: Opaque
 data:
-  READARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
+  READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
+  READARR__API_KEY: {{ .Values.media.readarr.apiKey | b64enc }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -28,13 +30,14 @@ metadata:
   name: readarr-env
   namespace: media
 data:
-  READARR__APP__THEME: "dark"
-  # READARR__SERVER__URLBASE: "/series"
-  READARR__POSTGRES__HOST: {{ .Values.default.postgresql.hostnameInCluster }}
-  READARR__POSTGRES__PORT: "5432"
-  READARR__POSTGRES__MAINDB: readarr-main
-  READARR__POSTGRES__LOGDB: readarr-log
-  READARR__POSTGRES__CACHEDB: readarr-cache
-  READARR__POSTGRES__USER: {{ .Values.default.postgresql.postgresReadarrUser }}
-  READARR__LOG__ANALYTICSENABLED: "false"
-  READARR__LOG__LEVEL: "INFO"
+  # READARR__URL_BASE: "/books"
+  READARR__AUTHENTICATION_METHOD: "Forms"
+  READARR__AUTHENTICATION_REQUIRED: "true"
+  READARR__POSTGRES_HOST: {{ .Values.default.postgresql.hostnameInCluster }}
+  READARR__POSTGRES_PORT: "5432"
+  READARR__POSTGRES_MAIN_DB: readarr_main
+  READARR__POSTGRES_LOG_DB: readarr_log
+  READARR__POSTGRES_CACHE_DB: readarr_cache
+  READARR__POSTGRES_USER: {{ .Values.default.postgresql.postgresReadarrUser }}
+  READARR__ANALYTICS_ENABLED: "false"
+  READARR__LOG_LEVEL: "info"
