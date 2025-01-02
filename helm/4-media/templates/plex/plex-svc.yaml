@@ -1,3 +1,4 @@
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,3 +18,4 @@ spec:
       targetPort: 32400
       protocol: TCP
       name: pms
+{{- end }}

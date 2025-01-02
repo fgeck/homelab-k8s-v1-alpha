@@ -1,3 +1,4 @@
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -9,3 +10,4 @@ metadata:
 type: Opaque
 data:
   PLEX_CLAIM: {{ .Values.media.plex.claim | b64enc }}
+{{- end }}

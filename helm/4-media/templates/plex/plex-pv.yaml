@@ -1,3 +1,4 @@
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -21,7 +22,9 @@ spec:
       backingImage: ""
       numberOfReplicas: "1"
     volumeHandle: plex-config-longhorn-volume
+{{- end }}
 ---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -37,7 +40,9 @@ spec:
     requests:
       storage: 500Mi
   volumeName: plex-config-pv
+{{- end }}
 ---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -61,7 +66,9 @@ spec:
       backingImage: ""
       numberOfReplicas: "1"
     volumeHandle: plex-transcode-longhorn-volume
+{{- end }}
 ---
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -77,3 +84,4 @@ spec:
     requests:
       storage: 8Gi
   volumeName: plex-transcode-pv
+{{- end }}
