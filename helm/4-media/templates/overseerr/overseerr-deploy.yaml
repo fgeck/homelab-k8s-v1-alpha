@@ -32,7 +32,7 @@ spec:
           value: Europe/Berlin
         - name: LOG_LEVEL
           value: info
-        image: fallenbagel/overseerr:2.2.3
+        image: ghcr.io/sct/overseerr:1.33.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
