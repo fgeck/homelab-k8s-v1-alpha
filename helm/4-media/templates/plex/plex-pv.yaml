@@ -48,7 +48,7 @@ metadata:
     meta.helm.sh/release-namespace: media
 spec:
   capacity:
-    storage: 500Mi
+    storage: 8Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
@@ -75,5 +75,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500Mi
+      storage: 8Gi
   volumeName: plex-transcode-pv
