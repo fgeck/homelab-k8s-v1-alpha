@@ -28,7 +28,7 @@ metadata:
   namespace: media
 data:
   SONARR__APP__THEME: "dark"
-  # SONARR__SERVER__URLBASE: "/movies"
+  # SONARR__SERVER__URLBASE: "/series"
   SONARR__POSTGRES__HOST: {{ .Values.default.postgresql.hostnameInCluster }}
   SONARR__POSTGRES__PORT: "5432"
   SONARR__POSTGRES__MAINDB: sonarr_main
