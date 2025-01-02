@@ -9,9 +9,9 @@ data:
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.default.postgresql.postgresPassword | b64enc }}
   PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
-  MAIN_DB: {{ "readarr_main" | b64enc }}
-  LOG_DB: {{ "readarr_log" | b64enc }}
-  CACHE_DB: {{ "readarr_cache" | b64enc }}
+  MAIN_DB: {{ "readarr-main" | b64enc }}
+  LOG_DB: {{ "readarr-log" | b64enc }}
+  CACHE_DB: {{ "readarr-cache" | b64enc }}
 ---
 apiVersion: v1
 kind: Secret
@@ -32,8 +32,9 @@ data:
   # READARR__SERVER__URLBASE: "/series"
   READARR__POSTGRES__HOST: {{ .Values.default.postgresql.hostnameInCluster }}
   READARR__POSTGRES__PORT: "5432"
-  READARR__POSTGRES__MAINDB: readarr_main
-  READARR__POSTGRES__LOGDB: readarr_log
+  READARR__POSTGRES__MAINDB: readarr-main
+  READARR__POSTGRES__LOGDB: readarr-log
+  READARR__POSTGRES__CACHEDB: readarr-cache
   READARR__POSTGRES__USER: {{ .Values.default.postgresql.postgresReadarrUser }}
   READARR__LOG__ANALYTICSENABLED: "false"
   READARR__LOG__LEVEL: "INFO"

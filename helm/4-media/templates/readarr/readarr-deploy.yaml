@@ -117,7 +117,7 @@ spec:
             name: readarr-env
         - secretRef:
             name: readarr-secret-env
-        image: ghcr.io/linuxserver/readarr:latest
+        image: lscr.io/linuxserver/readarr:develop
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
