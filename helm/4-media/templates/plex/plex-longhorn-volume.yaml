@@ -88,7 +88,7 @@ spec:
   migrationNodeID: ""
   nodeID: ""
   nodeSelector: []
-  numberOfReplicas: 0
+  numberOfReplicas: 1
   replicaAutoBalance: ignored
   replicaDiskSoftAntiAffinity: ignored
   replicaSoftAntiAffinity: ignored
