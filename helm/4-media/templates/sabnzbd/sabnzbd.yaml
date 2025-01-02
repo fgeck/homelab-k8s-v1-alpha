@@ -58,7 +58,7 @@ spec:
         - name: S6_READ_ONLY_ROOT
           value: "1"
         - name: SABNZBD__HOST_WHITELIST_ENTRIES
-          value: "dl.{{ .Values.edge.domain }}, sabnzbd, sabnzbd.default, sabnzbd.default.svc, sabnzbd.default.svc.cluster, sabnzbd.default.svc.cluster.local"
+          value: "dl.{{ .Values.edge.domain }}, dl.home.{{ .Values.edge.domain }}, sabnzbd, sabnzbd.default, sabnzbd.default.svc, sabnzbd.default.svc.cluster, sabnzbd.default.svc.cluster.local"
         - name: SABNZBD__PORT
           value: "10097"
         image: ghcr.io/onedr0p/sabnzbd:4.4.1
@@ -153,7 +153,7 @@ spec:
           claimName: sabnzbd-pvc
       - name: sabnzbd-data
         persistentVolumeClaim:
-          claimName: sabnzbd-data-pvc
+          claimName: media-data-pvc
       - emptyDir:
           medium: Memory
           sizeLimit: 2Gi

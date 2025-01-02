@@ -7,5 +7,5 @@ metadata:
     meta.helm.sh/release-name: bootstrap
     meta.helm.sh/release-namespace: kube-system
 data:
-  range-default: {{ .Values.bootstrap.ip_ranges.range_default }} # Default range for the VIP
-  cidr-edge: {{ .Values.bootstrap.ip_ranges.cidr_edge }} # CIDR for the edge node
+  range-default: {{ .Values.bootstrap.ipRanges.rangeDefault }} # Default range for the VIP
+  cidr-edge: {{ .Values.bootstrap.ipRanges.cidrEdge }} # CIDR for the edge node
