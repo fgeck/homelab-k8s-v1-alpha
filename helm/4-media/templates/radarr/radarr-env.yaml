@@ -3,6 +3,9 @@ kind: Secret
 metadata:
   name: radarr-init-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   RADARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresRadarrPassword | b64enc }}
@@ -17,6 +20,9 @@ kind: Secret
 metadata:
   name: radarr-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   RADARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresRadarrPassword | b64enc }}
@@ -26,6 +32,9 @@ kind: ConfigMap
 metadata:
   name: radarr-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 data:
   RADARR__APP__THEME: "dark"
   # RADARR__SERVER__URLBASE: "/movies"

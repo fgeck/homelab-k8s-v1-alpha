@@ -3,6 +3,9 @@ kind: Secret
 metadata:
   name: sonarr-init-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   SONARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresSonarrPassword | b64enc }}
@@ -17,6 +20,9 @@ kind: Secret
 metadata:
   name: sonarr-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   SONARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresSonarrPassword | b64enc }}
@@ -26,6 +32,9 @@ kind: ConfigMap
 metadata:
   name: sonarr-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 data:
   SONARR__APP__THEME: "dark"
   # SONARR__SERVER__URLBASE: "/series"

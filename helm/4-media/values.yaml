@@ -1,2 +1,6 @@
 media:
   platform: jellyfin # jellyfin | plex | all
+
+plex:
+  nameOverride: plex
+  fullnameOverride: plex

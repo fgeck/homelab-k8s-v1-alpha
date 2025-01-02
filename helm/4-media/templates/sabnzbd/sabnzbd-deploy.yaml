@@ -10,6 +10,9 @@ metadata:
   labels:
     app.kubernetes.io/group: media
     app.kubernetes.io/name: sabnzbd
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
   name: sabnzbd
   namespace: media
 spec:
@@ -25,6 +28,9 @@ spec:
       labels:
         app.kubernetes.io/group: media
         app.kubernetes.io/name: sabnzbd
+      annotations:
+        meta.helm.sh/release-name: media
+        meta.helm.sh/release-namespace: media
     spec:
       automountServiceAccountToken: false
       containers:

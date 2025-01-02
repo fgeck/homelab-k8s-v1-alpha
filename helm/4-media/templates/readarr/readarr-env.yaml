@@ -4,6 +4,9 @@ kind: Secret
 metadata:
   name: readarr-init-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
@@ -19,6 +22,9 @@ kind: Secret
 metadata:
   name: readarr-secret-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 type: Opaque
 data:
   READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
@@ -29,6 +35,9 @@ kind: ConfigMap
 metadata:
   name: readarr-env
   namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 data:
   # READARR__URL_BASE: "/books"
   READARR__AUTHENTICATION_METHOD: "Forms"

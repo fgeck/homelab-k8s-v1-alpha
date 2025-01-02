@@ -5,7 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: sonarr
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
 spec:
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: sonarr
   ports:
