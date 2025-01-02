@@ -1,0 +1,50 @@
+apiVersion: longhorn.io/v1beta2
+kind: Volume
+metadata:
+  name: jellyseerr-longhorn-volume
+  namespace: longhorn-system
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: longhorn-system
+  labels:
+    longhornvolume: jellyseerr-longhorn-volume
+    recurring-job-group.longhorn.io/default: enabled
+    setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
+    setting.longhorn.io/replica-auto-balance: ignored
+    setting.longhorn.io/snapshot-data-integrity: ignored
+spec:
+  Standby: false
+  accessMode: rwo
+  backendStoreDriver: ""
+  backingImage: ""
+  backupCompressionMethod: lz4
+  dataEngine: v1
+  dataLocality: disabled
+  dataSource: ""
+  disableFrontend: false
+  diskSelector: []
+  encrypted: false
+  engineImage: ""
+  freezeFilesystemForSnapshot: ignored
+  fromBackup: ""
+  frontend: blockdev
+  image: longhornio/longhorn-engine:v1.7.2
+  lastAttachedBy: ""
+  migratable: false
+  migrationNodeID: ""
+  nodeID: ""
+  nodeSelector: []
+  numberOfReplicas: 1
+  replicaAutoBalance: ignored
+  replicaDiskSoftAntiAffinity: ignored
+  replicaSoftAntiAffinity: ignored
+  replicaZoneSoftAntiAffinity: ignored
+  restoreVolumeRecurringJob: ignored
+  revisionCounterDisabled: true
+  # 1073741824 -> 1Gi ; 2147483648 -> 2Gi ; 4294967296 -> 4Gi
+  size: "536870912"
+  snapshotDataIntegrity: ignored
+  snapshotMaxCount: 2
+  snapshotMaxSize: "0"
+  staleReplicaTimeout: 20
+  unmapMarkSnapChainRemoved: ignored
