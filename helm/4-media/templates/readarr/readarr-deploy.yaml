@@ -1,18 +1,3 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: sonarr
-  namespace: media
-  labels:
-    app.kubernetes.io/name: sonarr
-spec:
-  selector:
-    app.kubernetes.io/name: sonarr
-  ports:
-    - protocol: TCP
-      port: 8989
-      targetPort: 8989
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,13 +6,13 @@ metadata:
     keel.sh/pollSchedule: '@daily'
     keel.sh/trigger: poll
   labels:
-    app.kubernetes.io/name: sonarr
-  name: sonarr
+    app.kubernetes.io/name: readarr
+  name: readarr
   namespace: media
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: sonarr
+      app.kubernetes.io/name: readarr
   progressDeadlineSeconds: 600
   replicas: 1
   strategy:
@@ -35,7 +20,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: sonarr
+        app.kubernetes.io/name: readarr
     spec:
       automountServiceAccountToken: false
       initContainers:
@@ -43,9 +28,9 @@ spec:
           image: postgres:latest
           envFrom:
             - configMapRef:
-                name: sonarr-env
+                name: readarr-env
             - secretRef:
-                name: sonarr-init-secret-env
+                name: readarr-init-secret-env
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -57,8 +42,9 @@ spec:
               PGPASSWORD="${PGPASSWORD}"
               LOG_DB="${LOG_DB}"
               MAIN_DB="${MAIN_DB}"
-              SONARR_USER="${SONARR__POSTGRES__USER}"
-              SONARR_PASSWORD="${SONARR__POSTGRES__PASSWORD}"
+              CACHE_DB="${CACHE_DB}"
+              READARR_USER="${READARR__POSTGRES__USER}"
+              READARR_PASSWORD="${READARR__POSTGRES__PASSWORD}"
 
               # Set the database to connect to for checks and operations
               DEFAULT_DB="postgres"
@@ -83,11 +69,11 @@ spec:
               echo "PostgreSQL is available. Proceeding with database setup."
 
               # Ensure the user exists
-              echo "Ensuring user '$SONARR_USER' exists..."
-              PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$SONARR_USER') THEN CREATE ROLE \"$SONARR_USER\" WITH LOGIN PASSWORD '$SONARR_PASSWORD'; END IF; END \$\$;"
+              echo "Ensuring user '$READARR_USER' exists..."
+              PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$READARR_USER') THEN CREATE ROLE \"$READARR_USER\" WITH LOGIN PASSWORD '$READARR_PASSWORD'; END IF; END \$\$;"
 
               # List of databases to process
-              DATABASES="$LOG_DB $MAIN_DB"
+              DATABASES="$LOG_DB $MAIN_DB $CACHE_DB"
 
               # Loop through each database
               for DBNAME in $DATABASES; do
@@ -104,18 +90,18 @@ spec:
 
                   # Grant permissions on the database
                   echo "Granting permissions on database: $DBNAME"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT ALL PRIVILEGES ON DATABASE \"$DBNAME\" TO \"$SONARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT ALL PRIVILEGES ON DATABASE \"$DBNAME\" TO \"$READARR_USER\";"
 
                   # Grant schema permissions on the public schema
                   echo "Granting schema permissions for 'public' in database: $DBNAME"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, CREATE ON SCHEMA public TO \"$SONARR_USER\";"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"$SONARR_USER\";"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"$SONARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, CREATE ON SCHEMA public TO \"$READARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"$READARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"$READARR_USER\";"
 
                   # Alter default privileges (correct syntax)
-                  echo "Setting default privileges for '$SONARR_USER' in schema 'public' for database: $DBNAME"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"$SONARR_USER\";"
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"$SONARR_USER\";"
+                  echo "Setting default privileges for '$READARR_USER' in schema 'public' for database: $DBNAME"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"$READARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"$READARR_USER\";"
 
                   echo "Finished processing database: $DBNAME"
               done
@@ -128,16 +114,16 @@ spec:
           value: Europe/Berlin
         envFrom:
         - configMapRef:
-            name: sonarr-env
+            name: readarr-env
         - secretRef:
-            name: sonarr-secret-env
-        image: ghcr.io/onedr0p/sonarr:4.0.11
+            name: readarr-secret-env
+        image: ghcr.io/linuxserver/readarr:latest
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
           httpGet:
             path: /ping
-            port: 8989
+            port: 8787
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -151,7 +137,7 @@ spec:
           failureThreshold: 5
           httpGet:
             path: /ping
-            port: 8989
+            port: 8787
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -172,7 +158,7 @@ spec:
           failureThreshold: 60
           httpGet:
             path: /ping
-            port: 8989
+            port: 8787
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 5
@@ -180,7 +166,7 @@ spec:
           timeoutSeconds: 2
         volumeMounts:
         - mountPath: /config
-          name: sonarr-config
+          name: readarr-config
         - mountPath: /mnt/data
           name: data
       dnsConfig:
@@ -193,9 +179,9 @@ spec:
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
       volumes:
-      - name: sonarr-config
+      - name: readarr-config
         persistentVolumeClaim:
-          claimName: sonarr-pvc
+          claimName: readarr-pvc
       - name: data
         persistentVolumeClaim:
           claimName: media-data-pvc
