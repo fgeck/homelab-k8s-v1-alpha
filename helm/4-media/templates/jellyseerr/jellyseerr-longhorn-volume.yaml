@@ -1,14 +1,14 @@
-{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
-  name: overseerr-longhorn-volume
+  name: jellyseerr-longhorn-volume
   namespace: longhorn-system
   annotations:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: longhorn-system
   labels:
-    longhornvolume: overseerr-longhorn-volume
+    longhornvolume: jellyseerr-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
