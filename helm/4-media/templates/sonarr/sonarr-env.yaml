@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sonarr-init-secret-env
+  namespace: media
+type: Opaque
+data:
+  SONARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresSonarrPassword | b64enc }}
+  PGUSER: {{ "postgres" | b64enc }}
+  PGPASSWORD: {{ .Values.default.postgresql.postgresPassword | b64enc }}
+  PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
+  MAIN_DB: {{ "sonarr_main" | b64enc }}
+  LOG_DB: {{ "sonarr_log" | b64enc }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sonarr-secret-env
+  namespace: media
+type: Opaque
+data:
+  SONARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresSonarrPassword | b64enc }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonarr-env
+  namespace: media
+data:
+  SONARR__APP__THEME: "dark"
+  # SONARR__SERVER__URLBASE: "/series"
+  SONARR__POSTGRES__HOST: {{ .Values.default.postgresql.hostnameInCluster }}
+  SONARR__POSTGRES__PORT: "5432"
+  SONARR__POSTGRES__MAINDB: sonarr_main
+  SONARR__POSTGRES__LOGDB: sonarr_log
+  SONARR__POSTGRES__USER: {{ .Values.default.postgresql.postgresSonarrUser }}
+  SONARR__LOG__ANALYTICSENABLED: "false"
+  SONARR__LOG__LEVEL: "INFO"
