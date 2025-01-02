@@ -43,20 +43,46 @@ spec:
             - configMapRef:
                 name: radarr-env
             - secretRef:
-                name: radarr-secret-env
+                name: radarr-init-secret-env
           command: ["/bin/sh", "-c"]
           args:
             - |
               #!/bin/bash
+
               # Use environment variables provided
               PGHOST="${PGHOST}"
               PGUSER="${PGUSER}"
               PGPASSWORD="${PGPASSWORD}"
               LOG_DB="${LOG_DB}"
               MAIN_DB="${MAIN_DB}"
+              RADARR_USER="${RADARR__POSTGRES__USER}"
+              RADARR_PASSWORD="${RADARR__POSTGRES__PASSWORD}"
 
               # Set the database to connect to for checks and operations
               DEFAULT_DB="postgres"
+
+              # Maximum time to wait for PostgreSQL to become available (in seconds)
+              MAX_WAIT=300
+              WAIT_INTERVAL=5
+
+              echo "Checking PostgreSQL connectivity..."
+
+              elapsed=0
+              while ! PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c '\q' 2>/dev/null; do
+                  echo "PostgreSQL is not available yet. Retrying in $WAIT_INTERVAL seconds..."
+                  sleep $WAIT_INTERVAL
+                  elapsed=$((elapsed + WAIT_INTERVAL))
+                  if [ "$elapsed" -ge "$MAX_WAIT" ]; then
+                      echo "Failed to connect to PostgreSQL after $MAX_WAIT seconds."
+                      exit 1
+                  fi
+              done
+
+              echo "PostgreSQL is available. Proceeding with database setup."
+
+              # Ensure the user exists
+              echo "Ensuring user '$RADARR_USER' exists..."
+              PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$RADARR_USER') THEN CREATE ROLE \"$RADARR_USER\" WITH LOGIN PASSWORD '$RADARR_PASSWORD'; END IF; END \$\$;"
 
               # List of databases to process
               DATABASES="$LOG_DB $MAIN_DB"
@@ -74,19 +100,26 @@ spec:
                       echo "Database '$DBNAME' created successfully."
                   fi
 
-                  # Attempt to create user and grant permissions on the created DB
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "CREATE USER \"$RADARR__POSTGRES_USER\" WITH PASSWORD '$RADARR__POSTGRES_PASSWORD';" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "CREATE SCHEMA IF NOT EXISTS \"$DBNAME\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "ALTER SCHEMA \"$DBNAME\" OWNER TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "GRANT USAGE ON SCHEMA \"$DBNAME\" TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "GRANT CREATE ON SCHEMA \"$DBNAME\" TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "GRANT ALL PRIVILEGES ON DATABASE \"$DBNAME\" TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA \"$DBNAME\" TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA \"$DBNAME\" TO \"$RADARR__POSTGRES_USER\";" || true
-                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "ALTER ROLE \"$RADARR__POSTGRES_USER\" SET search_path = \"$DBNAME\";" || true
-                  
+                  # Grant permissions on the database
+                  echo "Granting permissions on database: $DBNAME"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT ALL PRIVILEGES ON DATABASE \"$DBNAME\" TO \"$RADARR_USER\";"
+
+                  # Grant schema permissions on the public schema
+                  echo "Granting schema permissions for 'public' in database: $DBNAME"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, CREATE ON SCHEMA public TO \"$RADARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO \"$RADARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO \"$RADARR_USER\";"
+
+                  # Alter default privileges (correct syntax)
+                  echo "Setting default privileges for '$RADARR_USER' in schema 'public' for database: $DBNAME"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO \"$RADARR_USER\";"
+                  PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DBNAME" -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO \"$RADARR_USER\";"
+
                   echo "Finished processing database: $DBNAME"
               done
+
+              echo "Database setup completed."
+
       containers:
       - name: main
         env:

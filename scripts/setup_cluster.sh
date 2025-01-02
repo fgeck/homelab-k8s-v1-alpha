@@ -84,7 +84,9 @@ log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
 echo ""
 log_exec kubectl config set-context --current --namespace=media
 log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
-log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+log_success "------------------------------------------------------------------------------------------"
+log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin                              |"
+log_success "------------------------------------------------------------------------------------------"
 echo ""
 
 # log_info "START --> Deploying All other Apps"

@@ -14,7 +14,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`browse.{{ .Values.edge.domain }}`)
+    match: Host(`browse.home.{{ .Values.edge.domain }}`)
     priority: 10
     middlewares:
     - name: local-ipallowlist

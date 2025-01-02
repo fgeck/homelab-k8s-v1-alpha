@@ -15,7 +15,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`storage.fgeck.de`)
+    match: Host(`home.storage.fgeck.de`)
     priority: 10
     middlewares:
     - name: local-ipallowlist

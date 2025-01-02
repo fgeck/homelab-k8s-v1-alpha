@@ -1,14 +1,17 @@
+# List can be found here:
+# https://wiki.servarr.com/useful-tools#using-environment-variables-for-config
+
 # apiVersion: v1
 # kind: Secret
 # metadata:
 #   name: prowlarr-secret-env
 # type: Opaque
 # data:
-#   PROWLARR__API_KEY: {{ .Values.media.prowlarr.api_key | b64enc }}
-#   PROWLARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgres_defaultuser_password | b64enc }}
+#   PROWLARR__API_KEY: {{ .Values.media.prowlarr.apiKey | b64enc }}
+#   PROWLARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresDefaultuserPassword | b64enc }}
 #   PGHOST: db-postgresql
-#   PGUSER: {{ .Values.default.postgresql.postgres_user | b64enc }}
-#   PGPASSWORD: {{ .Values.default.postgresql.postgres_defaultuser_password | b64enc }}
+#   PGUSER: {{ .Values.default.postgresql.postgresUser | b64enc }}
+#   PGPASSWORD: {{ .Values.default.postgresql.postgresDefaultuserPassword | b64enc }}
 #   DBNAME: prowlarr
 # ---
 # apiVersion: v1
@@ -23,37 +26,7 @@
 #   PROWLARR__POSTGRES_PORT: "5432"
 #   PROWLARR__POSTGRES_MAIN_DB: prowlarr_main
 #   PROWLARR__POSTGRES_LOG_DB: prowlarr_log
-#   PROWLARR__POSTGRES_USER: {{ .Values.default.postgresql.postgres_user }}
-# ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: radarr-secret-env
-  namespace: media
-type: Opaque
-data:
-  RADARR__API_KEY: {{ .Values.media.radarr.api_key | b64enc }}
-  RADARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgres_defaultuser_password | b64enc }}
-  PGUSER: {{ "postgres" | b64enc }}
-  PGPASSWORD: {{ .Values.default.postgresql.postgres_password | b64enc }}
-  PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
-  MAIN_DB: {{ "radarr_main" | b64enc }}
-  LOG_DB: {{ "radarr_log" | b64enc }}
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: radarr-env
-  namespace: media
-data:
-  RADARR__URL_BASE: "/movies"
-  RADARR__AUTHENTICATION_METHOD: "Forms"
-  RADARR__AUTHENTICATION_RQUIRED: "Enabled"
-  RADARR__POSTGRES_HOST: "persistence-postgresql.default.svc.cluster.local"
-  RADARR__POSTGRES_PORT: "5432"
-  RADARR__POSTGRES_MAIN_DB: radarr_main
-  RADARR__POSTGRES_LOG_DB: radarr_log
-  RADARR__POSTGRES_USER: radarr
+#   PROWLARR__postgresUser: {{ .Values.default.postgresql.postgresUser }}
 # ---
 # apiVersion: v1
 # kind: Secret
@@ -61,10 +34,10 @@ data:
 #   name: sonarr-secret-env
 # type: Opaque
 # data:
-#   SONARR__API_KEY: {{ .Values.media.sonarr.api_key | b64enc }}
-#   SONARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgres_defaultuser_password | b64enc }}
-#   PGUSER: {{ .Values.default.postgresql.postgres_user | b64enc }}
-#   PGPASSWORD: {{ .Values.default.postgresql.postgres_defaultuser_password | b64enc }}
+#   SONARR__API_KEY: {{ .Values.media.sonarr.apiKey | b64enc }}
+#   SONARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresDefaultuserPassword | b64enc }}
+#   PGUSER: {{ .Values.default.postgresql.postgresUser | b64enc }}
+#   PGPASSWORD: {{ .Values.default.postgresql.postgresDefaultuserPassword | b64enc }}
 #   PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
 #   DBNAME: {{ "sonarr" | b64enc }}
 # ---
@@ -80,5 +53,5 @@ data:
 #   SONARR__POSTGRES_PORT: "5432"
 #   SONARR__POSTGRES_MAIN_DB: sonarr_main
 #   SONARR__POSTGRES_LOG_DB: sonarr_log
-#   SONARR__POSTGRES_USER: {{ .Values.default.postgresql.postgres_user }}
+#   SONARR__postgresUser: {{ .Values.default.postgresql.postgresUser }}
   
