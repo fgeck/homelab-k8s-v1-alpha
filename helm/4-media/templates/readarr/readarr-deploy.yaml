@@ -190,4 +190,4 @@ spec:
           claimName: readarr-pvc
       - name: data
         persistentVolumeClaim:
-          claimName: media-data-pvc
+          claimName: downloads-data-pvc

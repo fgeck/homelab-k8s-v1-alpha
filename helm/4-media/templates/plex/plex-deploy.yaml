@@ -89,7 +89,7 @@ spec:
         - mountPath: /transcode
           name: plex-transcode
         - mountPath: /data
-          name: data
+          name: media
       dnsConfig:
         options:
         - name: ndots
@@ -106,7 +106,7 @@ spec:
       - name: plex-transcode
         persistentVolumeClaim:
           claimName: plex-transcode-pvc
-      - name: data
+      - name: media
         persistentVolumeClaim:
           claimName: media-data-pvc
 {{- end }}

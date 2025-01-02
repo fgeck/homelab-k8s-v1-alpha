@@ -35,34 +35,36 @@ spec:
         - name: TZ
           value: Europe/Berlin
         - name: HOSTNAME
-          value: "jellyfinServer"
+          value: "jellyfin"
+        - name: JELLYFIN_PublishedServerUrl
+          value: https://watch.home.{{ .Values.edge.domain }}
         - name: jellyfin_UID
           value: "1000"
         - name: jellyfin_GID
           value: "1000"
-        envFrom:
-        - secretRef:
-            name: jellyfin-secret-env
-        image: index.docker.io/jellyfininc/pms-docker:1.41.3.9314-a0bfb8370
+        # envFrom:
+        # - secretRef:
+        #     name: jellyfin-secret-env
+        image: jellyfin/jellyfin:2024123005
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
         ports:
-        - containerPort: 32400
+        - containerPort: 8096
           name: main
           protocol: TCP
         readinessProbe:
           failureThreshold: 5
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 2
@@ -77,8 +79,8 @@ spec:
         startupProbe:
           failureThreshold: 60
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
@@ -86,10 +88,10 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: jellyfin-config
-        - mountPath: /transcode
-          name: jellyfin-transcode
-        - mountPath: /data
-          name: data
+        - mountPath: /cache
+          name: jellyfin-cache
+        - mountPath: /media
+          name: media
       dnsConfig:
         options:
         - name: ndots
@@ -103,10 +105,10 @@ spec:
       - name: jellyfin-config
         persistentVolumeClaim:
           claimName: jellyfin-config-pvc
-      - name: jellyfin-transcode
+      - name: jellyfin-cache
         persistentVolumeClaim:
-          claimName: jellyfin-transcode-pvc
-      - name: data
+          claimName: jellyfin-cache-pvc
+      - name: media
         persistentVolumeClaim:
           claimName: media-data-pvc
 {{- end }}

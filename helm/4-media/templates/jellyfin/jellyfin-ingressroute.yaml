@@ -15,7 +15,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`jellyfin.home.{{ .Values.edge.domain }}`)
+    match: Host(`watch.home.{{ .Values.edge.domain }}`)
     priority: 10
     middlewares:
     - name: local-ipallowlist
@@ -25,6 +25,6 @@ spec:
       name: jellyfin
       namespace: media
       passHostHeader: true
-      port: 32400
+      port: 8096
       scheme: http
 {{- end }}

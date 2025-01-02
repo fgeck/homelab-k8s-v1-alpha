@@ -189,4 +189,4 @@ spec:
           claimName: sonarr-pvc
       - name: data
         persistentVolumeClaim:
-          claimName: media-data-pvc
+          claimName: downloads-data-pvc
