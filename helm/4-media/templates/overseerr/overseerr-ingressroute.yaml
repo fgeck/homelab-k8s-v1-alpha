@@ -1,3 +1,4 @@
+{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -26,3 +27,4 @@ spec:
       passHostHeader: true
       port: 5055
       scheme: http
+{{- end }}
