@@ -41,6 +41,12 @@ spec:
           value: ":8080"
         - name: METRICS_BIND
           value: ":8081"
+        - name: FRITZBOX_ENDPOINT_URL
+          value: {{ .Values.edge.dyndns.fritzboxPollURL }}
+        - name: FRITZBOX_ENDPOINT_INTERVAL
+          value: "120s"
+        - name: FRITZBOX_ENDPOINT_TIMEOUT
+          value: "30s"
         - name: CLOUDFLARE_API_TOKEN
           valueFrom:
             secretKeyRef:
