@@ -6,11 +6,12 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 
 1. Create you secret values: `cp secrets/values_template.yaml secrets/values.yaml`
 1. Add all secrets you need. Especially the `scriptConfigs` section
-1. Check the `talos/scripts` directory. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
-1. Deploy the config with the help of [setup_nodes.sh](./talos/scripts/setup_nodes.sh)
-1. Once the cluster is ready to use, set the kubeconfig `export KUBECONFIG=$(pwd)/kubeconfig` and deploy all services using [setup_cluster.sh](./scripts/setup_cluster.sh)
-1. Nodes can be reset using [reset_nodes.sh](./talos/scripts/reset_nodes.sh)
-1. Config of nodes can be updated using [update_nodes.sh](./talos/scripts/update_nodes.sh)
+1. Check the `scripts/` directory. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
+1. Generate the TalOS config with [config_generate.sh](/scripts/talos/config_generate.sh)
+1. Deploy the config with the help of [nodes_setup.sh](/scripts/talos/nodes_setup.sh)
+1. Once the cluster is ready to use, set the kubeconfig `export KUBECONFIG=$(pwd)/secrets/kubeconfig` and deploy all services using [cluster_setup.sh](/scripts/cluster/setup.sh)
+1. Nodes can be reset using [nodes_reset.sh](/scripts/talos/nodes_reset.sh)
+1. Config of nodes can be updated using [nodes_update.sh](/scripts/talos/nodes_update.sh)
 
 ## Todos
 

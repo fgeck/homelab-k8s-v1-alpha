@@ -53,11 +53,11 @@ WORKER1CONFIG_BASE64=$(echo "$JSON_RESPONSE" | jq -r '.data.fields[] | select(.n
 WORKER2CONFIG_BASE64=$(echo "$JSON_RESPONSE" | jq -r '.data.fields[] | select(.name == "worker-2.yaml") | .value')
 
 log_info "Writing secrets to files"
-echo "$VALUES_BASE64" | base64 -d > test/values.yaml
-echo "$SECRETS_BASE64" | base64 -d > test/secrets.yaml
-echo "$TALOSCONFIG_BASE64" | base64 -d > test/talos/talosconfig
-echo "$CONTROLPLANECONFIG_BASE64" | base64 -d > test/talos/controlplane.yaml
-echo "$WORKER1CONFIG_BASE64" | base64 -d > test/talos/worker-1.yaml
-echo "$WORKER2CONFIG_BASE64" | base64 -d > test/talos/worker-2.yaml
+echo "$VALUES_BASE64" | base64 -d > secrets/values.yaml
+echo "$SECRETS_BASE64" | base64 -d > secrets/secrets.yaml
+echo "$TALOSCONFIG_BASE64" | base64 -d > secrets/talos/talosconfig
+echo "$CONTROLPLANECONFIG_BASE64" | base64 -d > secrets/talos/controlplane.yaml
+echo "$WORKER1CONFIG_BASE64" | base64 -d > secrets/talos/worker-1.yaml
+echo "$WORKER2CONFIG_BASE64" | base64 -d > secrets/talos/worker-2.yaml
 
 log_success "Successfully wrote all secrets from '$SECRET_NAME' in folder '$FOLDER_NAME' to local files"
