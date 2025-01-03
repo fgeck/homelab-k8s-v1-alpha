@@ -28,6 +28,9 @@ traefik:
   nameOverride: traefik
   fullnameOverride: traefik
   namespaceOverride: edge
+  deployment:
+    enabled: true
+    kind: DaemonSet
   # TODO: enable access logs and feed them to crowdsec!
   # logs:
   #   access:
