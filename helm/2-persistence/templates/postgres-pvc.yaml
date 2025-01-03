@@ -7,13 +7,13 @@ metadata:
     meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: default
 spec:
+  storageClassName: longhorn
   capacity:
     storage: 2Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: longhorn
   csi:
     driver: driver.longhorn.io
     fsType: ext4
@@ -31,9 +31,9 @@ metadata:
     meta.helm.sh/release-name: db
     meta.helm.sh/release-namespace: default
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
-  storageClassName: longhorn
