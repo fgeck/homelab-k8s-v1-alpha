@@ -25,9 +25,6 @@ GATEWAY=$(yq '.scriptConfigs.gateway' secrets/values.yaml)
 IMAGE="factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.9.0"
 # --------------------------------CONFIG----------------------------------------
 
-
-mkdir -p talos/_out
-
 talosctl gen config --force "$CLUSTER_NAME" https://${CONTROL_PLANE_IP}:6443 \
     --config-patch-control-plane "[ \
         {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${CONTROL_PLANE_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
@@ -39,4 +36,4 @@ talosctl gen config --force "$CLUSTER_NAME" https://${CONTROL_PLANE_IP}:6443 \
         {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"} \
     ]" \
     --with-secrets ./secrets/secrets.yaml \
-    -o talos/_out/
+    -o secrets/talos/

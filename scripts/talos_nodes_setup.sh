@@ -24,15 +24,15 @@ CURRENT_WORKER_2_IP=$(yq '.scriptConfigs.currentWorker2Ip' secrets/values.yaml)
 # --------------------------------CONFIG----------------------------------------
 
 
-FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/controlplane.yaml | cut -d'/' -f1)
-FINAL_WORKER_1_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-1.yaml | cut -d'/' -f1)
-FINAL_WORKER_2_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' talos/_out/worker-2.yaml | cut -d'/' -f1)
+FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' secrets/talos/controlplane.yaml | cut -d'/' -f1)
+FINAL_WORKER_1_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' secrets/talos/worker-1.yaml | cut -d'/' -f1)
+FINAL_WORKER_2_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' secrets/talos/worker-2.yaml | cut -d'/' -f1)
 
-gum confirm "Applying configs to the nodes...? $CONTROL_PLANE_IP, $CURRENT_WORKER_1_IP, $CURRENT_WORKER_2_IP ?" || exit 1
+gum confirm "Applying configs to the nodes...? $CURRENT_CONTROL_PLANE_IP, $CURRENT_WORKER_1_IP, $CURRENT_WORKER_2_IP ?" || exit 1
 
-log_exec talosctl apply-config --nodes "$CURRENT_CONTROL_PLANE_IP" --file "talos/_out/controlplane.yaml" --insecure
-log_exec talosctl apply-config --nodes "$CURRENT_WORKER_1_IP" --file "talos/_out/worker-1.yaml" --insecure
-log_exec talosctl apply-config --nodes "$CURRENT_WORKER_2_IP" --file "talos/_out/worker-2.yaml" --insecure
+log_exec talosctl apply-config --nodes "$CURRENT_CONTROL_PLANE_IP" --file "secrets/talos/controlplane.yaml" --insecure
+log_exec talosctl apply-config --nodes "$CURRENT_WORKER_1_IP" --file "secrets/talos/worker-1.yaml" --insecure
+log_exec talosctl apply-config --nodes "$CURRENT_WORKER_2_IP" --file "secrets/talos/worker-2.yaml" --insecure
 
 log_info "Waiting 2m for the control plane to be ready... Eventually you have to retrigger this script if 2m was not enough"
 sleep 120
@@ -48,6 +48,6 @@ log_info "Checking the health of the cluster..."
 
 log_exec talosctl health
 
-log_exec talosctl kubeconfig -f .
+log_exec talosctl kubeconfig -f ./secrets/kubeconfig
 
 talosctl dashboard --nodes "$FINAL_CONTROL_PLANE_IP","$FINAL_WORKER_1_IP","$FINAL_WORKER_2_IP"
