@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# --------------------------------CONFIG----------------------------------------
-VAULTWARDEN_SERVER=$(yq '.scriptConfigs.vaultwardenURL' secrets/values.yaml)
-FOLDER_NAME="Homelab"
-SECRET_NAME="KubernetesOnTalos"
-# --------------------------------CONFIG----------------------------------------
-
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
   COLOR_RED="\033[1;31m"
@@ -14,6 +8,13 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed bw yq
+
+# --------------------------------CONFIG----------------------------------------
+VAULTWARDEN_SERVER=$(yq '.scriptConfigs.vaultwardenURL' secrets/values.yaml)
+FOLDER_NAME="Homelab"
+SECRET_NAME="KubernetesOnTalos"
+# --------------------------------CONFIG----------------------------------------
 
 log_info "Setting your server in config and logging in"
 log_exec bw config server "$VAULTWARDEN_SERVER"

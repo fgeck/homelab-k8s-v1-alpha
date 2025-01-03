@@ -8,6 +8,10 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed talosctl
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    assert_tools_installed gsed
+fi
 
 # Usage:
 # 1. generate your secrets.yaml file: talosctl gen secrets -o ./secrets/secrets.yaml
@@ -15,7 +19,6 @@ source ./scripts/helper_funcs.sh
 # 3. run this script from the root of this repository
 
 # --------------------------------CONFIG----------------------------------------
-
 CLUSTER_NAME=$(yq '.scriptConfigs.clusterName' secrets/values.yaml)
 CONTROL_PLANE_IP=$(yq '.scriptConfigs.finalControlPlaneIp' secrets/values.yaml)
 WORKER1_IP=$(yq '.scriptConfigs.finalWorker1Ip' secrets/values.yaml)
@@ -48,7 +51,6 @@ cp ./test/talos/worker-1.yaml ./test/talos/worker-2.yaml
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     gsed -i "s/${WORKER1_IP}\/24/${WORKER2_IP}\/24/g" ./test/talos/worker-2.yaml
-    exit 0
 else
     sed -i "s/${WORKER1_IP}\/24/${WORKER2_IP}\/24/g" ./test/talos/worker-2.yaml
 fi

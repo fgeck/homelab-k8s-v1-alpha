@@ -73,3 +73,13 @@ build_helm_dependencies() {
     log_exec helm dependency build "$dir" --skip-refresh
   done
 }
+
+# Function to check if tools are installed
+assert_tools_installed() {
+    for TOOL in "$@"; do
+        if ! command -v "$TOOL" &> /dev/null; then
+            log_error "Required tool '$TOOL' is not installed. Aborting script." >&2
+            exit 1
+        fi
+    done
+}

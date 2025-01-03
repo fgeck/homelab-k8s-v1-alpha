@@ -10,12 +10,13 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed talosctl yq
 
 
 # Usage:
-# Configure the control plane and worker nodes IPs which were assigned via DHCP
-# when the OS was installed. Can be found in the VM screen
-# Run the script from the root of this repository. It will fetch the final IPs from the config files
+# Configure the control plane and worker nodes IPs in secrets/values.yaml which were assigned via DHCP
+# when the OS was installed. Can be found in the VM screen.
+# Run the script from the root of this repository. It will fetch the final IPs from the config files as well.
 
 # --------------------------------CONFIG----------------------------------------
 CURRENT_CONTROL_PLANE_IP=$(yq '.scriptConfigs.currentControlPlaneIp' secrets/values.yaml)

@@ -6,6 +6,8 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 
 1. Create you secret values: `cp secrets/values_template.yaml secrets/values.yaml`
 1. Add all secrets you need. Especially start with the `scriptConfigs` section
+     - ⚠️ ATTENTION ⚠️
+     As the secrets are stored in plain text it is highly recommended to use the scripts in `scripts/secrets/` to push and pull all secrets (stored in `secrets/` directory) to/from a vaultwarden or bitwarden instance. After you have successfully deployed everything delete the contents of secrets directory. **Use at your own risk!**
 1. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
 1. Generate the TalOS config with [scripts/talos/config_generate.sh](/scripts/talos/config_generate.sh). The bash script is implemented to create 2 worker configs, each using the configured static IP from `secrets/values.yaml`
 1. If you have not setup your VMs for TalOS follow this [guide](https://www.talos.dev/v1.8/talos-guides/install/virtualized-platforms/proxmox/). Stop at generating/applying any config and come back to this README

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ./scripts/helper_funcs.sh
+assert_tools_installed kubectl helm
+
 gum confirm "Are you sure you want to teardown the whole cluster?" || exit 1
 
 kubectl config set-context --current --namespace=media
