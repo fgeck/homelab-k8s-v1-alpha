@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: calibre-wa-book-ingest-pv
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  storageClassName: dummy
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /share/data/media/books
+    server: {{ .Values.global.nfs.server }}
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: calibre-wa-book-ingest-pvc
+  namespace: media
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  storageClassName: dummy
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+  volumeName: calibre-wa-book-ingest-pv
