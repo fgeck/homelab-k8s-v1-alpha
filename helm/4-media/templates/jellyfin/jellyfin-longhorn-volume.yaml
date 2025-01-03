@@ -55,13 +55,13 @@ spec:
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
-  name: jellyfin-transcode-longhorn-volume
+  name: jellyfin-cache-longhorn-volume
   namespace: longhorn-system
   annotations:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: longhorn-system
   labels:
-    longhornvolume: jellyfin-transcode-longhorn-volume
+    longhornvolume: jellyfin-cache-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored

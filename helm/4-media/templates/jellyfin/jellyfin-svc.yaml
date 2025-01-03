@@ -14,8 +14,8 @@ spec:
   selector:
     app.kubernetes.io/name: jellyfin
   ports:
-    - port: 32400
-      targetPort: 32400
+    - port: 8096
+      targetPort: 8096
       protocol: TCP
       name: pms
 {{- end }}

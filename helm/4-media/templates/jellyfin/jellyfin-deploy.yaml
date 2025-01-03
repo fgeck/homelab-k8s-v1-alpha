@@ -42,9 +42,6 @@ spec:
           value: "1000"
         - name: jellyfin_GID
           value: "1000"
-        # envFrom:
-        # - secretRef:
-        #     name: jellyfin-secret-env
         image: jellyfin/jellyfin:2024123005
         imagePullPolicy: IfNotPresent
         livenessProbe:

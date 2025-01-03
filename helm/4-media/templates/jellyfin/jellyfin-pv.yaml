@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: jellyfin-transcode-pv
+  name: jellyfin-cache-pv
   namespace: media
   annotations:
     meta.helm.sh/release-name: media
@@ -65,14 +65,14 @@ spec:
     volumeAttributes:
       backingImage: ""
       numberOfReplicas: "1"
-    volumeHandle: jellyfin-transcode-longhorn-volume
+    volumeHandle: jellyfin-cache-longhorn-volume
 {{- end }}
 ---
 {{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-transcode-pvc
+  name: jellyfin-cache-pvc
   namespace: media
   annotations:
     meta.helm.sh/release-name: media
@@ -83,5 +83,5 @@ spec:
   resources:
     requests:
       storage: 8Gi
-  volumeName: jellyfin-transcode-pv
+  volumeName: jellyfin-cache-pv
 {{- end }}
