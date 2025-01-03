@@ -8,6 +8,7 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed bw yq
 
 # --------------------------------CONFIG----------------------------------------
 VAULTWARDEN_SERVER=$(yq '.scriptConfigs.vaultwardenURL' secrets/values.yaml)
