@@ -1,0 +1,21 @@
+{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin
+  namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
+  annotations:
+    meta.helm.sh/release-name: media
+    meta.helm.sh/release-namespace: media
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: jellyfin
+  ports:
+    - port: 8096
+      targetPort: 8096
+      protocol: TCP
+      name: pms
+{{- end }}

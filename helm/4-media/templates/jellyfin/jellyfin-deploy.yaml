@@ -1,4 +1,4 @@
-{{- if or (eq .Values.media.platform "plex") (eq .Values.media.platform "all") }}
+{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -9,13 +9,13 @@ metadata:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: media
   labels:
-    app.kubernetes.io/name: plex
-  name: plex
+    app.kubernetes.io/name: jellyfin
+  name: jellyfin
   namespace: media
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: plex
+      app.kubernetes.io/name: jellyfin
   progressDeadlineSeconds: 600
   replicas: 1
   strategy:
@@ -23,7 +23,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: plex
+        app.kubernetes.io/name: jellyfin
       annotations:
         meta.helm.sh/release-name: media
         meta.helm.sh/release-namespace: media
@@ -35,34 +35,33 @@ spec:
         - name: TZ
           value: Europe/Berlin
         - name: HOSTNAME
-          value: "PlexServer"
-        - name: PLEX_UID
+          value: "jellyfin"
+        - name: JELLYFIN_PublishedServerUrl
+          value: https://watch.home.{{ .Values.edge.domain }}
+        - name: PUID
           value: "1000"
-        - name: PLEX_GID
+        - name: PGID
           value: "1000"
-        envFrom:
-        - secretRef:
-            name: plex-secret-env
-        image: index.docker.io/plexinc/pms-docker:1.41.3.9314-a0bfb8370
+        image: jellyfin/jellyfin:2024123005
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
         ports:
-        - containerPort: 32400
+        - containerPort: 8096
           name: main
           protocol: TCP
         readinessProbe:
           failureThreshold: 5
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 10
           successThreshold: 2
@@ -77,18 +76,18 @@ spec:
         startupProbe:
           failureThreshold: 60
           httpGet:
-            path: /identity
-            port: 32400
+            path: /health
+            port: 8096
           initialDelaySeconds: 10
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 2
         volumeMounts:
         - mountPath: /config
-          name: plex-config
-        - mountPath: /transcode
-          name: plex-transcode
-        - mountPath: /data
+          name: jellyfin-config
+        - mountPath: /cache
+          name: jellyfin-cache
+        - mountPath: /media
           name: media
       dnsConfig:
         options:
@@ -100,12 +99,12 @@ spec:
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
       volumes:
-      - name: plex-config
+      - name: jellyfin-config
         persistentVolumeClaim:
-          claimName: plex-config-pvc
-      - name: plex-transcode
+          claimName: jellyfin-config-pvc
+      - name: jellyfin-cache
         persistentVolumeClaim:
-          claimName: plex-transcode-pvc
+          claimName: jellyfin-cache-pvc
       - name: media
         persistentVolumeClaim:
           claimName: media-data-pvc
