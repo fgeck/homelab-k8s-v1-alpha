@@ -25,9 +25,9 @@ metadata:
   name: uptime-kuma-pvc
   namespace: monitoring
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-  storageClassName: longhorn

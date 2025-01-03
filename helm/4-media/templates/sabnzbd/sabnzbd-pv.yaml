@@ -31,6 +31,7 @@ metadata:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: media
 spec:
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
