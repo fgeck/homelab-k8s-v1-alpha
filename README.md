@@ -8,6 +8,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 1. Add all secrets you need. Especially start with the `scriptConfigs` section
 1. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
 1. Generate the TalOS config with [scripts/talos/config_generate.sh](/scripts/talos/config_generate.sh). The bash script is implemented to create 2 worker configs, each using the configured static IP from `secrets/values.yaml`
+1. If you have not setup your VMs for TalOS follow this [guide](https://www.talos.dev/v1.8/talos-guides/install/virtualized-platforms/proxmox/). Stop at generating/applying any config and come back to this README
 1. Deploy the config with the help of [nodes_setup.sh](/scripts/talos/nodes_setup.sh)
 1. Once the cluster is ready to use, set the kubeconfig `export KUBECONFIG=$(pwd)/secrets/kubeconfig` and deploy all services using [scripts/cluster/setup.sh](/scripts/cluster/setup.sh)
 1. Nodes can be reset using [scripts/talos/nodes_reset.sh](/scripts/talos/nodes_reset.sh)
