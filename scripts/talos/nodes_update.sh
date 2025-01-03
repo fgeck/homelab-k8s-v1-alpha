@@ -10,6 +10,7 @@ if [[ ! -d ".git" ]]; then
 fi
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed talosctl yq
 
 
 FINAL_CONTROL_PLANE_IP=$(yq eval '.machine.network.interfaces[0].addresses[0]' secrets/talos/controlplane.yaml | cut -d'/' -f1)

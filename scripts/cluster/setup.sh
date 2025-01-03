@@ -12,6 +12,7 @@ script_dir="$(pwd)"
 
 # Source the helper script
 source ./scripts/helper_funcs.sh
+assert_tools_installed kubectl helm
 
 log_info "-------------------------------------------------------------------------------------------"
 log_info "-------------------------START-HELM-REPO-ADD/UPDATE-DEPDENCY-BUILD-------------------------"
