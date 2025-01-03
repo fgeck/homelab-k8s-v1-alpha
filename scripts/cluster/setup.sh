@@ -2,13 +2,14 @@
 
 set -e
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )"
 # Check if the script is executed at the root of the repository
 if [[ ! -d ".git" ]]; then
   COLOR_RED="\033[1;31m"
   echo -e "${COLOR_RED}[ERROR] This script must be run from the root of the repository.${COLOR_RESET}" >&2
   exit 1
 fi
+script_dir="$(pwd)"
+
 # Source the helper script
 source ./scripts/helper_funcs.sh
 
