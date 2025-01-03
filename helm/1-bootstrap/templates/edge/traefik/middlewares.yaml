@@ -4,7 +4,7 @@ metadata:
   name: local-ipallowlist
   namespace: edge
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: edge
     meta.helm.sh/release-namespace: edge
     "helm.sh/hook": "post-install,post-upgrade"
 spec:
@@ -16,10 +16,26 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
+  name: gateway-only-ipallowlist
+  namespace: edge
+  annotations:
+    meta.helm.sh/release-name: edge
+    meta.helm.sh/release-namespace: edge
+    "helm.sh/hook": "post-install,post-upgrade"
+spec:
+  ipAllowList:
+    sourceRange:
+        - 127.0.0.1/32
+        - {{ .Values.edge.gateway }}
+---
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
   name: ssl-header
   namespace: edge
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: edge
     meta.helm.sh/release-namespace: edge
     "helm.sh/hook": "post-install,post-upgrade"
 spec:

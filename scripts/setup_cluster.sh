@@ -22,6 +22,7 @@ log_exec helm repo add traefik https://traefik.github.io/charts
 # certmanager
 log_exec helm repo add jetstack https://charts.jetstack.io
 log_exec helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
+# postgres
 log_exec helm repo add bitnami https://charts.bitnami.com/bitnami
 log_exec helm repo add signoz https://charts.signoz.io
 log_exec helm repo add keel https://charts.keel.sh 
@@ -80,12 +81,14 @@ log_success "DONE --> Deploying Monitoring: Uptime-Kuma, Signoz                 
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-log_info "START --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin"
+log_info "------------------------------------------------------------------------------------------"
+log_info "START --> Deploying Media: Sabnzbd, *arr, Jellyseerr, Jellyfin, Calibre-Web-Automated... |"
+log_info "------------------------------------------------------------------------------------------"
 echo ""
 log_exec kubectl config set-context --current --namespace=media
 log_exec helm upgrade media "$script_dir/helm/4-media" --install -f $script_dir/helm/4-media/values.yaml -f $script_dir/secrets/values.yaml
 log_success "------------------------------------------------------------------------------------------"
-log_success "DONE --> Deploying Media: Sabnzbd, *arr, Overserr, Jellyfin                              |"
+log_success "DONE --> Deploying Media: Sabnzbd, *arr, Jellyseerr, Jellyfin, Calibre-Web-Automated...  |"
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
