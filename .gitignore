@@ -8,6 +8,8 @@
 **kubeconfig**
 secrets/*
 !secrets/.values_template.yaml
+!secrets/talos/
+secrets/talos/*
 
 **.log
-**/talos/_out/
+
