@@ -187,4 +187,4 @@ spec:
           claimName: radarr-pvc
       - name: data
         persistentVolumeClaim:
-          claimName: media-data-pvc
+          claimName: downloads-data-pvc

@@ -42,18 +42,21 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
   - Final Setup for backups: Use RPI to host [Openmediavault](https://www.openmediavault.org/)
 - [x] successfully deploy storage provider
 - [x] TalOS extract secrets and use templating mechanism
-- [x] Proper scripts for setup of cluster and cluster installation (ongoing WIP)
+- [x] Proper scripts for setup of cluster and cluster installation
 - [x] Script to uninstall everything from the cluster
-- [x] Minimal README (ongoing WIP)
+- [x] Minimal README
 - [x] Write a script that fills in `secrets/values.yaml` and `secrets/secrets.yaml` from defined vaultwarden
 - [x] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
-- [ ] Successfully deploy crowdsec
-- [ ] Successfully deploy keel
+- [ ] Successfully deploy Mediastack
+- [ ] Mediastack tested E2E: Jellyseerr --> Radarr/Sonarr --> SAbnzbd --> Jellyfin ; Calibre-Web-Automated
+- [ ] Successfully deploy and configure crowdsec
+- [ ] Successfully deploy and configure keel
 - [ ] Successfully deploy and configure Authentik
 - [x] Single postgres deployment to be used by many services
-- [ ] Successfully deploy signoz
+- [ ] Successfully deploy and configure signoz
 - [ ] Migrate stack from docker-compose to K8s
 - [ ] configure backups for important PVs
 - [ ] Enhanced security using RBAC
+- [ ] (Fun project) Write a golang cli to be able to remove the bash scripts. Especially for secrets pushing/pulling

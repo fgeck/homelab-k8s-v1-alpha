@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: media-data-pv
+  name: downloads-data-pv
   namespace: media
   annotations:
     meta.helm.sh/release-name: media
@@ -14,14 +14,14 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /share/data/media
+    path: /share/data/usenet
     server: {{ .Values.global.nfs.server }}
   persistentVolumeReclaimPolicy: Retain
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: media-data-pvc
+  name: downloads-data-pvc
   namespace: media
   annotations:
     meta.helm.sh/release-name: media
@@ -34,4 +34,4 @@ spec:
     requests:
       # TODO: Fix me
       storage: 2Gi #1800Gi
-  volumeName: media-data-pv
+  volumeName: downloads-data-pv
