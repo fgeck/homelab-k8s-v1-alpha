@@ -38,9 +38,9 @@ spec:
           value: "jellyfin"
         - name: JELLYFIN_PublishedServerUrl
           value: https://watch.home.{{ .Values.edge.domain }}
-        - name: jellyfin_UID
+        - name: PUID
           value: "1000"
-        - name: jellyfin_GID
+        - name: PGID
           value: "1000"
         image: jellyfin/jellyfin:2024123005
         imagePullPolicy: IfNotPresent
