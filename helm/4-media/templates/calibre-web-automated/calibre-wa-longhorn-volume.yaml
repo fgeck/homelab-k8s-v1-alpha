@@ -1,13 +1,13 @@
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
-  name: calibre-web-automated-config-longhorn-volume
+  name: calibre-wa-config-longhorn-volume
   namespace: longhorn-system
   annotations:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: longhorn-system
   labels:
-    longhornvolume: calibre-web-automated-config-longhorn-volume
+    longhornvolume: calibre-wa-config-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
@@ -48,4 +48,3 @@ spec:
   snapshotMaxSize: "0"
   staleReplicaTimeout: 20
   unmapMarkSnapChainRemoved: ignored
----

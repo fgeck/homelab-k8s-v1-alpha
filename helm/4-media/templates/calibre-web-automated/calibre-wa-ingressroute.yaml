@@ -1,27 +1,27 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: calibre-web-automated
+  name: calibre-wa
   namespace: media
   annotations:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: media
   labels:
-    app: calibre-web-automated
+    app: calibre-wa
 spec:
   entryPoints:
     - websecure
     - web
   routes:
   - kind: Rule
-    match: Host(`books.{{ .Values.edge.domain }}`)
+    match: Host(`books.home.{{ .Values.edge.domain }}`)
     priority: 10
     middlewares:
     - name: local-ipallowlist
       namespace: edge
     services:
     - kind: Service
-      name: calibre-web-automated
+      name: calibre-wa
       namespace: media
       passHostHeader: true
       port: 8083

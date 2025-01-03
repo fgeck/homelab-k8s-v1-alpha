@@ -1,5 +1,5 @@
 media:
-  platform: jellyfin # jellyfin | plex | all
+  platform: jellyfin # jellyfin | plex | all | none
 
 plex:
   nameOverride: plex
