@@ -26,8 +26,7 @@ spec:
   ipAllowList:
     sourceRange:
         - 127.0.0.1/32
-        - {{ .Values.edge.gateway }}
----
+        - {{ .Values.edge.traefik.gatewayCidr }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
