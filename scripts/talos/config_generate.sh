@@ -18,25 +18,37 @@ source ./scripts/helper_funcs.sh
 
 CLUSTER_NAME=$(yq '.scriptConfigs.clusterName' secrets/values.yaml)
 CONTROL_PLANE_IP=$(yq '.scriptConfigs.finalControlPlaneIp' secrets/values.yaml)
-WORKER_IP=$(yq '.scriptConfigs.finalWorkerIp' secrets/values.yaml)
+WORKER1_IP=$(yq '.scriptConfigs.finalWorker1Ip' secrets/values.yaml)
+WORKER2_IP=$(yq '.scriptConfigs.finalWorker2Ip' secrets/values.yaml)
 GATEWAY=$(yq '.scriptConfigs.gateway' secrets/values.yaml)
 
 # v1.9.0 Contains qemu-guest-agent, iscsi-tools, util-linux-tools
 IMAGE="factory.talos.dev/installer/88d1f7a5c4f1d3aba7df787c448c1d3d008ed29cfb34af53fa0df4336a56040b:v1.9.0"
 # --------------------------------CONFIG----------------------------------------
 
-
-mkdir -p talos/_out
-
 talosctl gen config --force "$CLUSTER_NAME" https://${CONTROL_PLANE_IP}:6443 \
     --config-patch-control-plane "[ \
         {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${CONTROL_PLANE_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
         {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"}, \
-        {\"op\": \"add\", \"path\": \"/cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-\", \"value\": \"longhorn-system\"} \
+        {\"op\": \"add\", \"path\": \"/cluster/apiServer/admissionControl/0/configuration/exemptions/namespaces/-\", \"value\": \"longhorn-system\"}, \
+        {\"op\": \"add\", \"path\": \"/machine/kubelet/extraMounts\", \"value\": [{\"destination\": \"/var/lib/longhorn\", \"type\": \"bind\", \"source\": \"/var/lib/longhorn\", \"options\": [\"bind\", \"rshared\", \"rw\"]}]} \
     ]" \
     --config-patch-worker "[ \
-        {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${WORKER_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
-        {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"} \
+        {\"op\": \"add\", \"path\": \"/machine/network/interfaces\", \"value\": [{\"interface\": \"eth0\", \"addresses\": [\"${WORKER1_IP}/24\"], \"routes\": [{\"network\": \"0.0.0.0/0\", \"gateway\": \"${GATEWAY}\"}]}]}, \
+        {\"op\": \"add\", \"path\": \"/machine/install/image\", \"value\": \"${IMAGE}\"}, \
+        {\"op\": \"add\", \"path\": \"/machine/kubelet/extraMounts\", \"value\": [{\"destination\": \"/var/lib/longhorn\", \"type\": \"bind\", \"source\": \"/var/lib/longhorn\", \"options\": [\"bind\", \"rshared\", \"rw\"]}]} \
     ]" \
     --with-secrets ./secrets/secrets.yaml \
-    -o talos/_out/
+    -o ./test/talos/
+
+
+mv ./test/talos/worker.yaml ./test/talos/worker-1.yaml
+cp ./test/talos/worker-1.yaml ./test/talos/worker-2.yaml
+
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    gsed -i "s/${WORKER1_IP}\/24/${WORKER2_IP}\/24/g" ./test/talos/worker-2.yaml
+    exit 0
+else
+    sed -i "s/${WORKER1_IP}\/24/${WORKER2_IP}\/24/g" ./test/talos/worker-2.yaml
+fi

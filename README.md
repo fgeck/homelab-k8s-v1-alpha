@@ -5,12 +5,14 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 ## How To
 
 1. Create you secret values: `cp secrets/values_template.yaml secrets/values.yaml`
-1. Add all secrets you need. Especially the `scriptConfigs` section
-1. Check the `talos/scripts` directory. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
-1. Deploy the config with the help of [setup_nodes.sh](./talos/scripts/setup_nodes.sh)
-1. Once the cluster is ready to use, set the kubeconfig `export KUBECONFIG=$(pwd)/kubeconfig` and deploy all services using [setup_cluster.sh](./scripts/setup_cluster.sh)
-1. Nodes can be reset using [reset_nodes.sh](./talos/scripts/reset_nodes.sh)
-1. Config of nodes can be updated using [update_nodes.sh](./talos/scripts/update_nodes.sh)
+1. Add all secrets you need. Especially start with the `scriptConfigs` section
+1. Generate secrets `talosctl gen secrets -o secrets/secret.yaml`
+1. Generate the TalOS config with [scripts/talos/config_generate.sh](/scripts/talos/config_generate.sh). The bash script is implemented to create 2 worker configs, each using the configured static IP from `secrets/values.yaml`
+1. If you have not setup your VMs for TalOS follow this [guide](https://www.talos.dev/v1.8/talos-guides/install/virtualized-platforms/proxmox/). Stop at generating/applying any config and come back to this README
+1. Deploy the config with the help of [nodes_setup.sh](/scripts/talos/nodes_setup.sh)
+1. Once the cluster is ready to use, set the kubeconfig `export KUBECONFIG=$(pwd)/secrets/kubeconfig` and deploy all services using [scripts/cluster/setup.sh](/scripts/cluster/setup.sh)
+1. Nodes can be reset using [scripts/talos/nodes_reset.sh](/scripts/talos/nodes_reset.sh)
+1. Config of nodes can be updated using [scripts/talos/nodes_update.sh](/scripts/talos/nodes_update.sh)
 
 ## Todos
 
@@ -19,7 +21,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Successfully deploy Cert-Manager which creates valid certificates
 - [x] Successfully deploy Kube-Vip
 - [x] Successfully deploy Traefik
-- [ ] A Traefik pod runs on every node to have some kind of HA setup
+- [x] A Traefik pod runs on every node to have some kind of HA setup. --> Configure as Daemsonset
 - [x] Deploy an app and it is reachable in local network via external IP
 - [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
 - [x] Deploy an app end to end with dedicated certificates (whoami-external)
@@ -49,7 +51,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
-- [ ] Successfully deploy Mediastack
+- [x] Successfully deploy Mediastack
 - [ ] Mediastack tested E2E: Jellyseerr --> Radarr/Sonarr --> SAbnzbd --> Jellyfin ; Calibre-Web-Automated
 - [ ] Successfully deploy and configure crowdsec
 - [ ] Successfully deploy and configure keel
