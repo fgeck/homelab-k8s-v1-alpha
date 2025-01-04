@@ -14,7 +14,7 @@ source ./scripts/helper_funcs.sh
 assert_tools_installed bw jq yq
 
 # --------------------------------CONFIG----------------------------------------
-VAULTWARDEN_SERVER=$(yq '.scriptConfigs.vaultwardenURL' secrets/values.yaml)
+VAULTWARDEN_SERVER=$(yq eval '.scriptConfigs.vaultwardenURL' secrets/values.yaml)
 FOLDER_NAME="Homelab"
 SECRET_NAME="KubernetesOnTalos"
 # --------------------------------CONFIG----------------------------------------
