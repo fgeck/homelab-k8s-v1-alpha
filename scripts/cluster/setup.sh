@@ -28,6 +28,7 @@ log_exec helm repo add crowdsec https://crowdsecurity.github.io/helm-charts
 log_exec helm repo add bitnami https://charts.bitnami.com/bitnami
 log_exec helm repo add signoz https://charts.signoz.io
 log_exec helm repo add keel https://charts.keel.sh 
+log_exec helm repo add authentik https://charts.goauthentik.io
 log_exec helm repo add vaultwarden https://guerzon.github.io/vaultwarden
 log_exec helm repo add uptime-kuma https://dirsigler.github.io/uptime-kuma-helm
 

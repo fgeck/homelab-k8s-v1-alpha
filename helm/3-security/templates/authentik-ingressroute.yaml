@@ -1,0 +1,26 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authentik
+  namespace: security
+  annotations:
+    meta.helm.sh/release-name: bootstrap
+    meta.helm.sh/release-namespace: security
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    app: authentik
+spec:
+  entryPoints:
+    - websecure
+    - web
+  routes:
+  - kind: Rule
+    match: Host(`auth.fgeck.de`)
+    priority: 10
+    services:
+    - kind: Service
+      name: authentik-server
+      namespace: security
+      passHostHeader: true
+      port: 9000
+      scheme: http

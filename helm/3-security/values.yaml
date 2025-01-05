@@ -1,0 +1,18 @@
+authentik:
+  authentik:
+    nameOverride: authentik
+    fullnameOverride: authentik
+    # Needs my PR to be merged first: https://github.com/goauthentik/helm/pull/316 
+    namespaceOverride: security
+    secret_key: ""
+    # This sends anonymous usage-data, stack traces on errors and
+    # performance data to authentik.error-reporting.a7k.io, and is fully opt-in
+    error_reporting:
+      enabled: false
+    postgresql:
+      password: ""
+  # TODO: configure a new postgres that is deployed in security NS 
+  postgresql:
+    enabled: false
+  redis:
+    enabled: true
