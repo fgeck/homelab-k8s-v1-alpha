@@ -19,9 +19,9 @@ assert_tools_installed talosctl yq
 # Run the script from the root of this repository. It will fetch the final IPs from the config files as well.
 
 # --------------------------------CONFIG----------------------------------------
-CURRENT_CONTROL_PLANE_IP=$(yq '.scriptConfigs.currentControlPlaneIp' secrets/values.yaml)
-CURRENT_WORKER_1_IP=$(yq '.scriptConfigs.currentWorker1Ip' secrets/values.yaml)
-CURRENT_WORKER_2_IP=$(yq '.scriptConfigs.currentWorker2Ip' secrets/values.yaml)
+CURRENT_CONTROL_PLANE_IP=$(yq eval '.scriptConfigs.currentControlPlaneIp' secrets/values.yaml)
+CURRENT_WORKER_1_IP=$(yq eval '.scriptConfigs.currentWorker1Ip' secrets/values.yaml)
+CURRENT_WORKER_2_IP=$(yq eval '.scriptConfigs.currentWorker2Ip' secrets/values.yaml)
 # --------------------------------CONFIG----------------------------------------
 
 
