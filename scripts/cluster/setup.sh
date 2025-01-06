@@ -86,8 +86,6 @@ log_info "----------------------------------------------------------------------
 log_info "START --> Deploying Monitoring: Uptime-Kuma, Signoz                                      |"
 log_info "------------------------------------------------------------------------------------------"
 echo ""
-log_exec kubectl config set-context --current --namespace=monitoring
-# namespace needed until https://github.com/dirsigler/uptime-kuma-helm/pull/181 is merged
 log_exec helm upgrade monitoring "$script_dir/helm/4-monitoring" --namespace monitoring --install -f $script_dir/helm/4-monitoring/values.yaml -f $script_dir/secrets/values.yaml
 log_success "------------------------------------------------------------------------------------------"
 log_success "DONE --> Deploying Monitoring: Uptime-Kuma, Signoz                                       |"

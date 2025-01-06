@@ -7,7 +7,7 @@ appVersion: "latest"
 
 dependencies:
   - name: uptime-kuma 
-    version: "^2.20.0"
+    version: "^2.21.2"
     repository: https://dirsigler.github.io/uptime-kuma-helm # https://github.com/dirsigler/uptime-kuma-helm/blob/main/charts/uptime-kuma/values.yaml
   # - name: signoz
   #   version: "0.62.1"
