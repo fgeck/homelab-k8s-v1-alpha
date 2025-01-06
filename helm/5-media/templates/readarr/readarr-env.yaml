@@ -12,7 +12,7 @@ data:
   READARR__POSTGRES_PASSWORD: {{ .Values.persistence.postgresql.default.postgresReadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
-  PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
+  PGHOST: {{ "default-persistence-postgresql.default.svc.cluster.local" | b64enc }}
   MAIN_DB: {{ "readarr_main" | b64enc }}
   LOG_DB: {{ "readarr_log" | b64enc }}
   CACHE_DB: {{ "readarr_cache" | b64enc }}

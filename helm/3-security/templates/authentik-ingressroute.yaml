@@ -15,12 +15,12 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`auth.{{ .Values.edge.domain }}`)
+    match: Host(`auth.{{ .Values.edge.domain }}`) ||  Host(`auth.home.{{ .Values.edge.domain }}`) || 
     priority: 10
     services:
     - kind: Service
       name: authentik-server
       namespace: security
       passHostHeader: true
-      port: 9000
+      port: 80
       scheme: http

@@ -11,7 +11,7 @@ data:
   RADARR__POSTGRES__PASSWORD: {{ .Values.persistence.postgresql.default.postgresRadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
-  PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
+  PGHOST: {{ "default-persistence-postgresql.default.svc.cluster.local" | b64enc }}
   MAIN_DB: {{ "radarr_main" | b64enc }}
   LOG_DB: {{ "radarr_log" | b64enc }}
 ---
