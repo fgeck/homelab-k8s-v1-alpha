@@ -14,7 +14,7 @@ signoz:
 uptime-kuma:
   nameOverride: uptime-kuma
   fullnameOverride: uptime-kuma
-  namespace: monitoring
+  namespaceOverride: monitoring
   volume:
     enabled: true
     existingClaim: uptime-kuma-pvc

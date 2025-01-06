@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Color codes
 COLOR_RESET="\033[0m"
 COLOR_GREY="\033[1;30m"
