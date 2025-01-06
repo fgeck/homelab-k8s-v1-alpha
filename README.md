@@ -53,14 +53,32 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
-- [x] Successfully deploy Mediastack
-- [ ] Mediastack tested E2E: Jellyseerr --> Radarr/Sonarr --> SAbnzbd --> Jellyfin ; Calibre-Web-Automated
-- [ ] Successfully deploy and configure crowdsec
-- [ ] Successfully deploy and configure keel
-- [ ] Successfully deploy and configure Authentik
-- [x] Single postgres deployment to be used by many services
-- [ ] Successfully deploy and configure signoz
+- [ ] Successfully deploy Crowdsec
+- [ ] Successfully deploy Keel
+- [ ] Successfully deploy Vaultwarden incl. postgres communication
+- [x] Successfully deploy Authentik incl. postgres communication
+- [x] Successfully deploy Uptime-Kuma
+- [ ] Successfully deploy Signoz
+- [ ] Successfully deploy Portainer
+- [x] Successfully deploy Mediastack incl. postgres communication
+- [ ] Successfully deploy Immich
+- [ ] Successfully deploy Spoolman
+- [ ] Successfully deploy Homepage
+- [x] Default postgres deployment to be used by many services
+- [x] Security postgres deployment to be used by important services
+- [ ] Networkpolicies for security postgres
 - [ ] Migrate stack from docker-compose to K8s
-- [ ] configure backups for important PVs
+- [ ] Once migrated, test End2End and configure:
+  - [ ] Crowdsec
+  - [ ] Keel
+  - [ ] Vaultwarden
+  - [ ] Authentik
+  - [ ] Uptime-Kuma
+  - [ ] Signoz
+  - [ ] Mediastack
+  - [ ] Immich
+  - [ ] Spoolman
+  - [ ] Homepage
+- [ ] configure backups for PVs
 - [ ] Enhanced security using RBAC
 - [ ] (Fun project) Write a golang cli to be able to remove the bash scripts. Especially for secrets pushing/pulling
