@@ -73,16 +73,16 @@ log_success "DONE --> Deploying Databases                                       
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-# log_info "------------------------------------------------------------------------------------------"
-# log_info "START --> Deploying Security Stack                                                            |"
-# log_info "------------------------------------------------------------------------------------------"
-# echo ""
-# log_exec kubectl config set-context --current --namespace=security
-# log_exec helm upgrade persistence "$script_dir/helm/3-security" --install  -f $script_dir/helm/3-security/values.yaml -f $script_dir/secrets/values.yaml
-# log_success "------------------------------------------------------------------------------------------"
-# log_success "DONE --> Deploying Security Stack                                                             |"
-# log_success "------------------------------------------------------------------------------------------"
-# echo ""
+log_info "------------------------------------------------------------------------------------------"
+log_info "START --> Deploying Security Stack                                                            |"
+log_info "------------------------------------------------------------------------------------------"
+echo ""
+log_exec kubectl config set-context --current --namespace=security
+log_exec helm upgrade persistence "$script_dir/helm/3-security" --install  -f $script_dir/helm/3-security/values.yaml -f $script_dir/secrets/values.yaml
+log_success "------------------------------------------------------------------------------------------"
+log_success "DONE --> Deploying Security Stack                                                             |"
+log_success "------------------------------------------------------------------------------------------"
+echo ""
 
 log_info "------------------------------------------------------------------------------------------"
 log_info "START --> Deploying Monitoring: Uptime-Kuma, Signoz                                      |"
