@@ -75,7 +75,7 @@ spec:
 
               # Ensure the user exists
               echo "Ensuring user '$SONARR_USER' exists..."
-              PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$SONARR_USER') THEN CREATE ROLE \"$SONARR_USER\" WITH LOGIN PASSWORD '$SONARR_PASSWORD'; END IF; END \$\$;"
+              PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d "$DEFAULT_DB" -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$SONARR_USER') THEN CREATE ROLE \"$SONARR_USER\" WITH LOGIN ENCRYPTED PASSWORD '$SONARR_PASSWORD'; END IF; END \$\$;"
 
               # List of databases to process
               DATABASES="$LOG_DB $MAIN_DB"
