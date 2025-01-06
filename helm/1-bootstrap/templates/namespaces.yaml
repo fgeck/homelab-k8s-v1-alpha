@@ -37,3 +37,12 @@ metadata:
     meta.helm.sh/release-name: bootstrap
     meta.helm.sh/release-namespace: monitoring
     "helm.sh/hook": pre-install
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: security
+  annotations:
+    meta.helm.sh/release-name: bootstrap
+    meta.helm.sh/release-namespace: security
+    "helm.sh/hook": pre-install

@@ -9,9 +9,9 @@ metadata:
     meta.helm.sh/release-namespace: media
 type: Opaque
 data:
-  READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
+  READARR__POSTGRES_PASSWORD: {{ .Values.persistence.postgresql.default.postgresReadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
-  PGPASSWORD: {{ .Values.default.postgresql.postgresPassword | b64enc }}
+  PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
   PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
   MAIN_DB: {{ "readarr_main" | b64enc }}
   LOG_DB: {{ "readarr_log" | b64enc }}
@@ -27,7 +27,7 @@ metadata:
     meta.helm.sh/release-namespace: media
 type: Opaque
 data:
-  READARR__POSTGRES_PASSWORD: {{ .Values.default.postgresql.postgresReadarrPassword | b64enc }}
+  READARR__POSTGRES_PASSWORD: {{ .Values.persistence.postgresql.default.postgresReadarrPassword | b64enc }}
   READARR__API_KEY: {{ .Values.media.readarr.apiKey | b64enc }}
 ---
 apiVersion: v1
@@ -42,11 +42,11 @@ data:
   # READARR__URL_BASE: "/books"
   READARR__AUTHENTICATION_METHOD: "Forms"
   READARR__AUTHENTICATION_REQUIRED: "true"
-  READARR__POSTGRES_HOST: {{ .Values.default.postgresql.hostnameInCluster }}
+  READARR__POSTGRES_HOST: {{ .Values.persistence.postgresql.default.hostnameInCluster }}
   READARR__POSTGRES_PORT: "5432"
   READARR__POSTGRES_MAIN_DB: readarr_main
   READARR__POSTGRES_LOG_DB: readarr_log
   READARR__POSTGRES_CACHE_DB: readarr_cache
-  READARR__POSTGRES_USER: {{ .Values.default.postgresql.postgresReadarrUser }}
+  READARR__POSTGRES_USER: {{ .Values.persistence.postgresql.default.postgresReadarrUser }}
   READARR__ANALYTICS_ENABLED: "false"
   READARR__LOG_LEVEL: "info"

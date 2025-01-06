@@ -8,9 +8,9 @@ metadata:
     meta.helm.sh/release-namespace: media
 type: Opaque
 data:
-  RADARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresRadarrPassword | b64enc }}
+  RADARR__POSTGRES__PASSWORD: {{ .Values.persistence.postgresql.default.postgresRadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
-  PGPASSWORD: {{ .Values.default.postgresql.postgresPassword | b64enc }}
+  PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
   PGHOST: {{ "persistence-postgresql.default.svc.cluster.local" | b64enc }}
   MAIN_DB: {{ "radarr_main" | b64enc }}
   LOG_DB: {{ "radarr_log" | b64enc }}
@@ -25,7 +25,7 @@ metadata:
     meta.helm.sh/release-namespace: media
 type: Opaque
 data:
-  RADARR__POSTGRES__PASSWORD: {{ .Values.default.postgresql.postgresRadarrPassword | b64enc }}
+  RADARR__POSTGRES__PASSWORD: {{ .Values.persistence.postgresql.default.postgresRadarrPassword | b64enc }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -38,10 +38,10 @@ metadata:
 data:
   RADARR__APP__THEME: "dark"
   # RADARR__SERVER__URLBASE: "/movies"
-  RADARR__POSTGRES__HOST: {{ .Values.default.postgresql.hostnameInCluster }}
+  RADARR__POSTGRES__HOST: {{ .Values.persistence.postgresql.default.hostnameInCluster }}
   RADARR__POSTGRES__PORT: "5432"
   RADARR__POSTGRES__MAINDB: radarr_main
   RADARR__POSTGRES__LOGDB: radarr_log
-  RADARR__POSTGRES__USER: {{ .Values.default.postgresql.postgresRadarrUser }}
+  RADARR__POSTGRES__USER: {{ .Values.persistence.postgresql.default.postgresRadarrUser }}
   RADARR__LOG__ANALYTICSENABLED: "false"
   RADARR__LOG__LEVEL: "INFO"
