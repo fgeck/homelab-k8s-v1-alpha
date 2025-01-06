@@ -1,0 +1,43 @@
+{{- if eq .Release.Namespace "security" }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: security-postgres-pv
+  namespace: security
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: security
+spec:
+  storageClassName: longhorn
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      backingImage: ""
+      numberOfReplicas: "1"
+    volumeHandle: security-postgres-longhorn-volume
+{{- end }}
+---
+{{- if eq .Release.Namespace "security" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: security-postgres-pvc
+  namespace: security
+  annotations:
+    meta.helm.sh/release-name: db
+    meta.helm.sh/release-namespace: security
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+{{- end }}

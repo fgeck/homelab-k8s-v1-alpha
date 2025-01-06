@@ -1,10 +1,11 @@
+{{- if eq .Release.Namespace "default" }}
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
-  name: postgres-longhorn-volume
+  name: default-postgres-longhorn-volume
   namespace: longhorn-system
   labels:
-    longhornvolume: postgres-longhorn-volume
+    longhornvolume: default-postgres-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
@@ -48,3 +49,4 @@ spec:
   snapshotMaxSize: "0"
   staleReplicaTimeout: 20
   unmapMarkSnapChainRemoved: ignored
+{{- end }}

@@ -11,7 +11,9 @@ kubectl config set-context --current --namespace=monitoring
 # kubectl config set-context --current --namespace=security
 # helm uninstall security
 kubectl config set-context --current --namespace=default
-helm uninstall persistence
+helm uninstall default-persistence
+kubectl config set-context --current --namespace=security
+helm uninstall security-persistence
 kubectl -n longhorn-system patch settings.longhorn.io deleting-confirmation-flag --type=merge -p '{"value": "true"}'
 kubectl config set-context --current --namespace=kube-system
 helm uninstall certs

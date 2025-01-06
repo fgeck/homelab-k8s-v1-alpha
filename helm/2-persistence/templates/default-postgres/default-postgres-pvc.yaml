@@ -1,7 +1,8 @@
+{{- if eq .Release.Namespace "default" }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-pv
+  name: default-postgres-pv
   namespace: default
   annotations:
     meta.helm.sh/release-name: db
@@ -20,12 +21,14 @@ spec:
     volumeAttributes:
       backingImage: ""
       numberOfReplicas: "1"
-    volumeHandle: postgres-longhorn-volume
+    volumeHandle: default-postgres-longhorn-volume
+{{- end }}
 ---
+{{- if eq .Release.Namespace "default" }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: default-postgres-pvc
   namespace: default
   annotations:
     meta.helm.sh/release-name: db
@@ -37,3 +40,4 @@ spec:
   resources:
     requests:
       storage: 2Gi
+{{- end }}
