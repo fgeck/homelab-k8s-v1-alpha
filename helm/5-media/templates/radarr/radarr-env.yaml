@@ -11,7 +11,7 @@ data:
   RADARR__POSTGRES__PASSWORD: {{ .Values.persistence.postgresql.default.postgresRadarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
-  PGHOST: {{ "default-persistence-postgresql.default.svc.cluster.local" | b64enc }}
+  PGHOST: {{ .Values.persistence.postgresql.default.host | b64enc }}
   MAIN_DB: {{ "radarr_main" | b64enc }}
   LOG_DB: {{ "radarr_log" | b64enc }}
 ---
@@ -38,7 +38,7 @@ metadata:
 data:
   RADARR__APP__THEME: "dark"
   # RADARR__SERVER__URLBASE: "/movies"
-  RADARR__POSTGRES__HOST: {{ .Values.persistence.postgresql.default.hostnameInCluster }}
+  RADARR__POSTGRES__HOST: {{ .Values.persistence.postgresql.default.host }}
   RADARR__POSTGRES__PORT: "5432"
   RADARR__POSTGRES__MAINDB: radarr_main
   RADARR__POSTGRES__LOGDB: radarr_log

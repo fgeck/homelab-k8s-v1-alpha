@@ -11,7 +11,7 @@ data:
   SONARR__POSTGRES__PASSWORD: {{ .Values.persistence.postgresql.default.postgresSonarrPassword | b64enc }}
   PGUSER: {{ "postgres" | b64enc }}
   PGPASSWORD: {{ .Values.persistence.postgresql.default.postgresPassword | b64enc }}
-  PGHOST: {{ "default-persistence-postgresql.default.svc.cluster.local" | b64enc }}
+  PGHOST: {{ .Values.persistence.postgresql.default.host | b64enc }}
   MAIN_DB: {{ "sonarr_main" | b64enc }}
   LOG_DB: {{ "sonarr_log" | b64enc }}
 ---
@@ -38,7 +38,7 @@ metadata:
 data:
   SONARR__APP__THEME: "dark"
   # SONARR__SERVER__URLBASE: "/series"
-  SONARR__POSTGRES__HOST: {{ .Values.persistence.postgresql.default.hostnameInCluster }}
+  SONARR__POSTGRES__HOST: {{ .Values.persistence.postgresql.default.host }}
   SONARR__POSTGRES__PORT: "5432"
   SONARR__POSTGRES__MAINDB: sonarr_main
   SONARR__POSTGRES__LOGDB: sonarr_log
