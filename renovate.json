@@ -11,12 +11,6 @@
     "groupName": "Helm chart updates",
     "rangeStrategy": "update-lockfile"
   },
-  "packageRules": [
-    {
-      "matchManagers": ["helmv3"],
-      "groupName": "Helm Charts"
-    }
-  ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10
 }
