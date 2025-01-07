@@ -23,6 +23,11 @@
       "helm/.+/templates/**"
     ]
   },
+  "kubernetes": {
+    "fileMatch": [
+      "^helm/.+/templates(/.+)+\\.yaml$"
+    ]
+  },
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10
 }
