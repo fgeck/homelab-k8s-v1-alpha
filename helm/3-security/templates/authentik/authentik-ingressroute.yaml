@@ -14,7 +14,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`auth.{{ .Values.edge.domain }}`) ||  Host(`auth.home.{{ .Values.edge.domain }}`) || 
+    match: Host(`auth.{{ .Values.edge.domain }}`) ||  Host(`auth.home.{{ .Values.edge.domain }}`)
     priority: 10
     services:
     - kind: Service
