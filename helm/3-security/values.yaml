@@ -1,6 +1,11 @@
 authentik:
   redis:
     enabled: true
+    master:
+      persistence:
+        size: 2Gi
+        # existingClaim: authentik-redis-master-pvc
+
   nameOverride: authentik
   fullnameOverride: authentik
   # Needs my PR to be merged first: https://github.com/goauthentik/helm/pull/316 

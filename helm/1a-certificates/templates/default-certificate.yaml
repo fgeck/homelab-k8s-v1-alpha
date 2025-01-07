@@ -6,7 +6,6 @@ metadata:
   annotations:
     meta.helm.sh/release-name: certs
     meta.helm.sh/release-namespace: edge
-    "helm.sh/hook": post-install,post-upgrade
 spec:
   secretName: {{ .Values.edge.certificateName }}
   issuerRef:

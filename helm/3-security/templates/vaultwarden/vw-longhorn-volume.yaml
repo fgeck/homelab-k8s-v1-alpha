@@ -1,17 +1,16 @@
-{{- if eq .Release.Namespace "default" }}
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
-  name: default-postgres-longhorn-volume
+  name: vaultwarden-longhorn-volume
   namespace: longhorn-system
   labels:
-    longhornvolume: default-postgres-longhorn-volume
+    longhornvolume: vaultwarden-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
   annotations:
-    meta.helm.sh/release-name: default-persistence
+    meta.helm.sh/release-name: security
     meta.helm.sh/release-namespace: longhorn-system
 spec:
   Standby: false
@@ -49,4 +48,3 @@ spec:
   snapshotMaxSize: "0"
   staleReplicaTimeout: 20
   unmapMarkSnapChainRemoved: ignored
-{{- end }}

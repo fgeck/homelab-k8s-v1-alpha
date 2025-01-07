@@ -55,7 +55,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Use a single wildcard certificate instead of a certificate for each service
 - [ ] Successfully deploy Crowdsec
 - [ ] Successfully deploy Keel
-- [ ] Successfully deploy Vaultwarden incl. postgres communication
+- [x] Successfully deploy Vaultwarden incl. postgres communication
 - [x] Successfully deploy Authentik incl. postgres communication
 - [x] Successfully deploy Uptime-Kuma
 - [ ] Successfully deploy Signoz

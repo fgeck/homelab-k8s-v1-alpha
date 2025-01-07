@@ -4,9 +4,8 @@ metadata:
   name: authentik
   namespace: security
   annotations:
-    meta.helm.sh/release-name: bootstrap
+    meta.helm.sh/release-name: security
     meta.helm.sh/release-namespace: security
-    "helm.sh/hook": "post-install,post-upgrade"
   labels:
     app: authentik
 spec:
@@ -15,7 +14,7 @@ spec:
     - web
   routes:
   - kind: Rule
-    match: Host(`auth.{{ .Values.edge.domain }}`) ||  Host(`auth.home.{{ .Values.edge.domain }}`) || 
+    match: Host(`auth.{{ .Values.edge.domain }}`) ||  Host(`auth.home.{{ .Values.edge.domain }}`)
     priority: 10
     services:
     - kind: Service
