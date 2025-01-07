@@ -54,7 +54,8 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
 - [ ] Successfully deploy Crowdsec
-- [ ] Successfully deploy Keel
+- [x] ~~Successfully deploy Keel~~
+- [x] Configure Renovate
 - [x] Successfully deploy Vaultwarden incl. postgres communication
 - [x] Successfully deploy Authentik incl. postgres communication
 - [x] Successfully deploy Uptime-Kuma

@@ -7,7 +7,7 @@ appVersion: "latest"
 
 dependencies:
   - name: postgresql
-    version: "^14.3.3"
+    version: "^16.3.5"
     repository: https://charts.bitnami.com/bitnami
   # - name: mariadb
   #   version: "^20.2.1"
