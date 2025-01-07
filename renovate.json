@@ -26,6 +26,9 @@
   "kubernetes": {
     "fileMatch": [
       "^helm/.+/templates(/.+)+\\.yaml$"
+    ],
+    "ignorePaths": [
+      ".*-longhorn-volume\\.yaml$"
     ]
   },
   "prHourlyLimit": 5,
