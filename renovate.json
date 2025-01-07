@@ -1,6 +1,44 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ]
+  "extends": ["config:base"],
+  "labels": ["dependencies", "renovate"],
+  "assignees": ["fgeck"],
+  "schedule": ["at any time"],
+  "helm": {
+    "enabled": true,
+    "fileMatch": ["^helm/.+/Chart.yaml$", "^helm/.+/values.yaml$"],
+    "ignorePaths": ["helm/.+/templates/**"],
+    "groupName": "Helm chart updates",
+    "rangeStrategy": "update-lockfile"
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["^helm/.+/values.yaml$"],
+      "matchStrings": [
+        "(?<!#).*image:\\s*(?<depName>\\S+):(?<currentValue>[\\w\\.\\-_]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
+      "fileMatch": ["^helm/.+/templates(/.+)+\\.yaml$"],
+      "matchStrings": [
+        "(?<!#).*image:\\s*(?<depName>\\S+):(?<currentValue>[\\w\\.\\-_]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["helm"],
+      "groupName": "Helm Charts"
+    },
+    {
+      "matchManagers": ["regex"],
+      "groupName": "Docker Images"
+    }
+  ],
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 10
 }
