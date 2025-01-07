@@ -1,18 +1,17 @@
-{{- if or (eq .Values.media.platform "jellyfin") (eq .Values.media.platform "all") }}
 apiVersion: longhorn.io/v1beta2
 kind: Volume
 metadata:
   name: vaultwarden-longhorn-volume
   namespace: longhorn-system
-  annotations:
-    meta.helm.sh/release-name: security
-    meta.helm.sh/release-namespace: longhorn-system
   labels:
     longhornvolume: vaultwarden-longhorn-volume
     recurring-job-group.longhorn.io/default: enabled
     setting.longhorn.io/remove-snapshots-during-filesystem-trim: ignored
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
+  annotations:
+    meta.helm.sh/release-name: security
+    meta.helm.sh/release-namespace: longhorn-system
 spec:
   Standby: false
   accessMode: rwo
@@ -43,7 +42,7 @@ spec:
   restoreVolumeRecurringJob: ignored
   revisionCounterDisabled: true
   # 1073741824 -> 1Gi ; 2147483648 -> 2Gi ; 4294967296 -> 4Gi
-  size: "1073741824"
+  size: "2147483648"
   snapshotDataIntegrity: ignored
   snapshotMaxCount: 2
   snapshotMaxSize: "0"

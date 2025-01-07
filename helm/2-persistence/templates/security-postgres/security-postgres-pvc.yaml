@@ -5,7 +5,7 @@ metadata:
   name: security-postgres-pv
   namespace: security
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: security-persistence
     meta.helm.sh/release-namespace: security
 spec:
   storageClassName: longhorn
@@ -31,7 +31,7 @@ metadata:
   name: security-postgres-pvc
   namespace: security
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: security-persistence
     meta.helm.sh/release-namespace: security
 spec:
   storageClassName: longhorn

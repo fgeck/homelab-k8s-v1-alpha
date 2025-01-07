@@ -5,7 +5,7 @@ metadata:
   name: default-postgres-pv
   namespace: default
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: default-persistence
     meta.helm.sh/release-namespace: default
 spec:
   storageClassName: longhorn
@@ -31,7 +31,7 @@ metadata:
   name: default-postgres-pvc
   namespace: default
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: default-persistence
     meta.helm.sh/release-namespace: default
 spec:
   storageClassName: longhorn

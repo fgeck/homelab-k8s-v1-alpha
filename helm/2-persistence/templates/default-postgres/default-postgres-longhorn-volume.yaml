@@ -11,7 +11,7 @@ metadata:
     setting.longhorn.io/replica-auto-balance: ignored
     setting.longhorn.io/snapshot-data-integrity: ignored
   annotations:
-    meta.helm.sh/release-name: db
+    meta.helm.sh/release-name: default-persistence
     meta.helm.sh/release-namespace: longhorn-system
 spec:
   Standby: false
