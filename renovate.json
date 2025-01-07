@@ -31,7 +31,7 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["helm"],
+      "matchManagers": ["helmv3"],
       "groupName": "Helm Charts"
     },
     {
