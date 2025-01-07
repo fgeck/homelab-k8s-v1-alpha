@@ -4,7 +4,7 @@
   "labels": ["dependencies", "renovate"],
   "assignees": ["fgeck"],
   "schedule": ["at any time"],
-  "helm": {
+  "helmv3": {
     "enabled": true,
     "fileMatch": ["^helm/.+/Chart.yaml$", "^helm/.+/values.yaml$"],
     "ignorePaths": ["helm/.+/templates/**"],
