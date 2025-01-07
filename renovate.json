@@ -11,32 +11,10 @@
     "groupName": "Helm chart updates",
     "rangeStrategy": "update-lockfile"
   },
-  "regexManagers": [
-    {
-      "fileMatch": ["^helm/.+/(values\\.yaml|.+-values\\.yaml)$"],
-      "matchStrings": [
-        ".*image:\\s*([\\w\\.\\-_]+):([\\w\\.\\-_]+)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    },
-    {
-      "fileMatch": ["^helm/.+/templates(/.+)+\\.yaml$"],
-      "matchStrings": [
-        ".*image:\\s*([\\w\\.\\-_]+):([\\w\\.\\-_]+)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    }
-  ],
   "packageRules": [
     {
       "matchManagers": ["helmv3"],
       "groupName": "Helm Charts"
-    },
-    {
-      "matchManagers": ["regex"],
-      "groupName": "Docker Images"
     }
   ],
   "prHourlyLimit": 5,
