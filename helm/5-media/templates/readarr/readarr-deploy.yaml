@@ -30,7 +30,7 @@ spec:
       automountServiceAccountToken: false
       initContainers:
         - name: init-postgres
-          image: postgres:latest
+          image: postgres:16.3.5
           envFrom:
             - configMapRef:
                 name: readarr-env

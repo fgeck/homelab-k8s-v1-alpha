@@ -20,12 +20,15 @@
       "^helm/.+/(values\\.yaml|.+-values\\.yaml)$"
     ],
     "ignorePaths": [
-      "helm/.+/templates/**"
+      "helm/*/templates/**"
     ]
   },
   "kubernetes": {
     "fileMatch": [
       "^helm/.+/templates(/.+)+\\.yaml$"
+    ],
+    "ignorePaths": [
+      "**/*-longhorn-volume.yaml"
     ]
   },
   "prHourlyLimit": 5,

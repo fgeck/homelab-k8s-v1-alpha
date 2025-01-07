@@ -72,7 +72,7 @@ spec:
             secretKeyRef:
               name: fritzbox-cloudflare-dyndns-credentials
               key: password
-        image: ghcr.io/cromefire/fritzbox-cloudflare-dyndns:latest
+        image: ghcr.io/cromefire/fritzbox-cloudflare-dyndns:1.3.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
