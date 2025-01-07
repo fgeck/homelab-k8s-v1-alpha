@@ -9,7 +9,6 @@ metadata:
     keel.sh/trigger: poll
     meta.helm.sh/release-name: security
     meta.helm.sh/release-namespace: security
-    "helm.sh/hook": "post-install,post-upgrade"
 spec:
   schedule: "0 7 * * *"
   jobTemplate:

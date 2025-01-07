@@ -1,6 +1,4 @@
 authentik:
-  redis:
-    enabled: true
   nameOverride: authentik
   fullnameOverride: authentik
   # Needs my PR to be merged first: https://github.com/goauthentik/helm/pull/316 
