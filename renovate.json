@@ -6,16 +6,16 @@
   "schedule": ["at any time"],
   "helmv3": {
     "enabled": true,
-    "fileMatch": ["^helm/.+/Chart.yaml$", "^helm/.+/values.yaml$"],
+    "fileMatch": ["^helm/.+/Chart.yaml$", "^helm/.+/(values\\.yaml|.+-values\\.yaml)$"],
     "ignorePaths": ["helm/.+/templates/**"],
     "groupName": "Helm chart updates",
     "rangeStrategy": "update-lockfile"
   },
   "regexManagers": [
     {
-      "fileMatch": ["^helm/.+/values.yaml$"],
+      "fileMatch": ["^helm/.+/(values\\.yaml|.+-values\\.yaml)$"],
       "matchStrings": [
-        "(?<!#).*image:\\s*(?<depName>\\S+):(?<currentValue>[\\w\\.\\-_]+)"
+        ".*image:\\s*([\\w\\.\\-_]+):([\\w\\.\\-_]+)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
@@ -23,7 +23,7 @@
     {
       "fileMatch": ["^helm/.+/templates(/.+)+\\.yaml$"],
       "matchStrings": [
-        "(?<!#).*image:\\s*(?<depName>\\S+):(?<currentValue>[\\w\\.\\-_]+)"
+        ".*image:\\s*([\\w\\.\\-_]+):([\\w\\.\\-_]+)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
