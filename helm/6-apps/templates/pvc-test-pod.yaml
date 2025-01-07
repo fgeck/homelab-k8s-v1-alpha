@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: test
-      image: ubuntu:20.04
+      image: ubuntu:24.04
       command: ["/bin/bash", "-c", "sleep 99999"]
       securityContext:
         privileged: true
@@ -29,7 +29,7 @@ metadata:
 spec:
   containers:
     - name: test
-      image: ubuntu:20.04
+      image: ubuntu:24.04
       command: ["/bin/bash", "-c", "sleep 99999"]
       volumeMounts:
         - mountPath: /mnt/data
