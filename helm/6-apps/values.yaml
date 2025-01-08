@@ -1,0 +1,12 @@
+portnainer:
+  service:
+    type: ClusterIP
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  persistence:
+    existingClaim: portnainer-pvc

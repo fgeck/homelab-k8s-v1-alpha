@@ -53,20 +53,21 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Script that stores current `secrets/values.yaml` and `secrets/secrets.yaml` in vaultwarden
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
-- [ ] Successfully deploy Crowdsec
+- [ ] Successfully deploy [Crowdsec](https://github.com/crowdsecurity/helm-charts)
 - [x] ~~Successfully deploy Keel~~
 - [x] Configure Renovate
-- [x] Successfully deploy Vaultwarden incl. postgres communication
-- [x] Successfully deploy Authentik incl. postgres communication
-- [x] Successfully deploy Uptime-Kuma
-- [ ] Successfully deploy Signoz
-- [ ] Successfully deploy Portainer
+- [x] Successfully deploy [Vaultwarden](https://github.com/dani-garcia/vaultwarden) incl. postgres communication
+- [x] Successfully deploy [Authentik](https://docs.goauthentik.io/docs/install-config/install/kubernetes) incl. postgres communication
+- [x] Successfully deploy [Uptime-Kuma](https://github.com/dirsigler/uptime-kuma-helm/tree/main)
+- [ ] Successfully deploy [Signoz](https://signoz.io/docs/install/kubernetes/others/)
+- [x] Successfully deploy [Portainer](https://github.com/portainer/k8s/tree/master/deploy/helm/charts/portainer)
 - [x] Successfully deploy Mediastack incl. postgres communication
-- [ ] Successfully deploy Immich
-- [ ] Successfully deploy Spoolman
-- [ ] Successfully deploy Homepage
-- [x] Default postgres deployment to be used by many services
-- [x] Security postgres deployment to be used by important services
+- [ ] Successfully deploy [Immich](https://github.com/immich-app/immich-charts)
+- [ ] Successfully deploy [Spoolman](https://github.com/Donkie/Spoolman)
+- [ ] Successfully deploy [Homepage](https://gethomepage.dev/installation/k8s/#install-with-helm)
+- [ ] Successfully deploy [Wallabag](https://github.com/wallabag/wallabag)
+- [x] Default [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by many services
+- [x] Security [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by important services
 - [ ] Networkpolicies for security postgres
 - [ ] Migrate stack from docker-compose to K8s
 - [ ] Once migrated, test End2End and configure:

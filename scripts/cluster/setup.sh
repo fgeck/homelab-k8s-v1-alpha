@@ -31,6 +31,7 @@ log_exec helm repo add keel https://charts.keel.sh
 log_exec helm repo add authentik https://charts.goauthentik.io
 log_exec helm repo add vaultwarden https://guerzon.github.io/vaultwarden
 log_exec helm repo add uptime-kuma https://dirsigler.github.io/uptime-kuma-helm
+log_exec helm repo add portainer https://portainer.github.io/k8s/
 
 log_exec helm repo update
 
