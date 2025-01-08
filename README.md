@@ -18,15 +18,15 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 
 ## Todos
 
-- [x] Successfully create K8s cluster in Proxmox VMs using TalOS
-- [ ] Multi Controlplane Cluster using 2 Controlplane TalOS VMs
-- [x] Successfully deploy Cert-Manager which creates valid certificates
-- [x] Successfully deploy Kube-Vip
-- [x] Successfully deploy Traefik
+- [x] Successfully create K8s cluster in [Proxmox](https://www.proxmox.com/en/) VMs using [TalOS Linux](https://www.talos.dev/)
+- [ ] Multi-Controlplane Cluster using 2 Controlplane TalOS VMs
+- [x] Successfully deploy [Cert-Manager](https://cert-manager.io/docs/installation/helm/) which creates valid certificates
+- [x] Successfully deploy [Kube-Vip](https://github.com/kube-vip/helm-charts)
+- [x] Successfully deploy [Traefik](https://github.com/traefik/traefik-helm-chart)
 - [x] A Traefik pod runs on every node to have some kind of HA setup. --> Configure as Daemsonset
-- [x] Deploy an app and it is reachable in local network via external IP
-- [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine
-- [x] Deploy an app end to end with dedicated certificates (whoami-external)
+- [x] Deploy an app and it is reachable in local network via external IP --> `whoami-external`
+- [x] Deploy an app and it is reachable in local network via some dummy dns + modification of /etc/hosts on a client machine `whoami-internal`
+- [x] Deploy an app end to end with dedicated certificates --> `whoami-external`
 - [x] Decide about storage provider. Requirements:
   - The node that hosts Proxmox has a dedicated 2TB SSD where data will be stored. This must be available to many pods
   - A multi VM multi Node setup must be possible
