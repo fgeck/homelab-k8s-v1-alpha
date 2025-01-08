@@ -1,5 +1,5 @@
 apiVersion: v2
-name: bootstrap
+name: certs
 description: Helm chart for deploying certificates. This is a workaround  because cert-manager CRs need to be deployed after cert-manager webhook is ready
 type: application
 version: 0.1.0
