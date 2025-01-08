@@ -7,5 +7,5 @@ appVersion: "latest"
 
 dependencies:
   - name: portainer
-    version: 1.0.59
+    version: "^1.0.59"
     repository: https://portainer.github.io/k8s/
