@@ -112,6 +112,15 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 2
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
       dnsConfig:
         options:
         - name: ndots
@@ -119,5 +128,5 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
       securityContext:
-        fsGroup: 1001
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
