@@ -13,26 +13,36 @@ authentik:
       persistence:
         size: 2Gi
         # existingClaim: authentik-redis-master-pvc
+
   worker:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      seccompProfile:
+        type: RuntimeDefault
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
           - ALL
-      runAsNonRoot: true
-      runAsUser: 1000
-      seccompProfile:
-        type: RuntimeDefault
+
   server:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      seccompProfile:
+        type: RuntimeDefault
     containerSecurityContext:
       allowPrivilegeEscalation: false
       capabilities:
         drop:
           - ALL
-      runAsNonRoot: true
-      runAsUser: 1000
-      seccompProfile:
-        type: RuntimeDefault
     initContainers:
       - name: init-postgres
         image: bitnami/postgresql:17.2.0
@@ -118,7 +128,3 @@ authentik:
           capabilities:
             drop:
               - ALL
-          runAsNonRoot: true
-          runAsUser: 1000
-          seccompProfile:
-            type: RuntimeDefault

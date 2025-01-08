@@ -23,8 +23,13 @@ spec:
         app.kubernetes.io/name: vaultwarden
     spec:
       securityContext:
-        fsGroup: 1000 # This applies to all volumes in the pod
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: vaultwarden
         image: docker.io/vaultwarden/server:1.32.7-alpine
@@ -87,16 +92,9 @@ spec:
             memory: 256Mi
         securityContext:
           allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsGroup: 1000
-          runAsUser: 1000
           capabilities:
             drop:
               - ALL
-          seccompProfile:
-            type: RuntimeDefault
       initContainers:
       - name: init-postgres
         image: bitnami/postgresql:17.2.0
@@ -182,10 +180,6 @@ spec:
           capabilities:
             drop:
               - ALL
-          runAsNonRoot: true
-          runAsUser: 1000
-          seccompProfile:
-            type: RuntimeDefault
       volumes:
       - name: data
         persistentVolumeClaim:
