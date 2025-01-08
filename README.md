@@ -68,6 +68,8 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [ ] Successfully deploy [Wallabag](https://github.com/wallabag/wallabag)
 - [x] Default [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by many services
 - [x] Security [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by important services
+- [ ] Sync Secrets with [external-secrets](https://external-secrets.io/latest/examples/bitwarden/)
+- [ ] Switch to [Flux2](https://fluxcd.io/flux)
 - [ ] Networkpolicies for security postgres
 - [ ] Migrate stack from docker-compose to K8s
 - [ ] Once migrated, test End2End and configure:
