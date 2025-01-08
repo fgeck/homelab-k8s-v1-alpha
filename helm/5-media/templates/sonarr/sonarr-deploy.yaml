@@ -2,14 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    keel.sh/policy: all
-    keel.sh/pollSchedule: '@daily'
-    keel.sh/trigger: poll
-  labels:
-    app.kubernetes.io/name: sonarr
-  annotations:
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: media
+  labels:
+    app.kubernetes.io/name: sonarr
   name: sonarr
   namespace: media
 spec:

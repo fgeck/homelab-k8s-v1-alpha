@@ -72,7 +72,6 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [ ] Migrate stack from docker-compose to K8s
 - [ ] Once migrated, test End2End and configure:
   - [ ] Crowdsec
-  - [ ] Keel
   - [ ] Vaultwarden
   - [ ] Authentik
   - [ ] Uptime-Kuma

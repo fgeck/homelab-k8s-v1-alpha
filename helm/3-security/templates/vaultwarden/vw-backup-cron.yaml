@@ -4,9 +4,6 @@ metadata:
   name: vaultwarden-backup
   namespace: security
   annotations:
-    keel.sh/policy: all
-    keel.sh/pollSchedule: '@daily'
-    keel.sh/trigger: poll
     meta.helm.sh/release-name: security
     meta.helm.sh/release-namespace: security
 spec:

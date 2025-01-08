@@ -3,9 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    keel.sh/policy: all
-    keel.sh/pollSchedule: '@daily'
-    keel.sh/trigger: poll
     meta.helm.sh/release-name: media
     meta.helm.sh/release-namespace: media
   labels:
