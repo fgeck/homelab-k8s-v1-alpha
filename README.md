@@ -43,7 +43,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 ---> Final implementation: VM which only acts as NFS share
 - [ ] Expose USB HDDs in network as backup drives. Currently the Fritzbox exposes them as Samba Shares. Requirements:
   - Longhorn can use the disks; according to [Longhorn docs](https://longhorn.io/docs/1.7.2/snapshots-and-backups/backup-and-restore/set-backup-target/) it should be possible to use a Samba Share
-  - Final Setup for backups: Use RPI to host [Openmediavault](https://www.openmediavault.org/)
+- [ ] Final Setup for backups: Use RPI to host [Openmediavault](https://www.openmediavault.org/) and connect USB HDDs to this machine.
 - [x] successfully deploy storage provider
 - [x] TalOS extract secrets and use templating mechanism
 - [x] Proper scripts for setup of cluster and cluster installation
