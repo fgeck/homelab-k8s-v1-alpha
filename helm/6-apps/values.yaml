@@ -1,4 +1,4 @@
-portnainer:
+portainer:
   service:
     type: ClusterIP
   resources:
@@ -9,4 +9,4 @@ portnainer:
       cpu: 10m
       memory: 64Mi
   persistence:
-    existingClaim: portnainer-pvc
+    existingClaim: portainer-pvc
