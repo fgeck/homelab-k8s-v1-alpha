@@ -5,6 +5,8 @@ assert_tools_installed kubectl helm
 
 gum confirm "Are you sure you want to teardown the whole cluster?" || exit 1
 
+kubectl config set-context --current --namespace=default
+helm uninstall apps
 kubectl config set-context --current --namespace=media
 helm uninstall media
 kubectl config set-context --current --namespace=monitoring

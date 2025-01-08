@@ -31,6 +31,7 @@ log_exec helm repo add keel https://charts.keel.sh
 log_exec helm repo add authentik https://charts.goauthentik.io
 log_exec helm repo add vaultwarden https://guerzon.github.io/vaultwarden
 log_exec helm repo add uptime-kuma https://dirsigler.github.io/uptime-kuma-helm
+log_exec helm repo add portainer https://portainer.github.io/k8s/
 
 log_exec helm repo update
 
@@ -106,11 +107,16 @@ log_success "DONE --> Deploying Media: Sabnzbd, *arr, Jellyseerr, Jellyfin, Cali
 log_success "------------------------------------------------------------------------------------------"
 echo ""
 
-# log_info "START --> Deploying All other Apps"
-# echo ""
-# log_exec helm upgrade media "$script_dir/helm/6-apps" --install -f $script_dir/helm/6-apps/values.yaml -f $script_dir/secrets/values.yaml
-# log_success "DONE --> Deploying All other Apps"
-# echo ""
+log_info "------------------------------------------------------------------------------------------"
+log_info "START --> Deploying All other Apps...                                                    |"
+log_info "------------------------------------------------------------------------------------------"
+echo ""
+log_exec kubectl config set-context --current --namespace=default
+log_exec helm upgrade apps "$script_dir/helm/6-apps" --install -f $script_dir/helm/6-apps/values.yaml -f $script_dir/secrets/values.yaml
+log_success "------------------------------------------------------------------------------------------"
+log_success "DONE --> Deploying All other Apps...                                                     |"
+log_success "------------------------------------------------------------------------------------------"
+echo ""
 
 # Workaround as Kube-Vip/Kube-Vip-Cloudprovider seems to be stuck sometimes after install/upgrade
 log_exec kubectl rollout restart deployment kube-vip-cloud-provider -n kube-system
