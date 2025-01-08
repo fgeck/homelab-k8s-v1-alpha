@@ -22,6 +22,14 @@ spec:
       labels:
         app.kubernetes.io/name: overseerr
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: main
         env:
@@ -63,9 +71,10 @@ spec:
             cpu: 10m
             memory: 50Mi
         securityContext:
-          runAsGroup: 1001
-          runAsNonRoot: true
-          runAsUser: 1001
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
         startupProbe:
           failureThreshold: 60
           initialDelaySeconds: 10
@@ -85,9 +94,6 @@ spec:
           value: "1"
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
-      securityContext:
-        fsGroup: 1001
-        fsGroupChangePolicy: OnRootMismatch
       volumes:
       - name: overseerr-config
         persistentVolumeClaim:

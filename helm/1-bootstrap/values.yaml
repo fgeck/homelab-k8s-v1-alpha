@@ -54,7 +54,7 @@ traefik:
   tlsStore:
     default:
       defaultCertificate:
-        secretName: "set-by-secret-values"
+        secretName: ""
   ingressClass:
     enabled: true
     isDefaultClass: true

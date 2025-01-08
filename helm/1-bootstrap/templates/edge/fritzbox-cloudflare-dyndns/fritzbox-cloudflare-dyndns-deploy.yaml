@@ -25,6 +25,14 @@ spec:
         meta.helm.sh/release-name: edge
         meta.helm.sh/release-namespace: edge
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: main
         env:
@@ -112,12 +120,14 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 2
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
       dnsConfig:
         options:
         - name: ndots
           value: "1"
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
-      securityContext:
-        fsGroup: 1001
-        fsGroupChangePolicy: OnRootMismatch
