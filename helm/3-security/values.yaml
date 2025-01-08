@@ -1,11 +1,4 @@
 authentik:
-  redis:
-    enabled: true
-    master:
-      persistence:
-        size: 2Gi
-        # existingClaim: authentik-redis-master-pvc
-
   nameOverride: authentik
   fullnameOverride: authentik
   # Needs my PR to be merged first: https://github.com/goauthentik/helm/pull/316
@@ -14,7 +7,32 @@ authentik:
   # performance data to authentik.error-reporting.a7k.io, and is fully opt-in
   error_reporting:
     enabled: false
+  redis:
+    enabled: true
+    master:
+      persistence:
+        size: 2Gi
+        # existingClaim: authentik-redis-master-pvc
+  worker:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
   server:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
     initContainers:
       - name: init-postgres
         image: bitnami/postgresql:17.2.0
@@ -95,3 +113,12 @@ authentik:
             done
 
             echo "Database setup completed."
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault

@@ -38,6 +38,15 @@ spec:
                 - name: rclone-config
                   mountPath: /home/backuptool/.rclone.conf
                   subPath: rclone.conf
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                runAsNonRoot: true
+                runAsUser: 1000
+                seccompProfile:
+                  type: RuntimeDefault
           volumes:
             - name: vaultwarden
               persistentVolumeClaim:

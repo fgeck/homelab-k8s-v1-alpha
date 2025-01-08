@@ -95,6 +95,8 @@ spec:
           capabilities:
             drop:
               - ALL
+          seccompProfile:
+            type: RuntimeDefault
       initContainers:
       - name: init-postgres
         image: bitnami/postgresql:17.2.0
@@ -175,6 +177,15 @@ spec:
             done
 
             echo "Database setup completed."
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
       volumes:
       - name: data
         persistentVolumeClaim:
