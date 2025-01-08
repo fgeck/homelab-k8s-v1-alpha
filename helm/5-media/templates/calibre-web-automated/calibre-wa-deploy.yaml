@@ -24,6 +24,14 @@ spec:
         meta.helm.sh/release-name: media
         meta.helm.sh/release-namespace: media
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: main
         env:
@@ -85,15 +93,18 @@ spec:
           name: calibre-library
         - mountPath: /cwa-book-ingest
           name: cwa-book-ingest
+# --- Nice to have, but container fails to start
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
       dnsConfig:
         options:
         - name: ndots
           value: "1"
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
-      securityContext:
-        fsGroup: 1001
-        fsGroupChangePolicy: OnRootMismatch
       volumes:
       - name: calibre-wa-config
         persistentVolumeClaim:
