@@ -16,10 +16,22 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 1. Nodes can be reset using [scripts/talos/nodes_reset.sh](/scripts/talos/nodes_reset.sh)
 1. Config of nodes can be updated using [scripts/talos/nodes_update.sh](/scripts/talos/nodes_update.sh)
 
+## Future Setup
+
+While working in the cluster and completing my Todos I found out way more elegant processes to bootstrap, deploy, and constantly update the cluster.
+It will include the projects in below ToDos:
+
+- [ ] Sync Secrets with [external-secrets](https://external-secrets.io/latest/examples/bitwarden/)
+- [ ] Switch to [Flux](https://fluxcd.io/flux)
+- [ ] Use [SOPS](https://fluxcd.io/flux/guides/mozilla-sops/)
+- [ ] Switch from Kube-Vip to [Cilium](https://docs.cilium.io/en/stable/installation/k8s-install-helm/) for Loadbalancer IPs [Howto on TalOS](https://www.talos.dev/v1.9/kubernetes-guides/network/deploying-cilium/) and [HowTo Migration and Helm Deployment](https://blog.stonegarden.dev/articles/2023/12/migrating-from-metallb-to-cilium/)
+- [ ] Decide about new VM Setup: 1 'small' Controplane VM and 1 'beefy' Worker VM **or** a single Controlplane that allows scheduling workload as well ([config](https://www.talos.dev/v1.7/talos-guides/howto/workers-on-controlplane/))
+- [ ] Decide about [local-path-provisioner running on TalOS](https://www.talos.dev/v1.9/kubernetes-guides/configuration/local-storage/#local-path-provisioner) vs. Longhorn. Backups could be realized with a Restic CronJob ([tutorial](https://itnext.io/simple-backups-for-small-kubernetes-clusters-1203c835fd97))
+
 ## Todos
 
 - [x] Successfully create K8s cluster in [Proxmox](https://www.proxmox.com/en/) VMs using [TalOS Linux](https://www.talos.dev/)
-- [ ] Multi-Controlplane Cluster using 2 Controlplane TalOS VMs
+- [x] ~~Multi-Controlplane Cluster using 3 Controlplane TalOS VMs~~ *Maybe overkill for a Homelab*
 - [x] Successfully deploy [Cert-Manager](https://cert-manager.io/docs/installation/helm/) which creates valid certificates
 - [x] Successfully deploy [Kube-Vip](https://github.com/kube-vip/helm-charts)
 - [x] Successfully deploy [Traefik](https://github.com/traefik/traefik-helm-chart)
@@ -54,6 +66,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [x] Use traefik ingress objects instead of standard ingress
 - [x] Use a single wildcard certificate instead of a certificate for each service
 - [ ] Successfully deploy [Crowdsec](https://github.com/crowdsecurity/helm-charts)
+  - [ ] Traefik access logs are created and parsed by crowdsec
 - [x] ~~Successfully deploy Keel~~
 - [x] Configure Renovate
 - [x] Successfully deploy [Vaultwarden](https://github.com/dani-garcia/vaultwarden) incl. postgres communication
@@ -68,9 +81,6 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
 - [ ] Successfully deploy [Wallabag](https://github.com/wallabag/wallabag)
 - [x] Default [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by many services
 - [x] Security [Postgres](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) deployment to be used by important services
-- [ ] Sync Secrets with [external-secrets](https://external-secrets.io/latest/examples/bitwarden/)
-- [ ] Switch to [Flux2](https://fluxcd.io/flux)
-- [ ] Networkpolicies for security postgres
 - [ ] Migrate stack from docker-compose to K8s
 - [ ] Once migrated, test End2End and configure:
   - [ ] Crowdsec
@@ -82,6 +92,7 @@ This repository contains scripts and mostly yaml files to spin up and deploy ser
   - [ ] Immich
   - [ ] Spoolman
   - [ ] Homepage
-- [ ] configure backups for PVs
+- [ ] Configure backups for Longhorn volumes
 - [ ] Enhanced security using RBAC
 - [ ] (Fun project) Write a golang cli to be able to remove the bash scripts. Especially for secrets pushing/pulling
+- [ ] Networkpolicies for security postgres
