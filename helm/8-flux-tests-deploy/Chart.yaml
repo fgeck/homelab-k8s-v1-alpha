@@ -1,0 +1,6 @@
+apiVersion: v2
+name: flux-tests
+description: Helm chart for deploying all other apps
+type: application
+version: 0.1.0
+appVersion: "latest"

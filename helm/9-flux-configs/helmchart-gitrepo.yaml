@@ -1,0 +1,17 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: homelab-k8s
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: ssh://git@github.com/fgeck/homelab-k8s
+  secretRef:
+    name: github-auth
+  ref:
+    branch: flux
+  ignore: |
+    # exclude all
+    /*
+    # include charts directory
+    !/helm/
