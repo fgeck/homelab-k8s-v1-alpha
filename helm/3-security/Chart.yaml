@@ -7,5 +7,5 @@ appVersion: "latest"
 
 dependencies:
   - name: authentik
-    version: "2024.12.1"
+    version: "2025.2.0"
     repository: https://charts.goauthentik.io # After the installation is complete, access authentik at https://<ingress-host-name>/if/flow/initial-setup/. Here, you can set a password for the default akadmin user.
