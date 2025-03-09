@@ -19,5 +19,5 @@ dependencies:
     version: "^1.14.3"
     repository: https://charts.jetstack.io
   - name: longhorn
-    version: "1.7.2"
+    version: "1.8.1"
     repository: https://charts.longhorn.io

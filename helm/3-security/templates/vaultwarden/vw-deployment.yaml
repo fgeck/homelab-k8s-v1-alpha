@@ -32,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: vaultwarden
-        image: docker.io/vaultwarden/server:1.32.7-alpine
+        image: docker.io/vaultwarden/server:1.33.2-alpine
         imagePullPolicy: IfNotPresent
         env:
         - name: LOG_LEVEL
@@ -97,7 +97,7 @@ spec:
               - ALL
       initContainers:
       - name: init-postgres
-        image: bitnami/postgresql:17.2.0
+        image: bitnami/postgresql:17.4.0
         envFrom:
           - secretRef:
               name: vaultwarden-init-secret-env

@@ -35,7 +35,7 @@ spec:
       automountServiceAccountToken: false
       initContainers:
         - name: init-postgres
-          image: bitnami/postgresql:17.2.0
+          image: bitnami/postgresql:17.4.0
           envFrom:
             - configMapRef:
                 name: sonarr-env
@@ -131,7 +131,7 @@ spec:
             name: sonarr-env
         - secretRef:
             name: sonarr-secret-env
-        image: ghcr.io/onedr0p/sonarr:4.0.12
+        image: ghcr.io/onedr0p/sonarr:4.0.13
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5

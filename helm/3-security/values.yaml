@@ -45,7 +45,7 @@ authentik:
           - ALL
     initContainers:
       - name: init-postgres
-        image: bitnami/postgresql:17.2.0
+        image: bitnami/postgresql:17.4.0
         envFrom:
           - secretRef:
               name: authentik-init-secret-env
