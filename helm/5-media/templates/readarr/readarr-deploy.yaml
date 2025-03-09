@@ -35,7 +35,7 @@ spec:
       automountServiceAccountToken: false
       initContainers:
         - name: init-postgres
-          image: bitnami/postgresql:17.2.0
+          image: bitnami/postgresql:17.4.0
           envFrom:
             - configMapRef:
                 name: readarr-env
@@ -132,7 +132,7 @@ spec:
             name: readarr-env
         - secretRef:
             name: readarr-secret-env
-        image: ghcr.io/elfhosted/readarr-develop:0.4.7.2718
+        image: ghcr.io/elfhosted/readarr-develop:0.4.12.2753
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 5
